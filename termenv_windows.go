@@ -7,11 +7,11 @@ func SupportedColorProfile() ColorProfile {
 }
 
 func DefaultForegroundColor() ColorSequencer {
-	// default white
-	return 15
+	// default gray
+	return ANSIColor(7)
 }
 
 func DefaultBackgroundColor() ColorSequencer {
 	// default black
-	return 0
+	return ANSIColor(0)
 }

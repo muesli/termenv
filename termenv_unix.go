@@ -72,8 +72,8 @@ func DefaultForegroundColor() ColorSequencer {
 		}
 	}
 
-	// default white
-	return ANSIColor(15)
+	// default gray
+	return ANSIColor(7)
 }
 
 func DefaultBackgroundColor() ColorSequencer {
