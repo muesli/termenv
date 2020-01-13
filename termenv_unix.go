@@ -6,7 +6,6 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -20,19 +19,25 @@ import (
 var (
 	nbStdout   *os.File
 	initStdout sync.Once
+
+	ErrStatusReport = errors.New("unable to retrieve status report")
 )
 
 func stdoutWithTimeout(d time.Duration) *os.File {
+	var err error
 	initStdout.Do(func() {
-		if err := syscall.SetNonblock(1, true); err != nil {
-			panic(err)
+		if err = syscall.SetNonblock(1, true); err != nil {
+			return
 		}
 
 		nbStdout = os.NewFile(1, "stdout")
 	})
+	if err != nil {
+		return nil
+	}
 
 	if err := nbStdout.SetReadDeadline(time.Now().Add(d)); err != nil {
-		panic(err)
+		return nil
 	}
 	return nbStdout
 }
@@ -101,7 +106,7 @@ func DefaultBackgroundColor() ColorSequencer {
 func termStatusReport(sequence int) (string, error) {
 	t, err := term.Attr(os.Stdout)
 	if err != nil {
-		log.Fatal(err)
+		return "", ErrStatusReport
 	}
 	defer t.Set(os.Stdout)
 
@@ -109,10 +114,14 @@ func termStatusReport(sequence int) (string, error) {
 	noecho.Lflag = noecho.Lflag &^ term.ECHO
 	noecho.Lflag = noecho.Lflag &^ term.ICANON
 	if err := noecho.Set(os.Stdout); err != nil {
-		log.Fatal(err)
+		return "", ErrStatusReport
 	}
 
 	f := stdoutWithTimeout(100 * time.Millisecond)
+	if f == nil {
+		return "", ErrStatusReport
+	}
+
 	ch := make(chan string)
 	fmt.Printf("\033]%d;?\007", sequence)
 
@@ -129,7 +138,7 @@ func termStatusReport(sequence int) (string, error) {
 
 	s, ok := <-ch
 	if !ok {
-		return "", errors.New("unable to retrieve status report")
+		return "", ErrStatusReport
 	}
 	return s, nil
 }
