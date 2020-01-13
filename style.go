@@ -34,6 +34,10 @@ func (t Style) String() string {
 
 // Styled renders s with all applied styles
 func (t Style) Styled(s string) string {
+	if len(t.styles) == 0 {
+		return s
+	}
+
 	seq := strings.Join(t.styles, ";")
 	return fmt.Sprintf("%s%sm%s%sm", CSI, seq, s, CSI+ResetSeq)
 }
