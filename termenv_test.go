@@ -23,6 +23,26 @@ func TestTermEnv(t *testing.T) {
 	}
 }
 
+func TestRendering(t *testing.T) {
+	out := String("foobar")
+	if out.String() != "foobar" {
+		t.Errorf("Unstyled strings should be returned as plain text")
+	}
+
+	out = out.Foreground(TrueColor.Color("#abcdef"))
+	out = out.Background(TrueColor.Color("69"))
+	out = out.Bold()
+	out = out.Italic()
+	out = out.Faint()
+	out = out.Underline()
+	out = out.Blink()
+
+	exp := "\x1b[38;2;171;205;239;48;5;69;1;3;2;4;5mfoobar\x1b[0m"
+	if out.String() != exp {
+		t.Errorf("Expected %s, got %s", exp, out.String())
+	}
+}
+
 func TestANSIProfile(t *testing.T) {
 	p := ANSI
 
