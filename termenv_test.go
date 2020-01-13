@@ -11,13 +11,13 @@ func TestTermEnv(t *testing.T) {
 	}
 
 	fg := DefaultForegroundColor()
-	fgexp := "37;1m"
+	fgexp := "37;1"
 	if fg.Sequence(false) != fgexp {
 		t.Errorf("Expected %s, got %s", fgexp, fg.Sequence(false))
 	}
 
 	bg := DefaultBackgroundColor()
-	bgexp := "48;2;0;0;0m"
+	bgexp := "48;2;0;0;0"
 	if bg.Sequence(true) != bgexp {
 		t.Errorf("Expected %s, got %s", bgexp, bg.Sequence(true))
 	}
@@ -27,7 +27,7 @@ func TestANSIProfile(t *testing.T) {
 	p := ANSI
 
 	c := p.Color("#abcdef")
-	exp := "37m"
+	exp := "37"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
@@ -36,7 +36,7 @@ func TestANSIProfile(t *testing.T) {
 	}
 
 	c = p.Color("139")
-	exp = "30;1m"
+	exp = "30;1"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
@@ -45,7 +45,7 @@ func TestANSIProfile(t *testing.T) {
 	}
 
 	c = p.Color("2")
-	exp = "32m"
+	exp = "32"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
@@ -58,7 +58,7 @@ func TestANSI256Profile(t *testing.T) {
 	p := ANSI256
 
 	c := p.Color("#abcdef")
-	exp := "38;5;153m"
+	exp := "38;5;153"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
@@ -67,7 +67,7 @@ func TestANSI256Profile(t *testing.T) {
 	}
 
 	c = p.Color("139")
-	exp = "38;5;139m"
+	exp = "38;5;139"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
@@ -76,7 +76,7 @@ func TestANSI256Profile(t *testing.T) {
 	}
 
 	c = p.Color("2")
-	exp = "32m"
+	exp = "32"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
@@ -89,7 +89,7 @@ func TestTrueColorProfile(t *testing.T) {
 	p := TrueColor
 
 	c := p.Color("#abcdef")
-	exp := "38;2;171;205;239m"
+	exp := "38;2;171;205;239"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
@@ -98,7 +98,7 @@ func TestTrueColorProfile(t *testing.T) {
 	}
 
 	c = p.Color("139")
-	exp = "38;5;139m"
+	exp = "38;5;139"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
@@ -107,7 +107,7 @@ func TestTrueColorProfile(t *testing.T) {
 	}
 
 	c = p.Color("2")
-	exp = "32m"
+	exp = "32"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}

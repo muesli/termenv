@@ -7,21 +7,19 @@ import (
 
 const (
 	CSI          = "\x1b["
-	ResetSeq     = "0m"
-	BoldSeq      = "1m"
-	FaintSeq     = "2m"
-	ItalicSeq    = "3m"
-	UnderlineSeq = "4m"
-	BlinkSeq     = "5m"
+	ResetSeq     = "0"
+	BoldSeq      = "1"
+	FaintSeq     = "2"
+	ItalicSeq    = "3"
+	UnderlineSeq = "4"
+	BlinkSeq     = "5"
 )
 
 // Style is a string that various rendering styles can be applied to.
 type Style struct {
 	string
-	styles []styleFunc
+	styles []string
 }
-
-type styleFunc func(string) string
 
 // String returns a new Style
 func String(s ...string) Style {
@@ -36,68 +34,48 @@ func (t Style) String() string {
 
 // Styled renders s with all applied styles
 func (t Style) Styled(s string) string {
-	for i := len(t.styles) - 1; i >= 0; i-- {
-		s = t.styles[i](s)
-	}
-	return fmt.Sprintf("%s%s", s, CSI+ResetSeq)
+	seq := strings.Join(t.styles, ";")
+	return fmt.Sprintf("%s%sm%s%sm", CSI, seq, s, CSI+ResetSeq)
 }
 
 // Foreground sets a foreground color
 func (t Style) Foreground(c ColorSequencer) Style {
-	t.styles = append(t.styles, func(s string) string {
-		return wrapSequence(c.Sequence(false), s)
-	})
+	t.styles = append(t.styles, c.Sequence(false))
 	return t
 }
 
 // Background sets a background color
 func (t Style) Background(c ColorSequencer) Style {
-	t.styles = append(t.styles, func(s string) string {
-		return wrapSequence(c.Sequence(true), s)
-	})
+	t.styles = append(t.styles, c.Sequence(true))
 	return t
 }
 
 // Bold enables bold rendering
 func (t Style) Bold() Style {
-	t.styles = append(t.styles, func(s string) string {
-		return wrapSequence(BoldSeq, s)
-	})
+	t.styles = append(t.styles, BoldSeq)
 	return t
 }
 
 // Faint enables faint rendering
 func (t Style) Faint() Style {
-	t.styles = append(t.styles, func(s string) string {
-		return wrapSequence(FaintSeq, s)
-	})
+	t.styles = append(t.styles, FaintSeq)
 	return t
 }
 
 // Italic enables italic rendering
 func (t Style) Italic() Style {
-	t.styles = append(t.styles, func(s string) string {
-		return wrapSequence(ItalicSeq, s)
-	})
+	t.styles = append(t.styles, ItalicSeq)
 	return t
 }
 
 // Underline enables underline rendering
 func (t Style) Underline() Style {
-	t.styles = append(t.styles, func(s string) string {
-		return wrapSequence(UnderlineSeq, s)
-	})
+	t.styles = append(t.styles, UnderlineSeq)
 	return t
 }
 
 // Blink enables blink mode
 func (t Style) Blink() Style {
-	t.styles = append(t.styles, func(s string) string {
-		return wrapSequence(BlinkSeq, s)
-	})
+	t.styles = append(t.styles, BlinkSeq)
 	return t
-}
-
-func wrapSequence(seq string, s string) string {
-	return fmt.Sprintf("%s%s", CSI+seq, s)
 }

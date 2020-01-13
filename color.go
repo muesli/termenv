@@ -95,9 +95,9 @@ func (c ANSIColor) Sequence(bg bool) string {
 	}
 
 	if col < 8 {
-		return fmt.Sprintf("%dm", bgMod(col)+30)
+		return fmt.Sprintf("%d", bgMod(col)+30)
 	}
-	return fmt.Sprintf("%d;1m", bgMod(col-8)+30)
+	return fmt.Sprintf("%d;1", bgMod(col-8)+30)
 }
 
 func (c ANSI256Color) Sequence(bg bool) string {
@@ -105,7 +105,7 @@ func (c ANSI256Color) Sequence(bg bool) string {
 	if bg {
 		prefix = Background
 	}
-	return fmt.Sprintf("%s;5;%dm", prefix, c)
+	return fmt.Sprintf("%s;5;%d", prefix, c)
 }
 
 func (c RGBColor) Sequence(bg bool) string {
@@ -118,7 +118,7 @@ func (c RGBColor) Sequence(bg bool) string {
 	if bg {
 		prefix = Background
 	}
-	return fmt.Sprintf("%s;2;%d;%d;%dm", prefix, uint8(f.R*255), uint8(f.G*255), uint8(f.B*255))
+	return fmt.Sprintf("%s;2;%d;%d;%d", prefix, uint8(f.R*255), uint8(f.G*255), uint8(f.B*255))
 }
 
 func xTermColor(s string) (RGBColor, error) {
