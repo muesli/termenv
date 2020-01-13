@@ -5,18 +5,18 @@ import (
 )
 
 func TestTermEnv(t *testing.T) {
-	p := SupportedColorProfile()
+	p := ColorProfile()
 	if p != TrueColor && p != Monochrome {
 		t.Errorf("Expected %d, got %d", TrueColor, p)
 	}
 
-	fg := DefaultForegroundColor()
+	fg := ForegroundColor()
 	fgexp := "37;1"
 	if fg.Sequence(false) != fgexp && fg.Sequence(false) != "37" {
 		t.Errorf("Expected %s, got %s", fgexp, fg.Sequence(false))
 	}
 
-	bg := DefaultBackgroundColor()
+	bg := BackgroundColor()
 	bgexp := "48;2;0;0;0"
 	if bg.Sequence(true) != bgexp && bg.Sequence(true) != "40" {
 		t.Errorf("Expected %s, got %s", bgexp, bg.Sequence(true))

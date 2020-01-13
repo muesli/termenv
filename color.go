@@ -19,7 +19,7 @@ const (
 	Background = "48"
 )
 
-type ColorSequencer interface {
+type Color interface {
 	Sequence(bg bool) string
 }
 
@@ -32,7 +32,22 @@ type ANSI256Color int
 // RGBColor is a hex-encoded color, e.g. "#abcdef"
 type RGBColor string
 
-func (p ColorProfile) Convert(c ColorSequencer) ColorSequencer {
+func convertToRGB(c Color) colorful.Color {
+	var hex string
+	switch v := c.(type) {
+	case RGBColor:
+		hex = string(v)
+	case ANSIColor:
+		hex = ansiHex[v]
+	case ANSI256Color:
+		hex = ansiHex[v]
+	}
+
+	ch, _ := colorful.Hex(hex)
+	return ch
+}
+
+func (p Profile) Convert(c Color) Color {
 	switch v := c.(type) {
 	case ANSIColor:
 		return v
@@ -61,12 +76,12 @@ func (p ColorProfile) Convert(c ColorSequencer) ColorSequencer {
 	return c
 }
 
-func (p ColorProfile) Color(s string) ColorSequencer {
+func (p Profile) Color(s string) Color {
 	if len(s) == 0 {
 		return nil
 	}
 
-	var c ColorSequencer
+	var c Color
 	if strings.HasPrefix(s, "#") {
 		c = RGBColor(s)
 	} else {

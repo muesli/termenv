@@ -1,9 +1,9 @@
 package termenv
 
-type ColorProfile int
+type Profile int
 
 const (
-	Monochrome = ColorProfile(iota)
+	Monochrome = Profile(iota)
 	ANSI
 	ANSI256
 	TrueColor

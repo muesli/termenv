@@ -23,26 +23,7 @@ var (
 	ErrStatusReport = errors.New("unable to retrieve status report")
 )
 
-func stdoutWithTimeout(d time.Duration) *os.File {
-	var err error
-	initStdout.Do(func() {
-		if err = syscall.SetNonblock(1, true); err != nil {
-			return
-		}
-
-		nbStdout = os.NewFile(1, "stdout")
-	})
-	if err != nil {
-		return nil
-	}
-
-	if err := nbStdout.SetReadDeadline(time.Now().Add(d)); err != nil {
-		return nil
-	}
-	return nbStdout
-}
-
-func SupportedColorProfile() ColorProfile {
+func ColorProfile() Profile {
 	colorTerm := os.Getenv("COLORTERM")
 	if colorTerm == "truecolor" {
 		return TrueColor
@@ -59,7 +40,7 @@ func SupportedColorProfile() ColorProfile {
 	return Monochrome
 }
 
-func DefaultForegroundColor() ColorSequencer {
+func ForegroundColor() Color {
 	s, err := termStatusReport(10)
 	if err == nil {
 		c, err := xTermColor(s)
@@ -81,7 +62,7 @@ func DefaultForegroundColor() ColorSequencer {
 	return ANSIColor(7)
 }
 
-func DefaultBackgroundColor() ColorSequencer {
+func BackgroundColor() Color {
 	s, err := termStatusReport(11)
 	if err == nil {
 		c, err := xTermColor(s)
@@ -141,4 +122,23 @@ func termStatusReport(sequence int) (string, error) {
 		return "", ErrStatusReport
 	}
 	return s, nil
+}
+
+func stdoutWithTimeout(d time.Duration) *os.File {
+	var err error
+	initStdout.Do(func() {
+		if err = syscall.SetNonblock(1, true); err != nil {
+			return
+		}
+
+		nbStdout = os.NewFile(1, "stdout")
+	})
+	if err != nil {
+		return nil
+	}
+
+	if err := nbStdout.SetReadDeadline(time.Now().Add(d)); err != nil {
+		return nil
+	}
+	return nbStdout
 }

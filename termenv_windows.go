@@ -6,12 +6,12 @@ func SupportedColorProfile() ColorProfile {
 	return TrueColor
 }
 
-func DefaultForegroundColor() ColorSequencer {
+func ForegroundColor() Color {
 	// default gray
 	return ANSIColor(7)
 }
 
-func DefaultBackgroundColor() ColorSequencer {
+func BackgroundColor() Color {
 	// default black
 	return ANSIColor(0)
 }
