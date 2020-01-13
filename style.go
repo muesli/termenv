@@ -13,6 +13,9 @@ const (
 	ItalicSeq    = "3"
 	UnderlineSeq = "4"
 	BlinkSeq     = "5"
+	ReverseSeq   = "7"
+	CrossOutSeq  = "9"
+	OverlineSeq  = "53"
 )
 
 // Style is a string that various rendering styles can be applied to.
@@ -81,5 +84,23 @@ func (t Style) Underline() Style {
 // Blink enables blink mode
 func (t Style) Blink() Style {
 	t.styles = append(t.styles, BlinkSeq)
+	return t
+}
+
+// Reverse enables reverse color mode
+func (t Style) Reverse() Style {
+	t.styles = append(t.styles, ReverseSeq)
+	return t
+}
+
+// CrossOut enables crossed-out rendering
+func (t Style) CrossOut() Style {
+	t.styles = append(t.styles, CrossOutSeq)
+	return t
+}
+
+// Overline enables overline rendering
+func (t Style) Overline() Style {
+	t.styles = append(t.styles, OverlineSeq)
 	return t
 }
