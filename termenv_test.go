@@ -43,6 +43,32 @@ func TestRendering(t *testing.T) {
 	}
 }
 
+func TestColorConversion(t *testing.T) {
+	a := ANSI.Color("7")
+	c := convertToRGB(a)
+
+	exp := "#c0c0c0"
+	if c.Hex() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Hex())
+	}
+
+	a256 := ANSI256.Color("91")
+	c = convertToRGB(a256)
+
+	exp = "#8700af"
+	if c.Hex() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Hex())
+	}
+
+	hex := "#abcdef"
+	argb := TrueColor.Color(hex)
+	c = convertToRGB(argb)
+
+	if c.Hex() != hex {
+		t.Errorf("Expected %s, got %s", exp, c.Hex())
+	}
+}
+
 func TestANSIProfile(t *testing.T) {
 	p := ANSI
 
