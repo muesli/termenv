@@ -8,3 +8,9 @@ const (
 	ANSI256
 	TrueColor
 )
+
+func HasDarkBackground() bool {
+	c := convertToRGB(BackgroundColor())
+	_, _, l := c.Hsl()
+	return l < 0.5
+}

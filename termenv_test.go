@@ -21,6 +21,8 @@ func TestTermEnv(t *testing.T) {
 	if bg.Sequence(true) != bgexp && bg.Sequence(true) != "40" {
 		t.Errorf("Expected %s, got %s", bgexp, bg.Sequence(true))
 	}
+
+	_ = HasDarkBackground()
 }
 
 func TestRendering(t *testing.T) {
