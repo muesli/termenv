@@ -23,6 +23,8 @@ type Color interface {
 	Sequence(bg bool) string
 }
 
+type NoColor struct{}
+
 // ANSIColor is a color (0-15) as defined by the ANSI Standard
 type ANSIColor int
 
@@ -48,6 +50,10 @@ func convertToRGB(c Color) colorful.Color {
 }
 
 func (p Profile) Convert(c Color) Color {
+	if p == Monochrome {
+		return NoColor{}
+	}
+
 	switch v := c.(type) {
 	case ANSIColor:
 		return v
@@ -98,6 +104,10 @@ func (p Profile) Color(s string) Color {
 	}
 
 	return p.Convert(c)
+}
+
+func (c NoColor) Sequence(bg bool) string {
+	return ""
 }
 
 func (c ANSIColor) Sequence(bg bool) string {

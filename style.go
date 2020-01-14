@@ -42,6 +42,10 @@ func (t Style) Styled(s string) string {
 	}
 
 	seq := strings.Join(t.styles, ";")
+	if seq == "" {
+		return s
+	}
+
 	return fmt.Sprintf("%s%sm%s%sm", CSI, seq, s, CSI+ResetSeq)
 }
 

@@ -43,6 +43,13 @@ func TestRendering(t *testing.T) {
 	if out.String() != exp {
 		t.Errorf("Expected %s, got %s", exp, out.String())
 	}
+
+	exp = "foobar"
+	mono := String(exp)
+	mono = mono.Foreground(Monochrome.Color("#abcdef"))
+	if mono.String() != exp {
+		t.Errorf("Monochrome profile should not apply color styles")
+	}
 }
 
 func TestColorConversion(t *testing.T) {
@@ -68,6 +75,13 @@ func TestColorConversion(t *testing.T) {
 
 	if c.Hex() != hex {
 		t.Errorf("Expected %s, got %s", exp, c.Hex())
+	}
+}
+
+func TestMonochrome(t *testing.T) {
+	c := Monochrome.Color("#abcdef")
+	if c.Sequence(false) != "" {
+		t.Errorf("Expected empty sequence, got %s", c.Sequence(false))
 	}
 }
 
