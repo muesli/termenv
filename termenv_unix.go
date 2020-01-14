@@ -118,6 +118,10 @@ func termStatusReport(sequence int) (string, error) {
 	}()
 
 	s, ok := <-ch
+	if err = syscall.SetNonblock(int(os.Stdout.Fd()), false); err != nil {
+		return "", err
+	}
+
 	if !ok {
 		return "", ErrStatusReport
 	}
@@ -127,11 +131,11 @@ func termStatusReport(sequence int) (string, error) {
 func stdoutWithTimeout(d time.Duration) *os.File {
 	var err error
 	initStdout.Do(func() {
-		if err = syscall.SetNonblock(1, true); err != nil {
+		if err = syscall.SetNonblock(int(os.Stdout.Fd()), true); err != nil {
 			return
 		}
 
-		nbStdout = os.NewFile(1, "stdout")
+		nbStdout = os.NewFile(os.Stdout.Fd(), "stdout")
 	})
 	if err != nil {
 		return nil
