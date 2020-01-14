@@ -2,7 +2,7 @@
 
 package termenv
 
-func SupportedColorProfile() ColorProfile {
+func ColorProfile() Profile {
 	return TrueColor
 }
 
