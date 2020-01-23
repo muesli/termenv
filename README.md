@@ -6,6 +6,8 @@
 ANSI & color support. You can then use its convenient methods to colorize and
 style your text output with ANSI escape sequences.
 
+![Example output](https://github.com/muesli/termenv/raw/master/examples/hello-world/hello-world.png)
+
 ## Query Terminal Status
 
 ```go
