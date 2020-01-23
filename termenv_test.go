@@ -15,7 +15,7 @@ func TestTermEnv(t *testing.T) {
 	}
 
 	fg := ForegroundColor()
-	fgexp := "37;1"
+	fgexp := "97"
 	if fg.Sequence(false) != fgexp && fg.Sequence(false) != "37" {
 		t.Errorf("Expected %s, got %s", fgexp, fg.Sequence(false))
 	}
@@ -102,7 +102,7 @@ func TestANSIProfile(t *testing.T) {
 	}
 
 	c = p.Color("139")
-	exp = "30;1"
+	exp = "90"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
