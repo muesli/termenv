@@ -2,7 +2,9 @@
 
 [![Latest Release](https://img.shields.io/github/release/muesli/termenv.svg)](https://github.com/muesli/termenv/releases) [![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/github.com/muesli/termenv) [![Build Status](https://github.com/muesli/termenv/workflows/build/badge.svg)](https://github.com/muesli/termenv/actions) [![Go ReportCard](http://goreportcard.com/badge/muesli/termenv)](http://goreportcard.com/report/muesli/termenv)
 
-Go package to gather &amp; query information about the terminal environment
+`termenv` gathers information about the terminal environment in terms of its
+ANSI & color support. You can then use its convenient methods to colorize and
+style your text output with ANSI escape sequences.
 
 ## Query Terminal Status
 
