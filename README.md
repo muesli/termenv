@@ -25,8 +25,9 @@ dark := termenv.HasDarkBackground()
 ## Apply Colors
 
 `termenv` will automatically degrade colors to the closest available color
-in the current color profile: `TrueColor` => `ANSI 256 Colors` =>
-`ANSI 16 Colors` => `Monochrome`.
+in the current color profile:
+
+`TrueColor` => `ANSI 256 Colors` => `ANSI 16 Colors` => `Monochrome`
 
 ```go
 p := termenv.ColorProfile()
