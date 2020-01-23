@@ -33,16 +33,19 @@ termenv.HasDarkBackground()
 ## Colors
 
 `termenv` supports multiple color profiles: ANSI (16 colors), ANSI Extended
-(256 colors), and TrueColor (24-bit RGB). Color profiles will automatically
-degrade colors to the best matching color available in the profile:
+(256 colors), and TrueColor (24-bit RGB). Colors will automatically be degraded
+to the best matching available color in the desired profile:
 
 `TrueColor` => `ANSI 256 Colors` => `ANSI 16 Colors` => `Monochrome`
 
 ```go
-p := termenv.ColorProfile()
 out := termenv.String("Hello World")
 
-// supports hex colors
+// retrieve color profile supported by terminal
+p := termenv.ColorProfile()
+
+// supports hex values
+// will automatically degrade colors on terminals not supporting RGB
 out = out.Foreground(p.Color("#abcdef"))
 // but also supports ANSI colors (0-255)
 out = out.Background(p.Color("69"))
