@@ -22,7 +22,7 @@ bg := termenv.BackgroundColor()
 dark := termenv.HasDarkBackground()
 ```
 
-## Apply Colors
+## Colors
 
 `termenv` will automatically degrade colors to the closest available color
 in the current color profile:
@@ -74,6 +74,9 @@ bold := `{{ Bold "Hello World" }}`
 col := `{{ Color "#ff0000" "#0000ff" "Red on Blue" }}`
 fg := `{{ Foreground "#ff0000" "Red Foreground" }}`
 bg := `{{ Background "#0000ff" "Blue Background" }}`
+
+// wrap styles
+wrap := `{{ Bold (Underline "Hello World") }}`
 
 // parse and render
 tpl = tpl.Parse(bold)
