@@ -49,6 +49,7 @@ out := termenv.String("foobar")
 out.Bold()
 out.Faint()
 out.Italic()
+out.CrossOut()
 out.Underline()
 out.Overline()
 
@@ -58,3 +59,28 @@ out.Reverse()
 // blinking text
 out.Blink()
 ```
+
+## Template Helpers
+
+```go
+// load template helpers
+tpl := template.New("tpl").Funcs(termenv.TemplateFuncs)
+
+// apply bold style in a template
+bold := `{{ Bold "Hello World" }}`
+
+// examples for colorized templates
+col := `{{ Color "#ff0000" "#0000ff" "Red on Blue" }}`
+fg := `{{ Foreground "#ff0000" "Red Foreground" }}`
+bg := `{{ Background "#0000ff" "Blue Background" }}`
+
+// parse and render
+tpl = tpl.Parse(bold)
+
+var buf bytes.Buffer
+tpl.Execute(&buf, nil)
+fmt.Println(buf)
+```
+
+Other available helper functions are: `Faint`, `Italic`, `CrossOut`,
+`Underline`, `Overline`, `Reverse`, and `Blink`.
