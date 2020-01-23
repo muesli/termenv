@@ -10,16 +10,16 @@ style your text output with ANSI escape sequences.
 
 ```go
 // returns supported color profile: Monochrome, ANSI, ANSI256, or TrueColor
-p := termenv.ColorProfile()
+termenv.ColorProfile()
 
 // returns default foreground color
-fg := termenv.ForegroundColor()
+termenv.ForegroundColor()
 
 // returns default background color
-bg := termenv.BackgroundColor()
+termenv.BackgroundColor()
 
 // returns whether terminal uses a dark-ish background
-dark := termenv.HasDarkBackground()
+termenv.HasDarkBackground()
 ```
 
 ## Colors
@@ -93,5 +93,4 @@ Other available helper functions are: `Faint`, `Italic`, `CrossOut`,
 
 ![ANSI color chart](https://github.com/muesli/termenv/raw/master/examples/color-chart/color-chart.png)
 
-You can find the source code I've used to create this chart in `termenv`'s
-examples.
+You can find the source code used to create this chart in `termenv`'s examples.
