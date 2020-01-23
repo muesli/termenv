@@ -112,6 +112,11 @@ Other available helper functions are: `Faint`, `Italic`, `CrossOut`,
 
 You can find the source code used to create this chart in `termenv`'s examples.
 
+## Related Projects
+
+Check out [Glow](https://github.com/charmbracelet/glow), a markdown renderer for
+the command-line, which uses `termenv`.
+
 ## License
 
 [MIT](https://github.com/muesli/termenv/raw/master/LICENSE)
