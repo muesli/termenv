@@ -2,9 +2,10 @@
 
 [![Latest Release](https://img.shields.io/github/release/muesli/termenv.svg)](https://github.com/muesli/termenv/releases) [![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/github.com/muesli/termenv) [![Build Status](https://github.com/muesli/termenv/workflows/build/badge.svg)](https://github.com/muesli/termenv/actions) [![Coverage Status](https://coveralls.io/repos/github/muesli/termenv/badge.svg?branch=master)](https://coveralls.io/github/muesli/termenv?branch=master) [![Go ReportCard](http://goreportcard.com/badge/muesli/termenv)](http://goreportcard.com/report/muesli/termenv)
 
-`termenv` gathers information about the terminal environment in terms of its
-ANSI & color support. You can then use its convenient methods to colorize and
-style your text output with ANSI escape sequences.
+`termenv` lets you safely use advanced styling options on the terminal. It
+gathers information about the terminal environment in terms of its ANSI & color
+support and offers you convenient methods to colorize and style your output,
+without you having to deal with all kinds of weird ANSI escape sequences.
 
 ![Example output](https://github.com/muesli/termenv/raw/master/examples/hello-world/hello-world.png)
 
