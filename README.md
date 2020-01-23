@@ -88,3 +88,10 @@ fmt.Println(buf)
 
 Other available helper functions are: `Faint`, `Italic`, `CrossOut`,
 `Underline`, `Overline`, `Reverse`, and `Blink`.
+
+## Color Chart
+
+![ANSI color chart](https://github.com/muesli/termenv/raw/master/examples/color-chart/color-chart.png)
+
+You can find the source code I've used to create this chart in `termenv`'s
+examples.
