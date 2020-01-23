@@ -258,7 +258,7 @@ func TestTemplateHelpers(t *testing.T) {
 	}
 
 	for i, v := range tt {
-		tpl, err := template.New(fmt.Sprintf("test_%d", i)).Funcs(TemplateFuncMap).Parse(v.Template)
+		tpl, err := template.New(fmt.Sprintf("test_%d", i)).Funcs(TemplateFuncs).Parse(v.Template)
 		if err != nil {
 			t.Error(err)
 		}

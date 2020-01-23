@@ -85,6 +85,12 @@ func (t Style) Underline() Style {
 	return t
 }
 
+// Overline enables overline rendering
+func (t Style) Overline() Style {
+	t.styles = append(t.styles, OverlineSeq)
+	return t
+}
+
 // Blink enables blink mode
 func (t Style) Blink() Style {
 	t.styles = append(t.styles, BlinkSeq)
@@ -100,11 +106,5 @@ func (t Style) Reverse() Style {
 // CrossOut enables crossed-out rendering
 func (t Style) CrossOut() Style {
 	t.styles = append(t.styles, CrossOutSeq)
-	return t
-}
-
-// Overline enables overline rendering
-func (t Style) Overline() Style {
-	t.styles = append(t.styles, OverlineSeq)
 	return t
 }

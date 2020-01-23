@@ -4,9 +4,9 @@ import (
 	"text/template"
 )
 
-// TemplateFuncMap contains a few useful template helpers
+// TemplateFuncs contains a few useful template helpers
 var (
-	TemplateFuncMap = template.FuncMap{
+	TemplateFuncs = template.FuncMap{
 		"Color": func(values ...interface{}) string {
 			s := String(values[len(values)-1].(string))
 			switch len(values) {
