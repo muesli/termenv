@@ -1,7 +1,11 @@
 package termenv
 
 import (
+	"bytes"
+	"fmt"
+	"strings"
 	"testing"
+	"text/template"
 )
 
 func TestTermEnv(t *testing.T) {
@@ -184,5 +188,91 @@ func TestStyles(t *testing.T) {
 	exp := "\x1b[32mfoobar\x1b[0m"
 	if s.String() != exp {
 		t.Errorf("Expected %s, got %s", exp, s.String())
+	}
+}
+
+func TestTemplateHelpers(t *testing.T) {
+	exp := String("Hello World")
+	basetpl := `{{ %s "Hello World" }}`
+	wraptpl := `{{ %s (%s "Hello World") }}`
+
+	tt := []struct {
+		Template string
+		Expected string
+	}{
+		{
+			Template: fmt.Sprintf(basetpl, "Bold"),
+			Expected: exp.Bold().String(),
+		},
+		{
+			Template: fmt.Sprintf(basetpl, "Faint"),
+			Expected: exp.Faint().String(),
+		},
+		{
+			Template: fmt.Sprintf(basetpl, "Italic"),
+			Expected: exp.Italic().String(),
+		},
+		{
+			Template: fmt.Sprintf(basetpl, "Underline"),
+			Expected: exp.Underline().String(),
+		},
+		{
+			Template: fmt.Sprintf(basetpl, "Overline"),
+			Expected: exp.Overline().String(),
+		},
+		{
+			Template: fmt.Sprintf(basetpl, "Blink"),
+			Expected: exp.Blink().String(),
+		},
+		{
+			Template: fmt.Sprintf(basetpl, "Reverse"),
+			Expected: exp.Reverse().String(),
+		},
+		{
+			Template: fmt.Sprintf(basetpl, "CrossOut"),
+			Expected: exp.CrossOut().String(),
+		},
+		{
+			Template: fmt.Sprintf(wraptpl, "Underline", "Bold"),
+			Expected: String(exp.Bold().String()).Underline().String(),
+		},
+		{
+			Template: `{{ Color "#ff0000" "foobar" }}`,
+			Expected: String("foobar").Foreground(TrueColor.Color("#ff0000")).String(),
+		},
+		{
+			Template: `{{ Color "#ff0000" "#0000ff" "foobar" }}`,
+			Expected: String("foobar").
+				Foreground(TrueColor.Color("#ff0000")).
+				Background(TrueColor.Color("#0000ff")).
+				String(),
+		},
+		{
+			Template: `{{ Foreground "#ff0000" "foobar" }}`,
+			Expected: String("foobar").Foreground(TrueColor.Color("#ff0000")).String(),
+		},
+		{
+			Template: `{{ Background "#ff0000" "foobar" }}`,
+			Expected: String("foobar").Background(TrueColor.Color("#ff0000")).String(),
+		},
+	}
+
+	for i, v := range tt {
+		tpl, err := template.New(fmt.Sprintf("test_%d", i)).Funcs(TemplateFuncMap).Parse(v.Template)
+		if err != nil {
+			t.Error(err)
+		}
+
+		var buf bytes.Buffer
+		err = tpl.Execute(&buf, nil)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if buf.String() != v.Expected {
+			v1 := strings.ReplaceAll(v.Expected, "\x1b", "")
+			v2 := strings.ReplaceAll(buf.String(), "\x1b", "")
+			t.Errorf("Expected %s, got %s", v1, v2)
+		}
 	}
 }
