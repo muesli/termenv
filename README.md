@@ -8,6 +8,12 @@ style your text output with ANSI escape sequences.
 
 ![Example output](https://github.com/muesli/termenv/raw/master/examples/hello-world/hello-world.png)
 
+## Installation
+
+```bash
+go get github.com/muesli/termenv
+```
+
 ## Query Terminal Status
 
 ```go
@@ -26,8 +32,9 @@ termenv.HasDarkBackground()
 
 ## Colors
 
-`termenv` will automatically degrade colors to the closest available color
-in the current color profile:
+`termenv` supports multiple color profiles: ANSI (16 colors), ANSI Extended
+(256 colors), and TrueColor (24-bit RGB). Color profiles will automatically
+degrade colors to the best matching color available in the profile:
 
 `TrueColor` => `ANSI 256 Colors` => `ANSI 16 Colors` => `Monochrome`
 
@@ -96,3 +103,7 @@ Other available helper functions are: `Faint`, `Italic`, `CrossOut`,
 ![ANSI color chart](https://github.com/muesli/termenv/raw/master/examples/color-chart/color-chart.png)
 
 You can find the source code used to create this chart in `termenv`'s examples.
+
+## License
+
+[MIT](https://github.com/muesli/termenv/raw/master/LICENSE)
