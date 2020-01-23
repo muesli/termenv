@@ -122,7 +122,7 @@ func (c ANSIColor) Sequence(bg bool) string {
 	if col < 8 {
 		return fmt.Sprintf("%d", bgMod(col)+30)
 	}
-	return fmt.Sprintf("%d;1", bgMod(col-8)+30)
+	return fmt.Sprintf("%d", bgMod(col-8)+90)
 }
 
 func (c ANSI256Color) Sequence(bg bool) string {
