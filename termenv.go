@@ -10,7 +10,7 @@ const (
 )
 
 func HasDarkBackground() bool {
-	c := convertToRGB(BackgroundColor())
+	c := ConvertToRGB(BackgroundColor())
 	_, _, l := c.Hsl()
 	return l < 0.5
 }

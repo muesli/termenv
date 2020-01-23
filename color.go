@@ -34,7 +34,7 @@ type ANSI256Color int
 // RGBColor is a hex-encoded color, e.g. "#abcdef"
 type RGBColor string
 
-func convertToRGB(c Color) colorful.Color {
+func ConvertToRGB(c Color) colorful.Color {
 	var hex string
 	switch v := c.(type) {
 	case RGBColor:

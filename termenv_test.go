@@ -58,7 +58,7 @@ func TestRendering(t *testing.T) {
 
 func TestColorConversion(t *testing.T) {
 	a := ANSI.Color("7")
-	c := convertToRGB(a)
+	c := ConvertToRGB(a)
 
 	exp := "#c0c0c0"
 	if c.Hex() != exp {
@@ -66,7 +66,7 @@ func TestColorConversion(t *testing.T) {
 	}
 
 	a256 := ANSI256.Color("91")
-	c = convertToRGB(a256)
+	c = ConvertToRGB(a256)
 
 	exp = "#8700af"
 	if c.Hex() != exp {
@@ -75,7 +75,7 @@ func TestColorConversion(t *testing.T) {
 
 	hex := "#abcdef"
 	argb := TrueColor.Color(hex)
-	c = convertToRGB(argb)
+	c = ConvertToRGB(argb)
 
 	if c.Hex() != hex {
 		t.Errorf("Expected %s, got %s", exp, c.Hex())
