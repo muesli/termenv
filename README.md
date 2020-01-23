@@ -1,6 +1,6 @@
 # termenv
 
-[![Latest Release](https://img.shields.io/github/release/muesli/termenv.svg)](https://github.com/muesli/termenv/releases) [![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/github.com/muesli/termenv) [![Build Status](https://github.com/muesli/termenv/workflows/build/badge.svg)](https://github.com/muesli/termenv/actions) [![Go ReportCard](http://goreportcard.com/badge/muesli/termenv)](http://goreportcard.com/report/muesli/termenv)
+[![Latest Release](https://img.shields.io/github/release/muesli/termenv.svg)](https://github.com/muesli/termenv/releases) [![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/github.com/muesli/termenv) [![Build Status](https://github.com/muesli/termenv/workflows/build/badge.svg)](https://github.com/muesli/termenv/actions) [![Coverage Status](https://coveralls.io/repos/github/muesli/termenv/badge.svg?branch=master)](https://coveralls.io/github/muesli/termenv?branch=master) [![Go ReportCard](http://goreportcard.com/badge/muesli/termenv)](http://goreportcard.com/report/muesli/termenv)
 
 `termenv` gathers information about the terminal environment in terms of its
 ANSI & color support. You can then use its convenient methods to colorize and
