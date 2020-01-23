@@ -270,8 +270,8 @@ func TestTemplateHelpers(t *testing.T) {
 		}
 
 		if buf.String() != v.Expected {
-			v1 := strings.ReplaceAll(v.Expected, "\x1b", "")
-			v2 := strings.ReplaceAll(buf.String(), "\x1b", "")
+			v1 := strings.Replace(v.Expected, "\x1b", "", -1)
+			v2 := strings.Replace(buf.String(), "\x1b", "", -1)
 			t.Errorf("Expected %s, got %s", v1, v2)
 		}
 	}
