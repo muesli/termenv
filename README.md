@@ -82,7 +82,8 @@ out.Bold().Underline()
 
 ```go
 // load template helpers
-tpl := template.New("tpl").Funcs(termenv.TemplateFuncs)
+f := termenv.TemplateFuncs(termenv.ColorProfile())
+tpl := template.New("tpl").Funcs(f)
 
 // apply bold style in a template
 bold := `{{ Bold "Hello World" }}`

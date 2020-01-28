@@ -192,6 +192,8 @@ func TestStyles(t *testing.T) {
 }
 
 func TestTemplateHelpers(t *testing.T) {
+	p := TrueColor
+
 	exp := String("Hello World")
 	basetpl := `{{ %s "Hello World" }}`
 	wraptpl := `{{ %s (%s "Hello World") }}`
@@ -238,27 +240,27 @@ func TestTemplateHelpers(t *testing.T) {
 		},
 		{
 			Template: `{{ Color "#ff0000" "foobar" }}`,
-			Expected: String("foobar").Foreground(TrueColor.Color("#ff0000")).String(),
+			Expected: String("foobar").Foreground(p.Color("#ff0000")).String(),
 		},
 		{
 			Template: `{{ Color "#ff0000" "#0000ff" "foobar" }}`,
 			Expected: String("foobar").
-				Foreground(TrueColor.Color("#ff0000")).
-				Background(TrueColor.Color("#0000ff")).
+				Foreground(p.Color("#ff0000")).
+				Background(p.Color("#0000ff")).
 				String(),
 		},
 		{
 			Template: `{{ Foreground "#ff0000" "foobar" }}`,
-			Expected: String("foobar").Foreground(TrueColor.Color("#ff0000")).String(),
+			Expected: String("foobar").Foreground(p.Color("#ff0000")).String(),
 		},
 		{
 			Template: `{{ Background "#ff0000" "foobar" }}`,
-			Expected: String("foobar").Background(TrueColor.Color("#ff0000")).String(),
+			Expected: String("foobar").Background(p.Color("#ff0000")).String(),
 		},
 	}
 
 	for i, v := range tt {
-		tpl, err := template.New(fmt.Sprintf("test_%d", i)).Funcs(TemplateFuncs).Parse(v.Template)
+		tpl, err := template.New(fmt.Sprintf("test_%d", i)).Funcs(TemplateFuncs(p)).Parse(v.Template)
 		if err != nil {
 			t.Error(err)
 		}
