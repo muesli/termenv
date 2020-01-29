@@ -3,24 +3,13 @@
 package termenv
 
 import (
-	"bufio"
-	"errors"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
-	"sync"
 	"syscall"
-	"time"
 
 	"github.com/google/goterm/term"
-)
-
-var (
-	nbStdout   *os.File
-	initStdout sync.Once
-
-	ErrStatusReport = errors.New("unable to retrieve status report")
 )
 
 func ColorProfile() Profile {
@@ -98,51 +87,42 @@ func termStatusReport(sequence int) (string, error) {
 		return "", ErrStatusReport
 	}
 
-	f := stdoutWithTimeout(100 * time.Millisecond)
-	if f == nil {
-		return "", ErrStatusReport
-	}
-
-	ch := make(chan string)
 	fmt.Printf("\033]%d;?\007", sequence)
-
-	go func() {
-		r := bufio.NewReader(f)
-		out, err := r.ReadBytes('\a')
-		if err != nil {
-			// timeout
-			close(ch)
-			return
-		}
-		ch <- string(out)
-	}()
-
-	s, ok := <-ch
-	if err = syscall.SetNonblock(int(os.Stdout.Fd()), false); err != nil {
-		return "", err
-	}
-
+	s, ok := readWithTimeout(os.Stdout)
 	if !ok {
 		return "", ErrStatusReport
 	}
+	// fmt.Println("Rcvd", s[1:])
 	return s, nil
 }
 
-func stdoutWithTimeout(d time.Duration) *os.File {
-	var err error
-	initStdout.Do(func() {
-		if err = syscall.SetNonblock(int(os.Stdout.Fd()), true); err != nil {
-			return
-		}
+func readWithTimeout(f *os.File) (string, bool) {
+	var readfds syscall.FdSet
+	fd := f.Fd()
+	readfds.Bits[fd/64] |= 1 << (fd % 64)
 
-		nbStdout = os.NewFile(os.Stdout.Fd(), "stdout")
-	})
+	// Use select to attempt to read from os.Stdout for 100 ms
+	n, err := syscall.Select(int(fd)+1,
+		&readfds, nil, nil,
+		&syscall.Timeval{Usec: 100000})
+
 	if err != nil {
-		return nil
+		// log.Printf("select(read stdout): %v", err)
+		return "", false
+	}
+	if n == 0 {
+		// log.Printf("select(read stdout): timed out")
+		return "", false
 	}
 
-	if err := nbStdout.SetReadDeadline(time.Now().Add(d)); err != nil {
-		return nil
+	// n > 0 => is readable
+	data := make([]byte, 24)
+	n, err = f.Read(data)
+	if err != nil {
+		// log.Printf("read(stdout): %v", err)
+		return "", false
 	}
-	return nbStdout
+
+	// fmt.Printf("read %d bytes from stdout: %s\n", n, data)
+	return string(data), true
 }

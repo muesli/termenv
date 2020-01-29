@@ -1,5 +1,11 @@
 package termenv
 
+import "errors"
+
+var (
+	ErrStatusReport = errors.New("unable to retrieve status report")
+)
+
 type Profile int
 
 const (
