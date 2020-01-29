@@ -15,6 +15,7 @@ const (
 	TrueColor
 )
 
+// HasDarkBackground returns whether terminal uses a dark-ish background
 func HasDarkBackground() bool {
 	c := ConvertToRGB(BackgroundColor())
 	_, _, l := c.Hsl()
