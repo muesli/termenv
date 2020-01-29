@@ -106,22 +106,22 @@ func readWithTimeout(f *os.File) (string, bool) {
 	readfds.Bits[fd/64] |= 1 << (fd % 64)
 
 	// Use select to attempt to read from os.Stdout for 100 ms
-	n, err := syscall.Select(int(fd)+1,
-		&readfds, nil, nil,
+	err := sysSelect(int(fd)+1,
+		&readfds,
 		&syscall.Timeval{Usec: 100000})
 
 	if err != nil {
 		// log.Printf("select(read stdout): %v", err)
 		return "", false
 	}
-	if n == 0 {
-		// log.Printf("select(read stdout): timed out")
+	if readfds.Bits[fd/64]&(1<<(fd%64)) == 0 {
+		// log.Print("select(read timeout)")
 		return "", false
 	}
 
 	// n > 0 => is readable
 	data := make([]byte, 24)
-	n, err = f.Read(data)
+	_, err = f.Read(data)
 	if err != nil {
 		// log.Printf("read(stdout): %v", err)
 		return "", false
