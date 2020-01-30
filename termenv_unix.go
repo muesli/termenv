@@ -12,9 +12,7 @@ import (
 	"github.com/google/goterm/term"
 )
 
-// ColorProfile returns the supported color profile:
-// Monochrome, ANSI, ANSI256, or TrueColor
-func ColorProfile() Profile {
+func colorProfile() Profile {
 	colorTerm := os.Getenv("COLORTERM")
 	if colorTerm == "truecolor" {
 		return TrueColor
@@ -28,11 +26,10 @@ func ColorProfile() Profile {
 		return ANSI
 	}
 
-	return Monochrome
+	return Ascii
 }
 
-// ForegroundColor returns the terminal's default foreground color
-func ForegroundColor() Color {
+func foregroundColor() Color {
 	s, err := termStatusReport(10)
 	if err == nil {
 		c, err := xTermColor(s)
@@ -54,8 +51,7 @@ func ForegroundColor() Color {
 	return ANSIColor(7)
 }
 
-// BackgroundColor returns the terminal's default background color
-func BackgroundColor() Color {
+func backgroundColor() Color {
 	s, err := termStatusReport(11)
 	if err == nil {
 		c, err := xTermColor(s)

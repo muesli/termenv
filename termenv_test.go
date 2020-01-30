@@ -16,13 +16,13 @@ func TestTermEnv(t *testing.T) {
 
 	fg := ForegroundColor()
 	fgexp := "97"
-	if fg.Sequence(false) != fgexp && fg.Sequence(false) != "37" {
+	if fg.Sequence(false) != fgexp && fg.Sequence(false) != "" {
 		t.Errorf("Expected %s, got %s", fgexp, fg.Sequence(false))
 	}
 
 	bg := BackgroundColor()
 	bgexp := "48;2;0;0;0"
-	if bg.Sequence(true) != bgexp && bg.Sequence(true) != "40" {
+	if bg.Sequence(true) != bgexp && bg.Sequence(true) != "" {
 		t.Errorf("Expected %s, got %s", bgexp, bg.Sequence(true))
 	}
 
