@@ -1,6 +1,10 @@
 # termenv
 
-[![Latest Release](https://img.shields.io/github/release/muesli/termenv.svg)](https://github.com/muesli/termenv/releases) [![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/github.com/muesli/termenv) [![Build Status](https://github.com/muesli/termenv/workflows/build/badge.svg)](https://github.com/muesli/termenv/actions) [![Coverage Status](https://coveralls.io/repos/github/muesli/termenv/badge.svg?branch=master)](https://coveralls.io/github/muesli/termenv?branch=master) [![Go ReportCard](http://goreportcard.com/badge/muesli/termenv)](http://goreportcard.com/report/muesli/termenv)
+[![Latest Release](https://img.shields.io/github/release/muesli/termenv.svg)](https://github.com/muesli/termenv/releases)
+[![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/github.com/muesli/termenv)
+[![Build Status](https://github.com/muesli/termenv/workflows/build/badge.svg)](https://github.com/muesli/termenv/actions)
+[![Coverage Status](https://coveralls.io/repos/github/muesli/termenv/badge.svg?branch=master)](https://coveralls.io/github/muesli/termenv?branch=master)
+[![Go ReportCard](http://goreportcard.com/badge/muesli/termenv)](http://goreportcard.com/report/muesli/termenv)
 
 `termenv` lets you safely use advanced styling options on the terminal. It
 gathers information about the terminal environment in terms of its ANSI & color
@@ -19,7 +23,7 @@ go get github.com/muesli/termenv
 ## Query Terminal Status
 
 ```go
-// returns supported color profile: Monochrome, ANSI, ANSI256, or TrueColor
+// returns supported color profile: Ascii, ANSI, ANSI256, or TrueColor
 termenv.ColorProfile()
 
 // returns default foreground color
@@ -38,7 +42,7 @@ termenv.HasDarkBackground()
 (256 colors), and TrueColor (24-bit RGB). Colors will automatically be degraded
 to the best matching available color in the desired profile:
 
-`TrueColor` => `ANSI 256 Colors` => `ANSI 16 Colors` => `Monochrome`
+`TrueColor` => `ANSI 256 Colors` => `ANSI 16 Colors` => `Ascii`
 
 ```go
 out := termenv.String("Hello World")

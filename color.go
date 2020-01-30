@@ -50,7 +50,7 @@ func ConvertToRGB(c Color) colorful.Color {
 }
 
 func (p Profile) Convert(c Color) Color {
-	if p == Monochrome {
+	if p == Ascii {
 		return NoColor{}
 	}
 

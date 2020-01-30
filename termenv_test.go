@@ -10,7 +10,7 @@ import (
 
 func TestTermEnv(t *testing.T) {
 	p := ColorProfile()
-	if p != TrueColor && p != Monochrome {
+	if p != TrueColor && p != Ascii {
 		t.Errorf("Expected %d, got %d", TrueColor, p)
 	}
 
@@ -50,9 +50,9 @@ func TestRendering(t *testing.T) {
 
 	exp = "foobar"
 	mono := String(exp)
-	mono = mono.Foreground(Monochrome.Color("#abcdef"))
+	mono = mono.Foreground(Ascii.Color("#abcdef"))
 	if mono.String() != exp {
-		t.Errorf("Monochrome profile should not apply color styles")
+		t.Errorf("Ascii profile should not apply color styles")
 	}
 }
 
@@ -82,8 +82,8 @@ func TestColorConversion(t *testing.T) {
 	}
 }
 
-func TestMonochrome(t *testing.T) {
-	c := Monochrome.Color("#abcdef")
+func TestAscii(t *testing.T) {
+	c := Ascii.Color("#abcdef")
 	if c.Sequence(false) != "" {
 		t.Errorf("Expected empty sequence, got %s", c.Sequence(false))
 	}

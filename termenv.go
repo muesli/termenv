@@ -9,7 +9,7 @@ var (
 type Profile int
 
 const (
-	Monochrome = Profile(iota)
+	Ascii = Profile(iota)
 	ANSI
 	ANSI256
 	TrueColor
