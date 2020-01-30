@@ -15,15 +15,17 @@ func TestTermEnv(t *testing.T) {
 	}
 
 	fg := ForegroundColor()
+	fgseq := fg.Sequence(false)
 	fgexp := "97"
-	if fg.Sequence(false) != fgexp && fg.Sequence(false) != "" {
-		t.Errorf("Expected %s, got %s", fgexp, fg.Sequence(false))
+	if fgseq != fgexp && fgseq != "" {
+		t.Errorf("Expected %s, got %s", fgexp, fgseq)
 	}
 
 	bg := BackgroundColor()
+	bgseq := bg.Sequence(true)
 	bgexp := "48;2;0;0;0"
-	if bg.Sequence(true) != bgexp && bg.Sequence(true) != "" {
-		t.Errorf("Expected %s, got %s", bgexp, bg.Sequence(true))
+	if bgseq != bgexp && bgseq != "" {
+		t.Errorf("Expected %s, got %s", bgexp, bgseq)
 	}
 
 	_ = HasDarkBackground()
