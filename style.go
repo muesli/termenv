@@ -6,7 +6,6 @@ import (
 )
 
 const (
-	CSI          = "\x1b["
 	ResetSeq     = "0"
 	BoldSeq      = "1"
 	FaintSeq     = "2"

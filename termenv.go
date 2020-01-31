@@ -14,6 +14,8 @@ var (
 type Profile int
 
 const (
+	CSI = "\x1b["
+
 	Ascii = Profile(iota)
 	ANSI
 	ANSI256
