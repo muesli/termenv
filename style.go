@@ -50,13 +50,17 @@ func (t Style) Styled(s string) string {
 
 // Foreground sets a foreground color
 func (t Style) Foreground(c Color) Style {
-	t.styles = append(t.styles, c.Sequence(false))
+	if c != nil {
+		t.styles = append(t.styles, c.Sequence(false))
+	}
 	return t
 }
 
 // Background sets a background color
 func (t Style) Background(c Color) Style {
-	t.styles = append(t.styles, c.Sequence(true))
+	if c != nil {
+		t.styles = append(t.styles, c.Sequence(true))
+	}
 	return t
 }
 
