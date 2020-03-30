@@ -107,7 +107,7 @@ func readWithTimeout(f *os.File) (string, bool) {
 		&syscall.Timeval{Usec: 100000})
 
 	if err != nil {
-		// log.Printf("select(read stdout): %v", err)
+		// log.Printf("select(read error): %v", err)
 		return "", false
 	}
 	if readfds.Bits[fd/64]&(1<<(fd%64)) == 0 {
@@ -116,11 +116,20 @@ func readWithTimeout(f *os.File) (string, bool) {
 	}
 
 	// n > 0 => is readable
-	data := make([]byte, 24)
-	_, err = f.Read(data)
-	if err != nil {
-		// log.Printf("read(stdout): %v", err)
-		return "", false
+	var data []byte
+	b := make([]byte, 1)
+	for {
+		_, err := f.Read(b)
+		if err != nil {
+			// log.Printf("read(%d): %v %d", fd, err, n)
+			return "", false
+		}
+		// log.Printf("read %d bytes from stdout: %s %d\n", n, data, data[len(data)-1])
+
+		data = append(data, b[0])
+		if b[0] == '\a' || (b[0] == '\\' && len(data) > 2) {
+			break
+		}
 	}
 
 	// fmt.Printf("read %d bytes from stdout: %s\n", n, data)
