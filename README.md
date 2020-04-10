@@ -111,6 +111,45 @@ fmt.Println(buf)
 Other available helper functions are: `Faint`, `Italic`, `CrossOut`,
 `Underline`, `Overline`, `Reverse`, and `Blink`.
 
+## Screen
+
+```go
+// Reset the terminal to its default style, removing any active styles
+termenv.Reset()
+
+// Switch to the altscreen. The former view can be restored with ExitAltScreen()
+termenv.AltScreen()
+
+// Exit the altscreen and return to the former terminal view
+termenv.ExitAltScreen()
+
+// Clear the visible portion of the terminal
+termenv.ClearScreen()
+
+// Move the cursor to a given position
+termenv.MoveCursor(row, column)
+
+// Hide the cursor
+termenv.HideCursor()
+
+// Show the cursor
+termenv.ShowCursor()
+
+// Move the cursor down a given number of lines and place it at the beginning
+// of the line
+termenv.CursorNextLine(n)
+
+// Move the cursor up a given number of lines and place it at the beginning of
+// the line
+termenv.CursorPrevLine(n)
+
+// Clear the current line
+termenv.ClearLine()
+
+// Clear a given number of lines
+termenv.ClearLines(n)
+```
+
 ## Color Chart
 
 ![ANSI color chart](https://github.com/muesli/termenv/raw/master/examples/color-chart/color-chart.png)
