@@ -21,6 +21,11 @@ const (
 	HideCursorSeq         = "?25l"
 )
 
+// Reset the terminal to its default style, removing any active styles.
+func Reset() {
+	fmt.Print(CSI + ResetSeq + "m")
+}
+
 // AltScreen switches to the altscreen. The former view can be restored with
 // ExitAltScreen().
 func AltScreen() {
