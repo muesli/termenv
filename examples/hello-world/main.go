@@ -36,4 +36,6 @@ func main() {
 		termenv.String("cyan").Foreground(p.Color("0")).Background(p.Color("#66C2CD")),
 		termenv.String("gray").Foreground(p.Color("0")).Background(p.Color("#B9BFCA")),
 	)
+
+	fmt.Printf("\n\t%s %t\n", termenv.String("Has dark background?").Bold(), termenv.HasDarkBackground())
 }
