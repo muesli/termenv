@@ -135,6 +135,12 @@ termenv.HideCursor()
 // Show the cursor
 termenv.ShowCursor()
 
+// Move the cursor up a given number of lines
+termenv.CursorUp(n)
+
+// Move the cursor down a given number of lines
+termenv.CursorDown(n)
+
 // Move the cursor down a given number of lines and place it at the beginning
 // of the line
 termenv.CursorNextLine(n)
