@@ -58,6 +58,16 @@ func ShowCursor() {
 	fmt.Printf(CSI + ShowCursorSeq)
 }
 
+// CursorUp moves the cursor up a given number of lines.
+func CursorUp(n int) {
+	fmt.Printf(CSI+CursorUpSeq, n)
+}
+
+// CursorDown moves the cursor down a given number of lines.
+func CursorDown(n int) {
+	fmt.Printf(CSI+CursorDownSeq, n)
+}
+
 // CursorNextLine moves the cursor down a given number of lines and places it at
 // the beginning of the line.
 func CursorNextLine(n int) {
@@ -79,7 +89,7 @@ func ClearLine() {
 func ClearLines(n int) {
 	ClearLine()
 	for i := 0; i < n; i++ {
-		CursorPrevLine(1)
+		CursorUp(1)
 		ClearLine()
 	}
 }
