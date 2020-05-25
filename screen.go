@@ -1,6 +1,9 @@
 package termenv
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 const (
 	AltScreenSeq          = "?1049h"
@@ -87,9 +90,7 @@ func ClearLine() {
 
 // ClearLines clears a given number of lines.
 func ClearLines(n int) {
-	ClearLine()
-	for i := 0; i < n; i++ {
-		CursorUp(1)
-		ClearLine()
-	}
+	clearLine := fmt.Sprintf(CSI+EraseLineSeq, 2)
+	cursorUp := fmt.Sprintf(CSI+CursorUpSeq, 1)
+	fmt.Print(clearLine + strings.Repeat(cursorUp+clearLine, n))
 }
