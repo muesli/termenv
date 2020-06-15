@@ -6,22 +6,23 @@ import (
 )
 
 const (
-	AltScreenSeq          = "?1049h"
-	ExitAltScreenSeq      = "?1049l"
-	CursorUpSeq           = "%dA"
-	CursorDownSeq         = "%dB"
-	CursorForwardSeq      = "%dC"
-	CursorBackSeq         = "%dD"
-	CursorNextLineSeq     = "%dE"
-	CursorPreviousLineSeq = "%dF"
-	CursorHorizontalSeq   = "%dG"
-	CursorPositionSeq     = "%d;%dH"
-	EraseDisplaySeq       = "%dJ"
-	EraseLineSeq          = "%dK"
-	ScrollUpSeq           = "%dS"
-	ScrollDownSeq         = "%dT"
-	ShowCursorSeq         = "?25h"
-	HideCursorSeq         = "?25l"
+	AltScreenSeq             = "?1049h"
+	ExitAltScreenSeq         = "?1049l"
+	CursorUpSeq              = "%dA"
+	CursorDownSeq            = "%dB"
+	CursorForwardSeq         = "%dC"
+	CursorBackSeq            = "%dD"
+	CursorNextLineSeq        = "%dE"
+	CursorPreviousLineSeq    = "%dF"
+	CursorHorizontalSeq      = "%dG"
+	CursorPositionSeq        = "%d;%dH"
+	EraseDisplaySeq          = "%dJ"
+	EraseLineSeq             = "%dK"
+	ScrollUpSeq              = "%dS"
+	ScrollDownSeq            = "%dT"
+	ShowCursorSeq            = "?25h"
+	HideCursorSeq            = "?25l"
+	ChangeScrollingRegionSeq = "%d;%dr"
 )
 
 // Reset the terminal to its default style, removing any active styles.
@@ -93,4 +94,9 @@ func ClearLines(n int) {
 	clearLine := fmt.Sprintf(CSI+EraseLineSeq, 2)
 	cursorUp := fmt.Sprintf(CSI+CursorUpSeq, 1)
 	fmt.Print(clearLine + strings.Repeat(cursorUp+clearLine, n))
+}
+
+// ChangeScrollingRegion sets the scrolling region of the terminal.
+func ChangeScrollingRegion(top, bottom int) {
+	fmt.Printf(CSI+ChangeScrollingRegionSeq, top, bottom)
 }
