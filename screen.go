@@ -20,6 +20,8 @@ const (
 	EraseLineSeq             = "%dK"
 	ScrollUpSeq              = "%dS"
 	ScrollDownSeq            = "%dT"
+	SaveCursorPositionSeq    = "s"
+	RestoreCursorPositionSeq = "u"
 	ShowCursorSeq            = "?25h"
 	HideCursorSeq            = "?25l"
 	ChangeScrollingRegionSeq = "%d;%dr"
@@ -60,6 +62,16 @@ func HideCursor() {
 // ShowCursor shows the cursor.
 func ShowCursor() {
 	fmt.Printf(CSI + ShowCursorSeq)
+}
+
+// SaveCursorPosition saves the cursor position.
+func SaveCursorPosition() {
+	fmt.Print(CSI + SaveCursorPositionSeq)
+}
+
+// RestoreCursorPosition restores a saved cursor position.
+func RestoreCursorPosition() {
+	fmt.Print(CSI + RestoreCursorPositionSeq)
 }
 
 // CursorUp moves the cursor up a given number of lines.
