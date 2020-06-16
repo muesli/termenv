@@ -72,6 +72,16 @@ func CursorDown(n int) {
 	fmt.Printf(CSI+CursorDownSeq, n)
 }
 
+// CursorForward moves the cursor up a given number of lines.
+func CursorForward(n int) {
+	fmt.Printf(CSI+CursorForwardSeq, n)
+}
+
+// CursorBack moves the cursor backwards a given number of cells.
+func CursorBack(n int) {
+	fmt.Printf(CSI+CursorBackSeq, n)
+}
+
 // CursorNextLine moves the cursor down a given number of lines and places it at
 // the beginning of the line.
 func CursorNextLine(n int) {
