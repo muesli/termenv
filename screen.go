@@ -25,6 +25,8 @@ const (
 	ShowCursorSeq            = "?25h"
 	HideCursorSeq            = "?25l"
 	ChangeScrollingRegionSeq = "%d;%dr"
+	InsertLineSeq            = "%dL"
+	DeleteLineSeq            = "%dM"
 )
 
 // Reset the terminal to its default style, removing any active styles.
@@ -121,4 +123,16 @@ func ClearLines(n int) {
 // ChangeScrollingRegion sets the scrolling region of the terminal.
 func ChangeScrollingRegion(top, bottom int) {
 	fmt.Printf(CSI+ChangeScrollingRegionSeq, top, bottom)
+}
+
+// InsertLines inserts the given number lines at the top of the scrollable
+// region, pushing lines below down.
+func InsertLines(n int) {
+	fmt.Printf(CSI+InsertLineSeq, n)
+}
+
+// DeleteLines deletes the given number of lines, pulling any lines in
+// the scrollable region below up.
+func DeleteLines(n int) {
+	fmt.Printf(CSI+DeleteLineSeq, n)
 }
