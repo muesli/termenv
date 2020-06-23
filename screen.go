@@ -158,8 +158,7 @@ func DisableMousePress() {
 	fmt.Print(CSI + EnableMousePressSeq)
 }
 
-// EnableMouse enables Mouse Tracking mode. Press, release and wheel events are
-// sent.
+// EnableMouse enables Mouse Tracking mode.
 func EnableMouse() {
 	fmt.Print(CSI + EnableMouseSeq)
 }
@@ -169,8 +168,7 @@ func DisableMouse() {
 	fmt.Print(CSI + DisableMouseSeq)
 }
 
-// EnableMouseHilite enables Hilite Mouse Tracking mode. Information is sent
-// pertaining to text selection.
+// EnableMouseHilite enables Hilite Mouse Tracking mode.
 func EnableMouseHilite() {
 	fmt.Print(CSI + EnableMouseHiliteSeq)
 }
@@ -180,9 +178,7 @@ func DisableMouseHilite() {
 	fmt.Print(CSI + DisableMouseHiliteSeq)
 }
 
-// EnableMouseCellMotion enables Cell Motion Mouse Tracking mode. Press,
-// release, and wheel events are sent as well as movement events when a
-// button is pressed.
+// EnableMouseCellMotion enables Cell Motion Mouse Tracking mode.
 func EnableMouseCellMotion() {
 	fmt.Print(CSI + EnableMouseCellMotionSeq)
 }
@@ -192,8 +188,7 @@ func DisableMouseCellMotion() {
 	fmt.Print(CSI + DisableMouseCellMotionSeq)
 }
 
-// EnableMouseAllMotion enables All Motion Mouse mode. Press, release, wheel
-// and all mouse movement events are sent.
+// EnableMouseAllMotion enables All Motion Mouse mode.
 func EnableMouseAllMotion() {
 	fmt.Print(CSI + EnableMouseAllMotionSeq)
 }
