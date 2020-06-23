@@ -6,27 +6,37 @@ import (
 )
 
 const (
-	AltScreenSeq             = "?1049h"
-	ExitAltScreenSeq         = "?1049l"
-	CursorUpSeq              = "%dA"
-	CursorDownSeq            = "%dB"
-	CursorForwardSeq         = "%dC"
-	CursorBackSeq            = "%dD"
-	CursorNextLineSeq        = "%dE"
-	CursorPreviousLineSeq    = "%dF"
-	CursorHorizontalSeq      = "%dG"
-	CursorPositionSeq        = "%d;%dH"
-	EraseDisplaySeq          = "%dJ"
-	EraseLineSeq             = "%dK"
-	ScrollUpSeq              = "%dS"
-	ScrollDownSeq            = "%dT"
-	SaveCursorPositionSeq    = "s"
-	RestoreCursorPositionSeq = "u"
-	ShowCursorSeq            = "?25h"
-	HideCursorSeq            = "?25l"
-	ChangeScrollingRegionSeq = "%d;%dr"
-	InsertLineSeq            = "%dL"
-	DeleteLineSeq            = "%dM"
+	CursorUpSeq               = "%dA"
+	CursorDownSeq             = "%dB"
+	CursorForwardSeq          = "%dC"
+	CursorBackSeq             = "%dD"
+	CursorNextLineSeq         = "%dE"
+	CursorPreviousLineSeq     = "%dF"
+	CursorHorizontalSeq       = "%dG"
+	CursorPositionSeq         = "%d;%dH"
+	EraseDisplaySeq           = "%dJ"
+	EraseLineSeq              = "%dK"
+	ScrollUpSeq               = "%dS"
+	ScrollDownSeq             = "%dT"
+	SaveCursorPositionSeq     = "s"
+	RestoreCursorPositionSeq  = "u"
+	ChangeScrollingRegionSeq  = "%d;%dr"
+	InsertLineSeq             = "%dL"
+	DeleteLineSeq             = "%dM"
+	ShowCursorSeq             = "?25h"
+	HideCursorSeq             = "?25l"
+	EnableMousePressSeq       = "?9h" // press only (X10)
+	DisableMousePressSeq      = "?9l"
+	EnableMouseSeq            = "?1000h" // press, release, wheel
+	DisableMouseSeq           = "?1000l"
+	EnableMouseHiliteSeq      = "?1001h" // highlight
+	DisableMouseHiliteSeq     = "?1001l"
+	EnableMouseCellMotionSeq  = "?1002h" // press, release, move on pressed, wheel
+	DisableMouseCellMotionSeq = "?1002l"
+	EnableMouseAllMotionSeq   = "?1003h" // press, release, move, wheel
+	DisableMouseAllMotionSeq  = "?1003l"
+	AltScreenSeq              = "?1049h"
+	ExitAltScreenSeq          = "?1049l"
 )
 
 // Reset the terminal to its default style, removing any active styles.
@@ -34,13 +44,14 @@ func Reset() {
 	fmt.Print(CSI + ResetSeq + "m")
 }
 
-// AltScreen switches to the altscreen. The former view can be restored with
-// ExitAltScreen().
+// AltScreen switches to the alternate screen buffer. The former view can be
+// restored with ExitAltScreen().
 func AltScreen() {
 	fmt.Print(CSI + AltScreenSeq)
 }
 
-// ExitAltScreen exits the altscreen and returns to the former terminal view.
+// ExitAltScreen exits the alternate screen buffer and returns to the former
+// terminal view.
 func ExitAltScreen() {
 	fmt.Print(CSI + ExitAltScreenSeq)
 }
@@ -135,4 +146,59 @@ func InsertLines(n int) {
 // the scrollable region below up.
 func DeleteLines(n int) {
 	fmt.Printf(CSI+DeleteLineSeq, n)
+}
+
+// EnableMousePress enables X10 mouse mode. Button press events are sent only.
+func EnableMousePress() {
+	fmt.Print(CSI + EnableMousePressSeq)
+}
+
+// DisableMousePress disables X10 mouse mode.
+func DisableMousePress() {
+	fmt.Print(CSI + EnableMousePressSeq)
+}
+
+// EnableMouse enables Mouse Tracking mode. Press, release and wheel events are
+// sent.
+func EnableMouse() {
+	fmt.Print(CSI + EnableMouseSeq)
+}
+
+// DisableMouse disables Mouse Tracking mode.
+func DisableMouse() {
+	fmt.Print(CSI + DisableMouseSeq)
+}
+
+// EnableMouseHilite enables Hilite Mouse Tracking mode. Information is sent
+// pertaining to text selection.
+func EnableMouseHilite() {
+	fmt.Print(CSI + EnableMouseHiliteSeq)
+}
+
+// DisableMouseHilite disables Hilite Mouse Tracking mode.
+func DisableMouseHilite() {
+	fmt.Print(CSI + DisableMouseHiliteSeq)
+}
+
+// EnableMouseCellMotion enables Cell Motion Mouse Tracking mode. Press,
+// release, and wheel events are sent as well as movement events when a
+// button is pressed.
+func EnableMouseCellMotion() {
+	fmt.Print(CSI + EnableMouseCellMotionSeq)
+}
+
+// DisableMouseCellMotion disables Cell Motion Mouse Tracking mode.
+func DisableMouseCellMotion() {
+	fmt.Print(CSI + DisableMouseCellMotionSeq)
+}
+
+// EnableMouseAllMotion enables All Motion Mouse mode. Press, release, wheel
+// and all mouse movement events are sent.
+func EnableMouseAllMotion() {
+	fmt.Print(CSI + EnableMouseAllMotionSeq)
+}
+
+// DisableMouseAllMotion disables All Motion Mouse mode.
+func DisableMouseAllMotion() {
+	fmt.Print(CSI + DisableMouseAllMotionSeq)
 }
