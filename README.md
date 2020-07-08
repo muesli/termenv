@@ -1,13 +1,10 @@
-# termenv
-
-[![Latest Release](https://img.shields.io/github/release/muesli/termenv.svg)](https://github.com/muesli/termenv/releases)
-[![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/github.com/muesli/termenv)
-[![Build Status](https://github.com/muesli/termenv/workflows/build/badge.svg)](https://github.com/muesli/termenv/actions)
-[![Coverage Status](https://coveralls.io/repos/github/muesli/termenv/badge.svg?branch=master)](https://coveralls.io/github/muesli/termenv?branch=master)
-[![Go ReportCard](http://goreportcard.com/badge/muesli/termenv)](http://goreportcard.com/report/muesli/termenv)
-
 <p align="center">
     <img src="https://stuff.charm.sh/termenv.png" width="360" alt="termenv Logo">
+    <a href="https://github.com/muesli/termenv/releases"><img src="https://img.shields.io/github/release/muesli/termenv.svg" alt="Latest Release"></a>
+    <a href="https://godoc.org/github.com/muesli/termenv"><img src="https://godoc.org/github.com/golang/gddo?status.svg" alt="GoDoc"></a>
+    <a href="https://github.com/muesli/termenv/actions"><img src="https://github.com/muesli/termenv/workflows/build/badge.sv" alt="Build Status"></a>
+    <a href="https://coveralls.io/github/muesli/termenv?branch=master"><img src="https://coveralls.io/repos/github/muesli/termenv/badge.svg?branch=maste" alt="Coverage Status"></a>
+    <a href="http://goreportcard.com/report/muesli/termenv"><img src="http://goreportcard.com/badge/muesli/termenv" alt="Go ReportCard"></a>
 </p>
 
 `termenv` lets you safely use advanced styling options on the terminal. It
