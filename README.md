@@ -6,6 +6,10 @@
 [![Coverage Status](https://coveralls.io/repos/github/muesli/termenv/badge.svg?branch=master)](https://coveralls.io/github/muesli/termenv?branch=master)
 [![Go ReportCard](http://goreportcard.com/badge/muesli/termenv)](http://goreportcard.com/report/muesli/termenv)
 
+<p align="center">
+    <img src="https://stuff.charm.sh/termenv.png" alt="termenv Logo">
+</p>
+
 `termenv` lets you safely use advanced styling options on the terminal. It
 gathers information about the terminal environment in terms of its ANSI & color
 support and offers you convenient methods to colorize and style your output,
