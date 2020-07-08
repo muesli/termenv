@@ -7,7 +7,7 @@
 [![Go ReportCard](http://goreportcard.com/badge/muesli/termenv)](http://goreportcard.com/report/muesli/termenv)
 
 <p align="center">
-    <img src="https://stuff.charm.sh/termenv.png" alt="termenv Logo">
+    <img src="https://stuff.charm.sh/termenv.png" width="360" alt="termenv Logo">
 </p>
 
 `termenv` lets you safely use advanced styling options on the terminal. It
