@@ -114,7 +114,7 @@ func (t Style) CrossOut() Style {
 	return t
 }
 
-// Len returns the amount of printable runes in the Style
-func (t Style) Len() int {
+// Width returns the width required to print all runes in Style.
+func (t Style) Width() int {
 	return runewidth.StringWidth(t.string)
 }
