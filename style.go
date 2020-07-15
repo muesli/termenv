@@ -3,6 +3,8 @@ package termenv
 import (
 	"fmt"
 	"strings"
+
+	"github.com/mattn/go-runewidth"
 )
 
 const (
@@ -110,4 +112,9 @@ func (t Style) Reverse() Style {
 func (t Style) CrossOut() Style {
 	t.styles = append(t.styles, CrossOutSeq)
 	return t
+}
+
+// Len returns the amount of printable runes in the Style
+func (t Style) Len() int {
+	return runewidth.StringWidth(t.string)
 }
