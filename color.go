@@ -169,7 +169,7 @@ func ansi256ToANSIColor(c ANSI256Color) ANSIColor {
 	md := math.MaxFloat64
 
 	h, _ := colorful.Hex(ansiHex[c])
-	for i := 0; i < 15; i++ {
+	for i := 0; i <= 15; i++ {
 		hb, _ := colorful.Hex(ansiHex[i])
 		d := h.DistanceLab(hb)
 
