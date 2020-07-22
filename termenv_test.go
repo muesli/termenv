@@ -3,6 +3,7 @@ package termenv
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"text/template"
@@ -278,5 +279,42 @@ func TestTemplateHelpers(t *testing.T) {
 			v2 := strings.Replace(buf.String(), "\x1b", "", -1)
 			t.Errorf("Expected %s, got %s", v1, v2)
 		}
+	}
+}
+
+func TestEnvNoColor(t *testing.T) {
+	tests := []struct {
+		name     string
+		environ  []string
+		expected bool
+	}{
+		{"no env", nil, false},
+		{"no_color", []string{"NO_COLOR", "Y"}, true},
+		{"no_color+clicolor=1", []string{"NO_COLOR", "Y", "CLICOLOR", "1"}, true},
+		{"no_color+clicolor_force=1", []string{"NO_COLOR", "Y", "CLICOLOR_FORCE", "1"}, true},
+		{"clicolor=0", []string{"CLICOLOR", "0"}, true},
+		{"clicolor=1", []string{"CLICOLOR", "1"}, false},
+		{"clicolor_force=1", []string{"CLICOLOR_FORCE", "0"}, false},
+		{"clicolor_force=0", []string{"CLICOLOR_FORCE", "1"}, false},
+		{"clicolor=0+clicolor_force=1", []string{"CLICOLOR", "0", "CLICOLOR_FORCE", "1"}, false},
+		{"clicolor=1+clicolor_force=1", []string{"CLICOLOR", "1", "CLICOLOR_FORCE", "1"}, false},
+		{"clicolor=0+clicolor_force=0", []string{"CLICOLOR", "0", "CLICOLOR_FORCE", "0"}, true},
+		{"clicolor=1+clicolor_force=0", []string{"CLICOLOR", "1", "CLICOLOR_FORCE", "0"}, false},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			defer func() {
+				os.Unsetenv("NO_COLOR")
+				os.Unsetenv("CLICOLOR")
+				os.Unsetenv("CLICOLOR_FORCE")
+			}()
+			for i := 0; i < len(test.environ); i += 2 {
+				os.Setenv(test.environ[i], test.environ[i+1])
+			}
+			actual := EnvNoColor()
+			if test.expected != actual {
+				t.Errorf("expected %t but was %t", test.expected, actual)
+			}
+		})
 	}
 }
