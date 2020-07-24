@@ -4,6 +4,7 @@ package termenv
 
 import (
 	"os"
+	"runtime"
 	"strconv"
 	"strings"
 	"syscall"
@@ -75,15 +76,23 @@ func readWithTimeout(f *os.File) (string, bool) {
 	fd := f.Fd()
 	readfds.Bits[fd/64] |= 1 << (fd % 64)
 
-	// Use select to attempt to read from os.Stdout for 100 ms
-	err := sysSelect(int(fd)+1,
-		&readfds,
-		&syscall.Timeval{Usec: 100000})
-
-	if err != nil {
+	for {
+		// Use select to attempt to read from os.Stdout for 100 ms
+		err := sysSelect(int(fd)+1,
+			&readfds,
+			&syscall.Timeval{Usec: 100000})
+		if err == nil {
+			break
+		}
+		// On MacOS we can see EINTR here if the user
+		// pressed ^Z. Similar to issue https://github.com/golang/go/issues/22838
+		if runtime.GOOS == "darwin" && err == syscall.EINTR {
+			continue
+		}
 		// log.Printf("select(read error): %v", err)
 		return "", false
 	}
+
 	if readfds.Bits[fd/64]&(1<<(fd%64)) == 0 {
 		// log.Print("select(read timeout)")
 		return "", false
