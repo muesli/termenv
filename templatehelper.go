@@ -6,6 +6,9 @@ import (
 
 // TemplateFuncs contains a few useful template helpers.
 func TemplateFuncs(p Profile) template.FuncMap {
+	if p == Ascii {
+		return noopTemplateFuncs
+	}
 	return template.FuncMap{
 		"Color": func(values ...interface{}) string {
 			s := p.String(values[len(values)-1].(string))
@@ -52,4 +55,26 @@ func styleFunc(p Profile, f func(Style) Style) func(...interface{}) string {
 		s := p.String(values[0].(string))
 		return f(s).String()
 	}
+}
+
+var noopTemplateFuncs = template.FuncMap{
+	"Color":      noColorFunc,
+	"Foreground": noColorFunc,
+	"Background": noColorFunc,
+	"Bold":       noStyleFunc,
+	"Faint":      noStyleFunc,
+	"Italic":     noStyleFunc,
+	"Underline":  noStyleFunc,
+	"Overline":   noStyleFunc,
+	"Blink":      noStyleFunc,
+	"Reverse":    noStyleFunc,
+	"CrossOut":   noStyleFunc,
+}
+
+func noColorFunc(values ...interface{}) string {
+	return values[len(values)-1].(string)
+}
+
+func noStyleFunc(values ...interface{}) string {
+	return values[0].(string)
 }
