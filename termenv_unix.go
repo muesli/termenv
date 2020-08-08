@@ -3,11 +3,13 @@
 package termenv
 
 import (
+	"fmt"
 	"os"
 	"runtime"
 	"strconv"
 	"strings"
-	"syscall"
+
+	"golang.org/x/sys/unix"
 )
 
 func colorProfile() Profile {
@@ -72,28 +74,26 @@ func backgroundColor() Color {
 }
 
 func readWithTimeout(f *os.File) (string, bool) {
-	var readfds syscall.FdSet
-	fd := f.Fd()
-	readfds.Bits[fd/64] |= 1 << (fd % 64)
+	var readfds unix.FdSet
+	fd := int(f.Fd())
+	readfds.Set(fd)
 
 	for {
 		// Use select to attempt to read from os.Stdout for 100 ms
-		err := sysSelect(int(fd)+1,
-			&readfds,
-			&syscall.Timeval{Usec: 100000})
+		_, err := unix.Select(fd+1, &readfds, nil, nil, &unix.Timeval{Usec: 100000})
 		if err == nil {
 			break
 		}
 		// On MacOS we can see EINTR here if the user
 		// pressed ^Z. Similar to issue https://github.com/golang/go/issues/22838
-		if runtime.GOOS == "darwin" && err == syscall.EINTR {
+		if runtime.GOOS == "darwin" && err == unix.EINTR {
 			continue
 		}
 		// log.Printf("select(read error): %v", err)
 		return "", false
 	}
 
-	if readfds.Bits[fd/64]&(1<<(fd%64)) == 0 {
+	if !readfds.IsSet(fd) {
 		// log.Print("select(read timeout)")
 		return "", false
 	}
@@ -117,4 +117,27 @@ func readWithTimeout(f *os.File) (string, bool) {
 
 	// fmt.Printf("read %d bytes from stdout: %s\n", n, data)
 	return string(data), true
+}
+
+func termStatusReport(sequence int) (string, error) {
+	t, err := unix.IoctlGetTermios(unix.Stdout, tcgetattr)
+	if err != nil {
+		return "", ErrStatusReport
+	}
+	defer unix.IoctlSetTermios(unix.Stdout, tcsetattr, t)
+
+	noecho := *t
+	noecho.Lflag = noecho.Lflag &^ unix.ECHO
+	noecho.Lflag = noecho.Lflag &^ unix.ICANON
+	if err := unix.IoctlSetTermios(unix.Stdout, tcsetattr, &noecho); err != nil {
+		return "", ErrStatusReport
+	}
+
+	fmt.Printf("\033]%d;?\007", sequence)
+	s, ok := readWithTimeout(os.Stdout)
+	if !ok {
+		return "", ErrStatusReport
+	}
+	// fmt.Println("Rcvd", s[1:])
+	return s, nil
 }
