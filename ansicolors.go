@@ -19,7 +19,7 @@ const (
 	ANSIBrightWhite
 )
 
-// RGB values of ANSI colors (0-255)
+// RGB values of ANSI colors (0-255).
 var ansiHex = []string{
 	"#000000",
 	"#800000",

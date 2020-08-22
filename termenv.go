@@ -23,7 +23,7 @@ const (
 )
 
 // ColorProfile returns the supported color profile:
-// Ascii, ANSI, ANSI256, or TrueColor
+// Ascii, ANSI, ANSI256, or TrueColor.
 func ColorProfile() Profile {
 	if !isatty.IsTerminal(os.Stdout.Fd()) {
 		return Ascii
@@ -32,7 +32,7 @@ func ColorProfile() Profile {
 	return colorProfile()
 }
 
-// ForegroundColor returns the terminal's default foreground color
+// ForegroundColor returns the terminal's default foreground color.
 func ForegroundColor() Color {
 	if !isatty.IsTerminal(os.Stdout.Fd()) {
 		return NoColor{}
@@ -41,7 +41,7 @@ func ForegroundColor() Color {
 	return foregroundColor()
 }
 
-// BackgroundColor returns the terminal's default background color
+// BackgroundColor returns the terminal's default background color.
 func BackgroundColor() Color {
 	if !isatty.IsTerminal(os.Stdout.Fd()) {
 		return NoColor{}
@@ -50,7 +50,7 @@ func BackgroundColor() Color {
 	return backgroundColor()
 }
 
-// HasDarkBackground returns whether terminal uses a dark-ish background
+// HasDarkBackground returns whether terminal uses a dark-ish background.
 func HasDarkBackground() bool {
 	c := ConvertToRGB(BackgroundColor())
 	_, _, l := c.Hsl()
@@ -61,7 +61,7 @@ func HasDarkBackground() bool {
 // by setting NO_COLOR (https://no-color.org/)
 // or CLICOLOR/CLICOLOR_FORCE (https://bixense.com/clicolors/)
 // If NO_COLOR is set, this will return true, ignoring CLICOLOR/CLICOLOR_FORCE
-// If CLICOLOR=="0", it will be true only if CLICOLOR_FORCE is also "0" or is unset
+// If CLICOLOR=="0", it will be true only if CLICOLOR_FORCE is also "0" or is unset.
 func EnvNoColor() bool {
 	return os.Getenv("NO_COLOR") != "" || (os.Getenv("CLICOLOR") == "0" && !cliColorForced())
 }

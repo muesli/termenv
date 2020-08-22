@@ -4,7 +4,7 @@ import (
 	"text/template"
 )
 
-// TemplateFuncs contains a few useful template helpers
+// TemplateFuncs contains a few useful template helpers.
 func TemplateFuncs(p Profile) template.FuncMap {
 	return template.FuncMap{
 		"Color": func(values ...interface{}) string {
