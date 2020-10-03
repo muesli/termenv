@@ -1,4 +1,6 @@
-// +build darwin dragonfly freebsd netbsd openbsd solaris
+// +build darwin dragonfly freebsd netbsd openbsd
+// +build !solaris
+// +build !illumos
 
 package termenv
 
