@@ -13,12 +13,23 @@ import (
 )
 
 func colorProfile() Profile {
+	term := os.Getenv("TERM")
 	colorTerm := os.Getenv("COLORTERM")
-	if colorTerm == "truecolor" {
-		return TrueColor
+
+	switch strings.ToLower(colorTerm) {
+	case "24bit":
+		fallthrough
+	case "truecolor":
+		if term == "screen" || !strings.HasPrefix(term, "screen") {
+			// enable TrueColor in tmux, but not for old-school screen
+			return TrueColor
+		}
+	case "yes":
+		fallthrough
+	case "true":
+		return ANSI256
 	}
 
-	term := os.Getenv("TERM")
 	if strings.Contains(term, "256color") {
 		return ANSI256
 	}
