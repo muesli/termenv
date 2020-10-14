@@ -103,11 +103,11 @@ bg := `{{ Background "#0000ff" "Blue Background" }}`
 wrap := `{{ Bold (Underline "Hello World") }}`
 
 // parse and render
-tpl = tpl.Parse(bold)
+tpl, _ = tpl.Parse(bold)
 
 var buf bytes.Buffer
 tpl.Execute(&buf, nil)
-fmt.Println(buf)
+fmt.Println(buf.String())
 ```
 
 Other available helper functions are: `Faint`, `Italic`, `CrossOut`,
