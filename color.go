@@ -3,6 +3,7 @@ package termenv
 import (
 	"errors"
 	"fmt"
+	"image/color"
 	"math"
 	"strconv"
 	"strings"
@@ -104,6 +105,11 @@ func (p Profile) Color(s string) Color {
 	}
 
 	return p.Convert(c)
+}
+
+func (p Profile) FromColor(c color.Color) Color {
+	col, _ := colorful.MakeColor(c)
+	return p.Color(col.Hex())
 }
 
 func (c NoColor) Sequence(bg bool) string {

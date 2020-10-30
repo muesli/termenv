@@ -3,6 +3,7 @@ package termenv
 import (
 	"bytes"
 	"fmt"
+	"image/color"
 	"os"
 	"strings"
 	"testing"
@@ -60,6 +61,7 @@ func TestRendering(t *testing.T) {
 }
 
 func TestColorConversion(t *testing.T) {
+	// ANSI color
 	a := ANSI.Color("7")
 	c := ConvertToRGB(a)
 
@@ -68,6 +70,7 @@ func TestColorConversion(t *testing.T) {
 		t.Errorf("Expected %s, got %s", exp, c.Hex())
 	}
 
+	// ANSI-256 color
 	a256 := ANSI256.Color("91")
 	c = ConvertToRGB(a256)
 
@@ -76,12 +79,22 @@ func TestColorConversion(t *testing.T) {
 		t.Errorf("Expected %s, got %s", exp, c.Hex())
 	}
 
+	// hex color
 	hex := "#abcdef"
 	argb := TrueColor.Color(hex)
 	c = ConvertToRGB(argb)
 
 	if c.Hex() != hex {
 		t.Errorf("Expected %s, got %s", exp, c.Hex())
+	}
+}
+
+func TestFromColor(t *testing.T) {
+	// color.Color interface
+	c := TrueColor.FromColor(color.RGBA{255, 128, 0, 255})
+	exp := "38;2;255;128;0"
+	if c.Sequence(false) != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
 }
 
