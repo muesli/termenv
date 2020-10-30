@@ -57,6 +57,8 @@ p := termenv.ColorProfile()
 out = out.Foreground(p.Color("#abcdef"))
 // but also supports ANSI colors (0-255)
 out = out.Background(p.Color("69"))
+// ...or the color.Color interface
+out = out.Foreground(p.FromColor(color.RGBA{255, 128, 0, 255}))
 
 fmt.Println(out)
 ```
