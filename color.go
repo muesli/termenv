@@ -153,9 +153,19 @@ func (c RGBColor) Sequence(bg bool) string {
 }
 
 func xTermColor(s string) (RGBColor, error) {
-	if len(s) != 24 {
+	if len(s) < 24 || len(s) > 25 {
 		return RGBColor(""), ErrInvalidColor
 	}
+
+	switch {
+	case strings.HasSuffix(s, "\a"):
+		s = strings.TrimSuffix(s, "\a")
+	case strings.HasSuffix(s, "\033\\"):
+		s = strings.TrimSuffix(s, "\033\\")
+	default:
+		return RGBColor(""), ErrInvalidColor
+	}
+
 	s = s[4:]
 
 	prefix := ";rgb:"
@@ -163,7 +173,6 @@ func xTermColor(s string) (RGBColor, error) {
 		return RGBColor(""), ErrInvalidColor
 	}
 	s = strings.TrimPrefix(s, prefix)
-	s = strings.TrimSuffix(s, "\a")
 
 	h := strings.Split(s, "/")
 	hex := fmt.Sprintf("#%s%s%s", h[0][:2], h[1][:2], h[2][:2])

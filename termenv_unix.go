@@ -3,6 +3,7 @@
 package termenv
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"runtime"
@@ -121,7 +122,9 @@ func readWithTimeout(f *os.File) (string, bool) {
 		// log.Printf("read %d bytes from stdout: %s %d\n", n, data, data[len(data)-1])
 
 		data = append(data, b[0])
-		if b[0] == '\a' || (b[0] == '\\' && len(data) > 2) {
+
+		// data sent by terminal is either terminated by BEL (\a) or ST (ESC \)
+		if bytes.HasSuffix(data, []byte("\a")) || bytes.HasSuffix(data, []byte("\033\\")) {
 			break
 		}
 	}
@@ -144,7 +147,7 @@ func termStatusReport(sequence int) (string, error) {
 		return "", ErrStatusReport
 	}
 
-	fmt.Printf("\033]%d;?\007", sequence)
+	fmt.Printf("\033]%d;?\033\\", sequence)
 	s, ok := readWithTimeout(os.Stdout)
 	if !ok {
 		return "", ErrStatusReport
