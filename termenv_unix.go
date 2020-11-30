@@ -134,6 +134,11 @@ func readWithTimeout(f *os.File) (string, bool) {
 }
 
 func termStatusReport(sequence int) (string, error) {
+	term := os.Getenv("TERM")
+	if strings.HasPrefix(term, "screen") {
+		return "", ErrStatusReport
+	}
+
 	t, err := unix.IoctlGetTermios(unix.Stdout, tcgetattr)
 	if err != nil {
 		return "", ErrStatusReport
