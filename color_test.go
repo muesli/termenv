@@ -1,6 +1,8 @@
 package termenv
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestXTermColor(t *testing.T) {
 	var tests = []struct {
@@ -55,5 +57,28 @@ func TestXTermColor(t *testing.T) {
 				t.Fatalf("wrong color returned, want %v, got %v", test.color, color)
 			}
 		})
+	}
+}
+
+func TestCSSNamedColor(t *testing.T) {
+	var tests = []struct {
+		name     string
+		expected string
+	}{
+		{
+			"red",
+			"38;2;255;0;0",
+		},
+		{
+			"rebeccapurple",
+			"38;2;102;51;153",
+		},
+	}
+
+	for _, test := range tests {
+		res := CSSNamedColor(test.name).Sequence(false)
+		if res != test.expected {
+			t.Fatalf("wrong color returned, want %v, got %v", test.expected, res)
+		}
 	}
 }
