@@ -96,19 +96,16 @@ func (p Profile) Color(s string) Color {
 	var c Color
 	if strings.HasPrefix(s, "#") {
 		c = RGBColor(s)
-	} else if _, ok := palette.CSS.Color(s); ok {
-		c = CSSNamedColor(s)
-	} else {
-		i, err := strconv.Atoi(s)
-		if err != nil {
-			return nil
-		}
-
+	} else if i, err := strconv.Atoi(s); err == nil {
 		if i < 16 {
 			c = ANSIColor(i)
 		} else {
 			c = ANSI256Color(i)
 		}
+	} else if _, ok := palette.CSS.Color(s); ok {
+		c = CSSNamedColor(s)
+	} else {
+		return nil
 	}
 
 	return p.Convert(c)
