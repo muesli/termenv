@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/lucasb-eyer/go-colorful"
+	"github.com/muesli/gamut/palette"
 )
 
 var (
@@ -34,6 +35,10 @@ type ANSI256Color int
 
 // RGBColor is a hex-encoded color, e.g. "#abcdef".
 type RGBColor string
+
+// CSSNamedColor is a color as defined by the CSS color standards, e.g. "red".
+// Colors are supported through CSS Color Module Level 4.
+type CSSNamedColor string
 
 func ConvertToRGB(c Color) colorful.Color {
 	var hex string
@@ -91,17 +96,16 @@ func (p Profile) Color(s string) Color {
 	var c Color
 	if strings.HasPrefix(s, "#") {
 		c = RGBColor(s)
-	} else {
-		i, err := strconv.Atoi(s)
-		if err != nil {
-			return nil
-		}
-
+	} else if i, err := strconv.Atoi(s); err == nil {
 		if i < 16 {
 			c = ANSIColor(i)
 		} else {
 			c = ANSI256Color(i)
 		}
+	} else if _, ok := palette.CSS.Color(s); ok {
+		c = CSSNamedColor(s)
+	} else {
+		return nil
 	}
 
 	return p.Convert(c)
@@ -150,6 +154,21 @@ func (c RGBColor) Sequence(bg bool) string {
 		prefix = Background
 	}
 	return fmt.Sprintf("%s;2;%d;%d;%d", prefix, uint8(f.R*255), uint8(f.G*255), uint8(f.B*255))
+}
+
+func (c CSSNamedColor) Sequence(bg bool) string {
+	f, ok := palette.CSS.Color(string(c))
+	if !ok {
+		return ""
+	}
+
+	r, g, b, _ := f.RGBA()
+
+	prefix := Foreground
+	if bg {
+		prefix = Background
+	}
+	return fmt.Sprintf("%s;2;%d;%d;%d", prefix, uint8(r), uint8(g), uint8(b))
 }
 
 func xTermColor(s string) (RGBColor, error) {
