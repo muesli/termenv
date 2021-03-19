@@ -16,26 +16,50 @@ color conversions.
 
 ![Example output](https://github.com/muesli/termenv/raw/master/examples/hello-world/hello-world.png)
 
+## Features
+
+- RGB/TrueColor support
+- Detects the supported color range of your terminal
+- Automatically converts colors to the best matching, available colors
+- Terminal theme (light/dark) detection
+- Chainable syntax
+- Nested styles
+
 ## Installation
 
 ```bash
 go get github.com/muesli/termenv
 ```
 
-## Query Terminal Status
+## Query Terminal Support
+
+`termenv` can query the terminal it is running in, so you can safely use
+advanced features, like RGB colors. `ColorProfile` returns the color profile
+supported by the terminal:
 
 ```go
-// returns supported color profile: Ascii, ANSI, ANSI256, or TrueColor
-termenv.ColorProfile()
+profile := termenv.ColorProfile()
+```
 
-// returns default foreground color
-termenv.ForegroundColor()
+This returns one of the supported color profiles:
 
-// returns default background color
-termenv.BackgroundColor()
+- `termenv.Ascii` - no ANSI support detected, ASCII only
+- `termenv.ANSI` - 16 color ANSI support
+- `termenv.ANSI256` - Extended 256 color ANSI support
+- `termenv.TrueColor` - RGB/TrueColor support
 
-// returns whether terminal uses a dark-ish background
-termenv.HasDarkBackground()
+You can also query the terminal for its color scheme, so you know whether your
+app is running in a light- or dark-themed environment:
+
+```go
+// Returns terminal's foreground color
+color := termenv.ForegroundColor()
+
+// Returns terminal's background color
+color := termenv.BackgroundColor()
+
+// Returns whether terminal uses a dark-ish background
+darkTheme := termenv.HasDarkBackground()
 ```
 
 ## Colors
@@ -47,43 +71,49 @@ to the best matching available color in the desired profile:
 `TrueColor` => `ANSI 256 Colors` => `ANSI 16 Colors` => `Ascii`
 
 ```go
-out := termenv.String("Hello World")
+s := termenv.String("Hello World")
 
-// retrieve color profile supported by terminal
+// Retrieve color profile supported by terminal
 p := termenv.ColorProfile()
 
-// supports hex values
-// will automatically degrade colors on terminals not supporting RGB
-out = out.Foreground(p.Color("#abcdef"))
+// Supports hex values
+// Will automatically degrade colors on terminals not supporting RGB
+s.Foreground(p.Color("#abcdef"))
 // but also supports ANSI colors (0-255)
-out = out.Background(p.Color("69"))
+s.Background(p.Color("69"))
 // ...or the color.Color interface
-out = out.Foreground(p.FromColor(color.RGBA{255, 128, 0, 255}))
+s.Foreground(p.FromColor(color.RGBA{255, 128, 0, 255}))
 
-fmt.Println(out)
+// Combine fore- & background colors
+s.Foreground(p.Color("#ffffff")).Background(p.Color("#0000ff"))
+
+// Supports the fmt.Stringer interface
+fmt.Println(s)
 ```
 
 ## Styles
 
+You can use a chainable syntax to compose your own styles:
+
 ```go
-out := termenv.String("foobar")
+s := termenv.String("foobar")
 
-// text styles
-out.Bold()
-out.Faint()
-out.Italic()
-out.CrossOut()
-out.Underline()
-out.Overline()
+// Text styles
+s.Bold()
+s.Faint()
+s.Italic()
+s.CrossOut()
+s.Underline()
+s.Overline()
 
-// reverse swaps current fore- & background colors
-out.Reverse()
+// Reverse swaps current fore- & background colors
+s.Reverse()
 
-// blinking text
-out.Blink()
+// Blinking text
+s.Blink()
 
-// combine multiple options
-out.Bold().Underline()
+// Combine multiple options
+s.Bold().Underline()
 ```
 
 ## Template Helpers
@@ -168,8 +198,9 @@ You can find the source code used to create this chart in `termenv`'s examples.
 
 ## Related Projects
 
-Check out [Glow](https://github.com/charmbracelet/glow), a markdown renderer for
-the command-line, which uses `termenv`.
+- [reflow](https://github.com/muesli/reflow) - ANSI-aware text operations
+- [Glow](https://github.com/charmbracelet/glow) - a markdown renderer for
+the command-line, which uses `termenv`
 
 ## License
 
