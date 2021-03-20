@@ -169,11 +169,23 @@ termenv.HideCursor()
 // Show the cursor
 termenv.ShowCursor()
 
+// Save the cursor position
+termenv.SaveCursorPosition()
+
+// Restore a saved cursor position
+termenv.RestoreCursorPosition()
+
 // Move the cursor up a given number of lines
 termenv.CursorUp(n)
 
 // Move the cursor down a given number of lines
 termenv.CursorDown(n)
+
+// Move the cursor up a given number of lines
+termenv.CursorForward(n)
+
+// Move the cursor backwards a given number of cells
+termenv.CursorBack(n)
 
 // Move the cursor down a given number of lines and place it at the beginning
 // of the line
@@ -188,6 +200,51 @@ termenv.ClearLine()
 
 // Clear a given number of lines
 termenv.ClearLines(n)
+
+// Set the scrolling region of the terminal
+termenv.ChangeScrollingRegion(top, bottom)
+
+// Insert the given number of lines at the top of the scrollable region, pushing
+// lines below down
+termenv.InsertLines(n)
+
+// Delete the given number of lines, pulling any lines in the scrollable region
+// below up
+termenv.DeleteLines(n)
+```
+
+## Mouse
+
+```go
+// Enable X10 mouse mode, only button press events are sent
+termenv.EnableMousePress()
+
+// Disable X10 mouse mode
+termenv.DisableMousePress()
+
+// Enable Mouse Tracking mode
+termenv.EnableMouse()
+
+// Disable Mouse Tracking mode
+termenv.DisableMouse()
+
+// Enable Hilite Mouse Tracking mode
+termenv.EnableMouseHilite()
+
+// Disable Hilite Mouse Tracking mode
+termenv.DisableMouseHilite()
+
+// Enable Cell Motion Mouse Tracking mode
+termenv.EnableMouseCellMotion()
+
+// Disable Cell Motion Mouse Tracking mode
+termenv.DisableMouseCellMotion()
+
+// Enable All Motion Mouse mode
+termenv.EnableMouseAllMotion()
+
+// Disable All Motion Mouse mode
+termenv.DisableMouseAllMotion()
 ```
 
 ## Color Chart
