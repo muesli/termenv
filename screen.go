@@ -137,7 +137,7 @@ func ChangeScrollingRegion(top, bottom int) {
 	fmt.Printf(CSI+ChangeScrollingRegionSeq, top, bottom)
 }
 
-// InsertLines inserts the given number lines at the top of the scrollable
+// InsertLines inserts the given number of lines at the top of the scrollable
 // region, pushing lines below down.
 func InsertLines(n int) {
 	fmt.Printf(CSI+InsertLineSeq, n)
