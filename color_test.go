@@ -9,6 +9,11 @@ func TestXTermColor(t *testing.T) {
 		valid bool
 	}{
 		{
+			"\033]11;rgb:fafa/fafa/fafa\033",
+			RGBColor("#fafafa"),
+			true,
+		},
+		{
 			"\033]11;rgb:fafa/fafa/fafa\033\\",
 			RGBColor("#fafafa"),
 			true,

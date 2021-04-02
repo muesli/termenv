@@ -101,12 +101,21 @@ func readNextByte(f *os.File) (byte, error) {
 //  * OSC response: "\x1b]11;rgb:1111/1111/1111\x1b\\"
 //  * cursor position response: "\x1b[42;1R"
 func readNextResponse(fd *os.File) (response string, isOSC bool, err error) {
-	// first byte must be ESC
 	start, err := readNextByte(fd)
 	if err != nil {
 		return "", false, err
 	}
 
+	// if we encounter a backslash, this is a left-over from the previous OSC
+	// response, which can be terminated by an optional backslash
+	if start == '\\' {
+		start, err = readNextByte(fd)
+		if err != nil {
+			return "", false, err
+		}
+	}
+
+	// first byte must be ESC
 	if start != '\033' {
 		return "", false, ErrStatusReport
 	}
@@ -140,8 +149,8 @@ func readNextResponse(fd *os.File) (response string, isOSC bool, err error) {
 		response += string(b)
 
 		if oscResponse {
-			// OSC can be terminated by BEL (\a) or ST (ESC \)
-			if b == '\a' || strings.HasSuffix(response, "\033\\") {
+			// OSC can be terminated by BEL (\a) or ST (ESC)
+			if b == '\a' || strings.HasSuffix(response, "\033") {
 				return response, true, nil
 			}
 		} else {
@@ -161,6 +170,8 @@ func readNextResponse(fd *os.File) (response string, isOSC bool, err error) {
 }
 
 func termStatusReport(sequence int) (string, error) {
+	// screen/tmux can't support OSC, because they can be connected to multiple
+	// terminals concurrently.
 	term := os.Getenv("TERM")
 	if strings.HasPrefix(term, "screen") {
 		return "", ErrStatusReport
@@ -202,6 +213,6 @@ func termStatusReport(sequence int) (string, error) {
 		return "", err
 	}
 
-	// fmt.Println("Rcvd", s[1:])
+	// fmt.Println("Rcvd", res[1:])
 	return res, nil
 }
