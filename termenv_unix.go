@@ -36,6 +36,10 @@ func colorProfile() Profile {
 		return ANSI
 	}
 
+	if term == "linux" {
+		return ANSI
+	}
+
 	return Ascii
 }
 
