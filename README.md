@@ -5,7 +5,7 @@
     <a href="https://godoc.org/github.com/muesli/termenv"><img src="https://godoc.org/github.com/golang/gddo?status.svg" alt="GoDoc"></a>
     <a href="https://github.com/muesli/termenv/actions"><img src="https://github.com/muesli/termenv/workflows/build/badge.svg" alt="Build Status"></a>
     <a href="https://coveralls.io/github/muesli/termenv?branch=master"><img src="https://coveralls.io/repos/github/muesli/termenv/badge.svg?branch=master" alt="Coverage Status"></a>
-    <a href="http://goreportcard.com/report/muesli/termenv"><img src="http://goreportcard.com/badge/muesli/termenv" alt="Go ReportCard"></a>
+    <a href="https://goreportcard.com/report/muesli/termenv"><img src="https://goreportcard.com/badge/muesli/termenv" alt="Go ReportCard"></a>
 </p>
 
 `termenv` lets you safely use advanced styling options on the terminal. It
