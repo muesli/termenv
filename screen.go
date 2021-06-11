@@ -24,6 +24,11 @@ const (
 	InsertLineSeq            = "%dL"
 	DeleteLineSeq            = "%dM"
 
+	// Explicit values for EraseLineSeq.
+	EraseLineRightSeq  = "0K"
+	EraseLineLeftSeq   = "1K"
+	EraseEntireLineSeq = "2K"
+
 	ShowCursorSeq             = "?25h"
 	HideCursorSeq             = "?25l"
 	EnableMousePressSeq       = "?9h" // press only (X10)
@@ -122,7 +127,17 @@ func CursorPrevLine(n int) {
 
 // ClearLine clears the current line.
 func ClearLine() {
-	fmt.Printf(CSI+EraseLineSeq, 2)
+	fmt.Print(CSI + EraseEntireLineSeq)
+}
+
+// ClearLineLeft clears the line to the left of the cursor.
+func ClearLineLeft() {
+	fmt.Print(CSI + EraseLineLeftSeq)
+}
+
+// ClearLineRight clears the line to the right of the cursor.
+func ClearLineRight() {
+	fmt.Print(CSI + EraseLineRightSeq)
 }
 
 // ClearLines clears a given number of lines.
