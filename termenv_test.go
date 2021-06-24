@@ -108,8 +108,8 @@ func TestAscii(t *testing.T) {
 func TestANSIProfile(t *testing.T) {
 	p := ANSI
 
-	c := p.Color("#abcdef")
-	exp := "37"
+	c := p.Color("#e88388")
+	exp := "91"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}
@@ -117,8 +117,8 @@ func TestANSIProfile(t *testing.T) {
 		t.Errorf("Expected type termenv.ANSIColor, got %T", c)
 	}
 
-	c = p.Color("139")
-	exp = "90"
+	c = p.Color("82")
+	exp = "92"
 	if c.Sequence(false) != exp {
 		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
 	}

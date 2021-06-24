@@ -188,7 +188,7 @@ func ansi256ToANSIColor(c ANSI256Color) ANSIColor {
 	h, _ := colorful.Hex(ansiHex[c])
 	for i := 0; i <= 15; i++ {
 		hb, _ := colorful.Hex(ansiHex[i])
-		d := h.DistanceLuv(hb)
+		d := h.DistanceHSLuv(hb)
 
 		if d < md {
 			md = d
@@ -235,8 +235,8 @@ func hexToANSI256Color(c colorful.Color) ANSI256Color {
 	// Return the one which is nearer to the original input rgb value
 	c2 := colorful.Color{R: float64(cr) / 255.0, G: float64(cg) / 255.0, B: float64(cb) / 255.0}
 	g2 := colorful.Color{R: float64(gv) / 255.0, G: float64(gv) / 255.0, B: float64(gv) / 255.0}
-	colorDist := c.DistanceLuv(c2)
-	grayDist := c.DistanceLuv(g2)
+	colorDist := c.DistanceHSLuv(c2)
+	grayDist := c.DistanceHSLuv(g2)
 
 	if colorDist <= grayDist {
 		return ANSI256Color(16 + ci)
