@@ -7,9 +7,7 @@ import (
 	"github.com/mattn/go-isatty"
 )
 
-var (
-	ErrStatusReport = errors.New("unable to retrieve status report")
-)
+var ErrStatusReport = errors.New("unable to retrieve status report")
 
 type Profile int
 
@@ -55,6 +53,16 @@ func HasDarkBackground() bool {
 	c := ConvertToRGB(BackgroundColor())
 	_, _, l := c.Hsl()
 	return l < 0.5
+}
+
+func HasDarkColorScheme() bool {
+	return isDarker(BackgroundColor(), ForegroundColor())
+}
+
+func isDarker(this, other Color) bool {
+	_, _, thisLightness := ConvertToRGB(this).Hsl()
+	_, _, otherLightness := ConvertToRGB(other).Hsl()
+	return thisLightness < otherLightness
 }
 
 // EnvNoColor returns true if the environment variables explicitly disable color output
