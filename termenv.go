@@ -55,10 +55,15 @@ func HasDarkBackground() bool {
 	return l < 0.5
 }
 
+// HasDarkColorScheme returns true if the current background color is darker
+// than the current foreground color.
 func HasDarkColorScheme() bool {
 	return isDarker(BackgroundColor(), ForegroundColor())
 }
 
+// isDarker returns true when the lightness of the color in the first argument
+// is lower than the lightness of the color in the second argument in the HSL
+// color space.
 func isDarker(this, other Color) bool {
 	_, _, thisLightness := ConvertToRGB(this).Hsl()
 	_, _, otherLightness := ConvertToRGB(other).Hsl()

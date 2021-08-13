@@ -38,7 +38,7 @@ func TemplateFuncs(p Profile) template.FuncMap {
 		},
 		"Bold":          styleFunc(Style.Bold),
 		"Faint":         styleFunc(Style.Faint),
-		"ForcedFaint":   styleFunc(Style.ForcedFaint),
+		"ForceFaint":    styleFunc(Style.ForceFaint),
 		"AdaptiveFaint": styleFunc(Style.AdaptiveFaint),
 		"Italic":        styleFunc(Style.Italic),
 		"Underline":     styleFunc(Style.Underline),

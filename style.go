@@ -18,6 +18,23 @@ const (
 	OverlineSeq  = "53"
 )
 
+// modifier is a function that is applied before a style is rendered. This
+// provides the opportunity to apply post-processing based on the style's
+// properties, even if the rendered style is a modified copy of the style to
+// which the modifier was added.
+type modifier func(*Style) string
+
+// sequenceModifier creates a simple modifier that applies an ANSI sequence.
+func sequenceModifier(sequence string) modifier {
+	return func(*Style) string {
+		if sequence == "" {
+			return sequence
+		}
+
+		return sequence + ";"
+	}
+}
+
 // Style is a string that various rendering styles can be applied to.
 type Style struct {
 	string
@@ -59,9 +76,7 @@ func (t Style) Styled(s string) string {
 		builder.WriteString(t.bgColor.Sequence(true) + ";")
 	}
 
-	builder.WriteString("m" + s + CSI + ResetSeq + "m")
-
-	return builder.String()
+	return strings.TrimSuffix(builder.String(), ";") + "m" + s + CSI + ResetSeq + "m"
 }
 
 // Foreground sets a foreground color.
@@ -80,17 +95,24 @@ func (t Style) Background(c Color) Style {
 
 // Bold enables bold rendering.
 func (t Style) Bold() Style {
-	t.modifier = append(t.modifier, newModifier(BoldSeq))
+	t.modifier = append(t.modifier, sequenceModifier(BoldSeq))
 	return t
 }
 
-// Faint enables faint rendering.
+// Faint enables faint rendering using the ANSI faint/dim sequence. Not all
+// terminals render faint text appropriately, especially when a light color
+// scheme is used. See ForcedFaint and AdaptiveFaint for alternative solutions.
 func (t Style) Faint() Style {
-	t.modifier = append(t.modifier, newModifier(FaintSeq))
+	t.modifier = append(t.modifier, sequenceModifier(FaintSeq))
 	return t
 }
 
-func (t Style) ForcedFaint() Style {
+// ForceFaint produces a consistent faint effect by changing the foreground
+// color to a blend of the foreground and background color of the Style. This
+// foreground or background color was set, the terminal's default colors are
+// used. If this fails, ForceFaint will produce a grey foreground color as
+// fallback.
+func (t Style) ForceFaint() Style {
 	t.modifier = append(t.modifier, func(s *Style) string {
 		bgColor := s.backgroundColor()
 		fgColor := s.foregroundColor()
@@ -103,6 +125,11 @@ func (t Style) ForcedFaint() Style {
 	return t
 }
 
+// AdaptiveFaint produces a faint effect using Faint for terminals with a dark
+// color scheme and ForceFaint for terminals with a light color scheme (see
+// HasDarkColorScheme). If the color scheme cannot be detected, it uses Faint.
+// This behaviour remedies the fact that many terminals do produce an
+// appropriate faint effect for light color schemes.
 func (t Style) AdaptiveFaint() Style {
 	t.modifier = append(t.modifier, func(s *Style) string {
 		bgColor := s.backgroundColor()
@@ -120,6 +147,9 @@ func (t Style) AdaptiveFaint() Style {
 	return t
 }
 
+// foregroundColor returns the foreground color when the style is applied
+// meaning the style's foreground color or the terminal's current foreground
+// color if the style does not have a foreground color set.
 func (t *Style) foregroundColor() Color {
 	if t.fgColor != nil {
 		return t.fgColor
@@ -128,6 +158,9 @@ func (t *Style) foregroundColor() Color {
 	return ForegroundColor()
 }
 
+// backgroundColor returns the background color when the style is applied
+// meaning the style's background color or the terminal's current background
+// color if the style does not have a background color set.
 func (t *Style) backgroundColor() Color {
 	if t.bgColor != nil {
 		return t.bgColor
@@ -136,6 +169,8 @@ func (t *Style) backgroundColor() Color {
 	return BackgroundColor()
 }
 
+// blend produces a blend between two colors. If one of the arguments is
+// NoColor{} a grey color is returned.
 func blend(c1 Color, c2 Color) Color {
 	profile := colorProfile()
 
@@ -155,55 +190,43 @@ func blend(c1 Color, c2 Color) Color {
 
 // Italic enables italic rendering.
 func (t Style) Italic() Style {
-	t.modifier = append(t.modifier, newModifier(ItalicSeq))
+	t.modifier = append(t.modifier, sequenceModifier(ItalicSeq))
 	return t
 }
 
 // Underline enables underline rendering.
 func (t Style) Underline() Style {
-	t.modifier = append(t.modifier, newModifier(UnderlineSeq))
+	t.modifier = append(t.modifier, sequenceModifier(UnderlineSeq))
 	return t
 }
 
 // Overline enables overline rendering.
 func (t Style) Overline() Style {
-	t.modifier = append(t.modifier, newModifier(OverlineSeq))
+	t.modifier = append(t.modifier, sequenceModifier(OverlineSeq))
 	return t
 }
 
 // Blink enables blink mode.
 func (t Style) Blink() Style {
-	t.modifier = append(t.modifier, newModifier(BlinkSeq))
+	t.modifier = append(t.modifier, sequenceModifier(BlinkSeq))
 	return t
 }
 
 // Reverse enables reverse color mode.
 func (t Style) Reverse() Style {
-	t.modifier = append(t.modifier, newModifier(ReverseSeq))
+	t.modifier = append(t.modifier, sequenceModifier(ReverseSeq))
 	return t
 }
 
 // CrossOut enables crossed-out rendering.
 func (t Style) CrossOut() Style {
-	t.modifier = append(t.modifier, newModifier(CrossOutSeq))
+	t.modifier = append(t.modifier, sequenceModifier(CrossOutSeq))
 	return t
 }
 
 // Width returns the width required to print all runes in Style.
 func (t Style) Width() int {
 	return runewidth.StringWidth(t.string)
-}
-
-type modifier func(*Style) string
-
-func newModifier(sequence string) modifier {
-	return func(*Style) string {
-		if sequence == "" {
-			return sequence
-		}
-
-		return sequence + ";"
-	}
 }
 
 func isNoColor(c Color) bool {
