@@ -26,3 +26,12 @@ func TestStyleWidth(t *testing.T) {
 		t.Errorf("Expected width of 11, got %d", s.Width())
 	}
 }
+
+func TestForceFaint(t *testing.T) {
+	s := String("Hello World").Foreground(TrueColor.Color("#40ff00")).Background(TrueColor.Color("#605e10")).ForceFaint()
+
+	exp := "\x1b[38;2;80;175;8;48;2;96;94;16mHello World\x1b[0m"
+	if s.String() != exp {
+		t.Errorf("Expected %s (%q), got %s (%q)", exp, exp, s.String(), s.String())
+	}
+}
