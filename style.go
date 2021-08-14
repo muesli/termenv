@@ -64,16 +64,17 @@ func (t Style) Styled(s string) string {
 
 	builder.WriteString(CSI)
 
+	processed := t // apply modifiers on a copy
 	for _, mod := range t.modifier {
-		builder.WriteString(mod(&t))
+		builder.WriteString(mod(&processed))
 	}
 
-	if !isNoColor(t.fgColor) {
-		builder.WriteString(t.fgColor.Sequence(false) + ";")
+	if !isNoColor(processed.fgColor) {
+		builder.WriteString(processed.fgColor.Sequence(false) + ";")
 	}
 
-	if !isNoColor(t.bgColor) {
-		builder.WriteString(t.bgColor.Sequence(true) + ";")
+	if !isNoColor(processed.bgColor) {
+		builder.WriteString(processed.bgColor.Sequence(true) + ";")
 	}
 
 	return strings.TrimSuffix(builder.String(), ";") + "m" + s + CSI + ResetSeq + "m"
