@@ -173,7 +173,7 @@ func (t *Style) backgroundColor() Color {
 // blend produces a blend between two colors. If one of the arguments is
 // NoColor{} a grey color is returned.
 func blend(c1 Color, c2 Color) Color {
-	profile := colorProfile()
+	profile := ColorProfile()
 
 	if (c1 == NoColor{}) || (c2 == NoColor{}) {
 		if profile != Ascii {
