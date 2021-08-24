@@ -28,19 +28,20 @@ func TestStyleWidth(t *testing.T) {
 }
 
 func TestForceFaint(t *testing.T) {
-	s := String("Hello World").Foreground(TrueColor.Color("#40ff00")).Background(TrueColor.Color("#605e10")).ForceFaint()
+	p := ColorProfile()
+	fg := p.Convert(TrueColor.Color("#40ff00"))
+	bg := p.Convert(TrueColor.Color("#605e10"))
+	s := String("Hello World").Foreground(fg).Background(bg).ForceFaint()
 
 	var exp string
 
-	p := ColorProfile()
-
 	switch p {
 	case Ascii:
-		exp = "\x1b[48;2;96;94;16mHello World\x1b[0m"
+		exp = "\x1b[mHello World\x1b[0m"
 	case ANSI:
-		exp = "\x1b[32;48;2;96;94;16mHello World\x1b[0m"
+		exp = "\x1b[32;43mHello World\x1b[0m"
 	case ANSI256:
-		exp = "\x1b[38;5;70;48;2;96;94;16mHello World\x1b[0m"
+		exp = "\x1b[38;5;70;48;5;58mHello World\x1b[0m"
 	case TrueColor:
 		exp = "\x1b[38;2;80;175;8;48;2;96;94;16mHello World\x1b[0m"
 	default:

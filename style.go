@@ -174,6 +174,9 @@ func (t *Style) backgroundColor() Color {
 // NoColor{} a grey color is returned.
 func blend(c1 Color, c2 Color) Color {
 	profile := ColorProfile()
+	if profile == Ascii {
+		return NoColor{}
+	}
 
 	if (c1 == NoColor{}) || (c2 == NoColor{}) {
 		if profile != Ascii {
