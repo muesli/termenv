@@ -37,5 +37,7 @@ func main() {
 		termenv.String("gray").Foreground(p.Color("0")).Background(p.Color("#B9BFCA")),
 	)
 
-	fmt.Printf("\n\t%s %t\n", termenv.String("Has dark background?").Bold(), termenv.HasDarkBackground())
+	fmt.Printf("\n\t%s %s\n", termenv.String("Has foreground color").Bold(), termenv.ForegroundColor())
+	fmt.Printf("\t%s %s\n", termenv.String("Has background color").Bold(), termenv.BackgroundColor())
+	fmt.Printf("\t%s %t\n", termenv.String("Has dark background?").Bold(), termenv.HasDarkBackground())
 }

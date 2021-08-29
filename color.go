@@ -26,11 +26,23 @@ type Color interface {
 
 type NoColor struct{}
 
+func (nc NoColor) String() string {
+	return ""
+}
+
 // ANSIColor is a color (0-15) as defined by the ANSI Standard.
 type ANSIColor int
 
+func (a ANSIColor) String() string {
+	return ansiHex[a]
+}
+
 // ANSI256Color is a color (16-255) as defined by the ANSI Standard.
 type ANSI256Color int
+
+func (a ANSI256Color) String() string {
+	return ansiHex[a]
+}
 
 // RGBColor is a hex-encoded color, e.g. "#abcdef".
 type RGBColor string
