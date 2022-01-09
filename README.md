@@ -262,3 +262,10 @@ the command-line, which uses `termenv`
 ## License
 
 [MIT](https://github.com/muesli/termenv/raw/master/LICENSE)
+
+## Feedback
+
+Got some feedback or suggestions? Please open an issue or drop me a note!
+
+* [Twitter](https://twitter.com/mueslix)
+* [The Fediverse](https://mastodon.social/@fribbledom)
