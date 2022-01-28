@@ -22,10 +22,18 @@ const (
 	TrueColor
 )
 
+func isTTY(fd uintptr) bool {
+	if len(os.Getenv("CI")) > 0 {
+		return false
+	}
+
+	return isatty.IsTerminal(fd)
+}
+
 // ColorProfile returns the supported color profile:
 // Ascii, ANSI, ANSI256, or TrueColor.
 func ColorProfile() Profile {
-	if !isatty.IsTerminal(os.Stdout.Fd()) {
+	if !isTTY(os.Stdout.Fd()) {
 		return Ascii
 	}
 
@@ -34,7 +42,7 @@ func ColorProfile() Profile {
 
 // ForegroundColor returns the terminal's default foreground color.
 func ForegroundColor() Color {
-	if !isatty.IsTerminal(os.Stdout.Fd()) {
+	if !isTTY(os.Stdout.Fd()) {
 		return NoColor{}
 	}
 
@@ -43,7 +51,7 @@ func ForegroundColor() Color {
 
 // BackgroundColor returns the terminal's default background color.
 func BackgroundColor() Color {
-	if !isatty.IsTerminal(os.Stdout.Fd()) {
+	if !isTTY(os.Stdout.Fd()) {
 		return NoColor{}
 	}
 
