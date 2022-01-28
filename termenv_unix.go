@@ -1,3 +1,4 @@
+//go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
 // +build darwin dragonfly freebsd linux netbsd openbsd solaris
 
 package termenv
@@ -84,6 +85,10 @@ func backgroundColor() Color {
 }
 
 func readNextByte(f *os.File) (byte, error) {
+	if err := waitForData(f.Fd()); err != nil {
+		return 0, err
+	}
+
 	var b [1]byte
 	n, err := f.Read(b[:])
 	if err != nil {
@@ -182,6 +187,8 @@ func termStatusReport(sequence int) (string, error) {
 		return "", ErrStatusReport
 	}
 	defer unix.IoctlSetTermios(unix.Stdout, tcsetattr, t)
+
+	_ = tcFlush(unix.Stdout, unix.TCIFLUSH)
 
 	noecho := *t
 	noecho.Lflag = noecho.Lflag &^ unix.ECHO
