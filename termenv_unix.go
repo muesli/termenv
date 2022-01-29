@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"golang.org/x/sys/unix"
 )
@@ -85,7 +86,7 @@ func backgroundColor() Color {
 }
 
 func readNextByte(f *os.File) (byte, error) {
-	if err := waitForData(f.Fd()); err != nil {
+	if err := waitForData(f.Fd(), 100*time.Millisecond); err != nil {
 		return 0, err
 	}
 
