@@ -273,6 +273,30 @@ termenv.EnableMouseAllMotion()
 termenv.DisableMouseAllMotion()
 ```
 
+## Compatibility
+
+| Terminal         | Alt Screen | Change Cursor Color | Change Default Foreground Color | Change Default Background Color | Query Color Scheme | Query Cursor Position | Set Window Title |
+| ---------------- | :--------: | :-----------------: | :-----------------------------: | :-----------------------------: | :----------------: | :-------------------: | :--------------: |
+| alacritty        |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
+| Gnome Terminal   |     ✅      |          ✅          |                ✅                |                ❌                |         ✅          |           ✅           |        ✅         |
+| kitty            |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
+| konsole          |     ✅      |          ✅          |                ❌                |                ✅                |         ✅          |           ✅           |        ✅         |
+| rxvt             |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
+| wezterm          |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
+| xterm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
+| Linux Console    |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
+| Apple Terminal   |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
+| iTerm            |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
+| Power Shell      |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
+| Windows Terminal |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
+
+You can help improve this list! Check out [how to](ansi_compat.md) and open an issue or pull request.
+
+### Color Support
+
+- 24-bit (RGB): alacritty, Gnome Terminal, kitty, konsole, wezterm, Windows Terminal
+- 8-bit (256): rxvt, xterm, Apple Terminal
+
 ## Color Chart
 
 ![ANSI color chart](https://github.com/muesli/termenv/raw/master/examples/color-chart/color-chart.png)
