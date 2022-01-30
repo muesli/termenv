@@ -145,29 +145,11 @@ fmt.Println(&buf)
 Other available helper functions are: `Faint`, `Italic`, `CrossOut`,
 `Underline`, `Overline`, `Reverse`, and `Blink`.
 
-## Screen
+## Positioning
 
 ```go
-// Reset the terminal to its default style, removing any active styles
-termenv.Reset()
-
-// Switch to the altscreen. The former view can be restored with ExitAltScreen()
-termenv.AltScreen()
-
-// Exit the altscreen and return to the former terminal view
-termenv.ExitAltScreen()
-
-// Clear the visible portion of the terminal
-termenv.ClearScreen()
-
 // Move the cursor to a given position
 termenv.MoveCursor(row, column)
-
-// Hide the cursor
-termenv.HideCursor()
-
-// Show the cursor
-termenv.ShowCursor()
 
 // Save the cursor position
 termenv.SaveCursorPosition()
@@ -194,6 +176,28 @@ termenv.CursorNextLine(n)
 // Move the cursor up a given number of lines and place it at the beginning of
 // the line
 termenv.CursorPrevLine(n)
+```
+
+## Screen
+
+```go
+// Reset the terminal to its default style, removing any active styles
+termenv.Reset()
+
+// RestoreScreen restores a previously saved screen state
+termenv.RestoreScreen()
+
+// SaveScreen saves the screen state
+termenv.SaveScreen()
+
+// Switch to the altscreen. The former view can be restored with ExitAltScreen()
+termenv.AltScreen()
+
+// Exit the altscreen and return to the former terminal view
+termenv.ExitAltScreen()
+
+// Clear the visible portion of the terminal
+termenv.ClearScreen()
 
 // Clear the current line
 termenv.ClearLine()
@@ -211,6 +215,28 @@ termenv.InsertLines(n)
 // Delete the given number of lines, pulling any lines in the scrollable region
 // below up
 termenv.DeleteLines(n)
+```
+
+## Session
+
+```go
+// SetWindowTitle sets the terminal window title
+termenv.SetWindowTitle(title)
+
+// SetForegroundColor sets the default foreground color
+termenv.SetForegroundColor(color)
+
+// SetBackgroundColor sets the default background color
+termenv.SetBackgroundColor(color)
+
+// SetCursorColor sets the cursor color
+termenv.SetCursorColor(color)
+
+// Hide the cursor
+termenv.HideCursor()
+
+// Show the cursor
+termenv.ShowCursor()
 ```
 
 ## Mouse
