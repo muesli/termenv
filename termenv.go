@@ -15,6 +15,7 @@ type Profile int
 
 const (
 	CSI = "\x1b["
+	OSC = "\x1b]"
 
 	Ascii = Profile(iota)
 	ANSI

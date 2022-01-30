@@ -6,6 +6,7 @@ import (
 )
 
 const (
+	// Cursor positioning.
 	CursorUpSeq              = "%dA"
 	CursorDownSeq            = "%dB"
 	CursorForwardSeq         = "%dC"
@@ -29,8 +30,7 @@ const (
 	EraseLineLeftSeq   = "1K"
 	EraseEntireLineSeq = "2K"
 
-	ShowCursorSeq             = "?25h"
-	HideCursorSeq             = "?25l"
+	// Mouse.
 	EnableMousePressSeq       = "?9h" // press only (X10)
 	DisableMousePressSeq      = "?9l"
 	EnableMouseSeq            = "?1000h" // press, release, wheel
@@ -41,13 +41,50 @@ const (
 	DisableMouseCellMotionSeq = "?1002l"
 	EnableMouseAllMotionSeq   = "?1003h" // press, release, move, wheel
 	DisableMouseAllMotionSeq  = "?1003l"
-	AltScreenSeq              = "?1049h"
-	ExitAltScreenSeq          = "?1049l"
+
+	// Screen.
+	RestoreScreenSeq = "?47l"
+	SaveScreenSeq    = "?47h"
+	AltScreenSeq     = "?1049h"
+	ExitAltScreenSeq = "?1049l"
+
+	// Session.
+	SetWindowTitleSeq     = "2;%s\007"
+	SetForegroundColorSeq = "10;%s\007"
+	SetBackgroundColorSeq = "11;%s\007"
+	SetCursorColorSeq     = "12;%s\007"
+	ShowCursorSeq         = "?25h"
+	HideCursorSeq         = "?25l"
 )
 
 // Reset the terminal to its default style, removing any active styles.
 func Reset() {
 	fmt.Print(CSI + ResetSeq + "m")
+}
+
+// SetForegroundColor sets the default foreground color.
+func SetForegroundColor(color Color) {
+	fmt.Printf(OSC+SetForegroundColorSeq, color)
+}
+
+// SetBackgroundColor sets the default background color.
+func SetBackgroundColor(color Color) {
+	fmt.Printf(OSC+SetBackgroundColorSeq, color)
+}
+
+// SetCursorColor sets the cursor color.
+func SetCursorColor(color Color) {
+	fmt.Printf(OSC+SetCursorColorSeq, color)
+}
+
+// RestoreScreen restores a previously saved screen state.
+func RestoreScreen() {
+	fmt.Print(CSI + RestoreScreenSeq)
+}
+
+// SaveScreen saves the screen state.
+func SaveScreen() {
+	fmt.Print(CSI + SaveScreenSeq)
 }
 
 // AltScreen switches to the alternate screen buffer. The former view can be
@@ -212,4 +249,9 @@ func EnableMouseAllMotion() {
 // DisableMouseAllMotion disables All Motion Mouse mode.
 func DisableMouseAllMotion() {
 	fmt.Print(CSI + DisableMouseAllMotionSeq)
+}
+
+// SetWindowTitle sets the terminal window title.
+func SetWindowTitle(title string) {
+	fmt.Printf(OSC+SetWindowTitleSeq, title)
 }
