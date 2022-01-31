@@ -280,7 +280,7 @@ termenv.DisableMouseAllMotion()
 | alacritty        |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | Gnome Terminal   |     ✅      |          ✅          |                ✅                |                ❌                |         ✅          |           ✅           |        ✅         |
 | kitty            |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
-| konsole          |     ✅      |          ✅          |                ❌                |                ✅                |         ✅          |           ✅           |        ✅         |
+| Konsole          |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | rxvt             |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
 | st               |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | wezterm          |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
