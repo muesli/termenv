@@ -285,7 +285,7 @@ termenv.DisableMouseAllMotion()
 | st               |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | wezterm          |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | xterm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
-| Linux Console    |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
+| Linux Console    |     ✅      |          ❌          |                ❌                |                ❌                |         ❌          |           ✅           |        ❌         |
 | Apple Terminal   |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | iTerm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
 | Power Shell      |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
