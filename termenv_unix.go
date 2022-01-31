@@ -39,6 +39,8 @@ func colorProfile() Profile {
 	switch term {
 	case "xterm-kitty":
 		return TrueColor
+	case "linux":
+		return ANSI
 	}
 
 	if strings.Contains(term, "256color") {
