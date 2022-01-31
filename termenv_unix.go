@@ -74,7 +74,7 @@ func backgroundColor() Color {
 	colorFGBG := os.Getenv("COLORFGBG")
 	if strings.Contains(colorFGBG, ";") {
 		c := strings.Split(colorFGBG, ";")
-		i, err := strconv.Atoi(c[1])
+		i, err := strconv.Atoi(c[len(c)-1])
 		if err == nil {
 			return ANSIColor(i)
 		}
