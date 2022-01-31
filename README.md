@@ -286,8 +286,8 @@ termenv.DisableMouseAllMotion()
 | wezterm          |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | xterm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
 | Linux Console    |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
-| Apple Terminal   |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
-| iTerm            |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
+| Apple Terminal   |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
+| iTerm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
 | Power Shell      |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
 | Windows Terminal |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
 
@@ -295,7 +295,7 @@ You can help improve this list! Check out [how to](ansi_compat.md) and open an i
 
 ### Color Support
 
-- 24-bit (RGB): alacritty, Gnome Terminal, kitty, konsole, wezterm, Windows Terminal
+- 24-bit (RGB): alacritty, Gnome Terminal, iTerm, kitty, konsole, st, wezterm, Windows Terminal
 - 8-bit (256): rxvt, xterm, Apple Terminal
 
 ## Color Chart
