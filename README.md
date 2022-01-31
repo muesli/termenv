@@ -289,7 +289,7 @@ termenv.DisableMouseAllMotion()
 | Apple Terminal   |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | iTerm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
 | Power Shell      |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
-| Windows Terminal |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
+| Windows Terminal |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
 
 You can help improve this list! Check out [how to](ansi_compat.md) and open an issue or pull request.
 
