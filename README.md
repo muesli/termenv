@@ -273,7 +273,7 @@ termenv.EnableMouseAllMotion()
 termenv.DisableMouseAllMotion()
 ```
 
-## Compatibility
+## Optional Feature Support
 
 | Terminal         | Alt Screen | Change Cursor Color | Change Default Foreground Color | Change Default Background Color | Query Color Scheme | Query Cursor Position | Set Window Title |
 | ---------------- | :--------: | :-----------------: | :-----------------------------: | :-----------------------------: | :----------------: | :-------------------: | :--------------: |
@@ -281,7 +281,9 @@ termenv.DisableMouseAllMotion()
 | kitty            |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | Konsole          |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | rxvt             |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
+| screen           |     ✅      |          ❌          |                ❌                |                ✅                |         ❌          |           ✅           |        ✅         |
 | st               |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
+| tmux             |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
 | vte-based[^vte]  |     ✅      |          ✅          |                ✅                |                ❌                |         ✅          |           ✅           |        ✅         |
 | wezterm          |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | xterm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
@@ -297,8 +299,8 @@ You can help improve this list! Check out [how to](ansi_compat.md) and open an i
 
 ### Color Support
 
-- 24-bit (RGB): alacritty, Gnome Terminal, iTerm, kitty, konsole, st, wezterm, Windows Terminal
-- 8-bit (256): rxvt, xterm, Apple Terminal
+- 24-bit (RGB): alacritty, Gnome Terminal, iTerm, kitty, konsole, st, tmux, wezterm, Windows Terminal
+- 8-bit (256): rxvt, screen, xterm, Apple Terminal
 
 ## Color Chart
 
