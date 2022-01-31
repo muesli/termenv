@@ -282,6 +282,7 @@ termenv.DisableMouseAllMotion()
 | kitty            |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | konsole          |     ✅      |          ✅          |                ❌                |                ✅                |         ✅          |           ✅           |        ✅         |
 | rxvt             |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
+| st               |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | wezterm          |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | xterm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
 | Linux Console    |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
