@@ -1,3 +1,4 @@
+//go:build (darwin || dragonfly || freebsd || netbsd || openbsd) && !solaris && !illumos
 // +build darwin dragonfly freebsd netbsd openbsd
 // +build !solaris
 // +build !illumos
