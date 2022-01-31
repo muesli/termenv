@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// Sequence definitions.
 const (
 	// Cursor positioning.
 	CursorUpSeq              = "%dA"
