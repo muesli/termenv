@@ -295,7 +295,7 @@ termenv.DisableMouseAllMotion()
 | Windows Terminal |     ✅      |         ❌          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
 
 [^vte]: This covers all vte-based terminals, including Gnome Terminal, guake, Pantheon Terminal, Terminator, Tilix, XFCE Terminal.
-[^mux]: Unsupported as multiplexers (like tmux or screen) can be connected to multiple terminals (with different color settings) at the same time.
+[^mux]: Unavailable as multiplexers (like tmux or screen) can be connected to multiple terminals (with different color settings) at the same time.
 
 You can help improve this list! Check out [how to](ansi_compat.md) and open an issue or pull request.
 
@@ -304,6 +304,20 @@ You can help improve this list! Check out [how to](ansi_compat.md) and open an i
 - 24-bit (RGB): alacritty, foot, iTerm, kitty, Konsole, st, tmux, vte-based, wezterm, Windows Terminal
 - 8-bit (256): rxvt, screen, xterm, Apple Terminal
 - 4-bit (16): Linux Console
+
+## Platform Support
+
+`termenv` works on Unix systems (like Linux, macOS, or BSD) and Windows. While
+terminal applications on Unix support ANSI styling out-of-the-box, on Windows
+you need to enable ANSI processing in your application first:
+
+```go
+    mode, err := termenv.EnableWindowsANSIConsole()
+    if err != nil {
+        panic(err)
+    }
+    defer termenv.RestoreWindowsConsole(mode)
+```
 
 ## Color Chart
 
