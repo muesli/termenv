@@ -30,10 +30,18 @@ func colorProfile() Profile {
 		return ANSI256
 	}
 
+	switch term {
+	case "xterm-kitty":
+		return TrueColor
+	}
+
 	if strings.Contains(term, "256color") {
 		return ANSI256
 	}
 	if strings.Contains(term, "color") {
+		return ANSI
+	}
+	if strings.Contains(term, "ansi") {
 		return ANSI
 	}
 
