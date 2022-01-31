@@ -36,14 +36,16 @@ func TemplateFuncs(p Profile) template.FuncMap {
 
 			return s.String()
 		},
-		"Bold":      styleFunc(Style.Bold),
-		"Faint":     styleFunc(Style.Faint),
-		"Italic":    styleFunc(Style.Italic),
-		"Underline": styleFunc(Style.Underline),
-		"Overline":  styleFunc(Style.Overline),
-		"Blink":     styleFunc(Style.Blink),
-		"Reverse":   styleFunc(Style.Reverse),
-		"CrossOut":  styleFunc(Style.CrossOut),
+		"Bold":          styleFunc(Style.Bold),
+		"Faint":         styleFunc(Style.Faint),
+		"ForceFaint":    styleFunc(Style.ForceFaint),
+		"AdaptiveFaint": styleFunc(Style.AdaptiveFaint),
+		"Italic":        styleFunc(Style.Italic),
+		"Underline":     styleFunc(Style.Underline),
+		"Overline":      styleFunc(Style.Overline),
+		"Blink":         styleFunc(Style.Blink),
+		"Reverse":       styleFunc(Style.Reverse),
+		"CrossOut":      styleFunc(Style.CrossOut),
 	}
 }
 

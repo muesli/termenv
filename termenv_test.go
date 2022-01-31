@@ -47,7 +47,7 @@ func TestRendering(t *testing.T) {
 	out = out.Underline()
 	out = out.Blink()
 
-	exp := "\x1b[38;2;171;205;239;48;5;69;1;3;2;4;5mfoobar\x1b[0m"
+	exp := "\x1b[1;3;2;4;5;38;2;171;205;239;48;5;69mfoobar\x1b[0m"
 	if out.String() != exp {
 		t.Errorf("Expected %s, got %s", exp, out.String())
 	}
@@ -203,7 +203,7 @@ func TestStyles(t *testing.T) {
 
 	exp := "\x1b[32mfoobar\x1b[0m"
 	if s.String() != exp {
-		t.Errorf("Expected %s, got %s", exp, s.String())
+		t.Errorf("Expected %s %q, got %s %q", exp, exp, s.String(), s.String())
 	}
 }
 
