@@ -275,24 +275,24 @@ termenv.DisableMouseAllMotion()
 
 ## Optional Feature Support
 
-| Terminal         | Alt Screen | Change Cursor Color | Change Default Foreground Color | Change Default Background Color | Query Color Scheme | Query Cursor Position | Set Window Title |
-| ---------------- | :--------: | :-----------------: | :-----------------------------: | :-----------------------------: | :----------------: | :-------------------: | :--------------: |
-| alacritty        |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
-| foot             |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
-| kitty            |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
-| Konsole          |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
-| rxvt             |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
-| screen           |     ✅      |          ❌          |                ❌                |                ✅                |      ⛔[^mux]       |           ✅           |        ✅         |
-| st               |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
-| tmux             |     ✅      |          ✅          |                ✅                |                ✅                |      ⛔[^mux]       |           ✅           |        ✅         |
-| vte-based[^vte]  |     ✅      |          ✅          |                ✅                |                ❌                |         ✅          |           ✅           |        ✅         |
-| wezterm          |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
-| xterm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
-| Linux Console    |     ✅      |          ❌          |                ❌                |                ❌                |         ❌          |           ✅           |        ⛔         |
-| Apple Terminal   |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
-| iTerm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
-| Power Shell      |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
-| Windows Terminal |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
+| Terminal         | Alt Screen | Query Color Scheme | Query Cursor Position | Set Window Title | Change Cursor Color | Change Default Foreground Setting | Change Default Background Setting |
+| ---------------- | :--------: | :----------------: | :-------------------: | :--------------: | :-----------------: | :-------------------------------: | :-------------------------------: |
+| alacritty        |     ✅      |         ✅          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
+| foot             |     ✅      |         ✅          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
+| kitty            |     ✅      |         ✅          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
+| Konsole          |     ✅      |         ✅          |           ✅           |        ✅         |          ❌          |                 ✅                 |                 ✅                 |
+| rxvt             |     ✅      |         ❌          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
+| screen           |     ✅      |      ⛔[^mux]       |           ✅           |        ✅         |          ❌          |                 ❌                 |                 ✅                 |
+| st               |     ✅      |         ✅          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
+| tmux             |     ✅      |      ⛔[^mux]       |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
+| vte-based[^vte]  |     ✅      |         ✅          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ❌                 |
+| wezterm          |     ✅      |         ✅          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
+| xterm            |     ✅      |         ✅          |           ✅           |        ✅         |          ❌          |                 ❌                 |                 ❌                 |
+| Linux Console    |     ✅      |         ❌          |           ✅           |        ⛔         |          ❌          |                 ❌                 |                 ❌                 |
+| Apple Terminal   |     ✅      |         ✅          |           ✅           |        ✅         |          ❌          |                 ✅                 |                 ✅                 |
+| iTerm            |     ✅      |         ✅          |           ✅           |        ✅         |          ❌          |                 ❌                 |                 ❌                 |
+| Power Shell      |     ✅      |         ❔          |           ❔           |        ❔         |          ❔          |                 ❔                 |                 ❔                 |
+| Windows Terminal |     ✅      |         ❌          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
 
 [^vte]: This covers all vte-based terminals, including Gnome Terminal, guake, Pantheon Terminal, Terminator, Tilix, XFCE Terminal.
 [^mux]: Unsupported as multiplexers (like tmux or screen) can be connected to multiple terminals (with different color settings) at the same time.
