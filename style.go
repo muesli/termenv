@@ -7,6 +7,7 @@ import (
 	"github.com/mattn/go-runewidth"
 )
 
+// Sequence definitions.
 const (
 	ResetSeq     = "0"
 	BoldSeq      = "1"
