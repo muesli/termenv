@@ -278,6 +278,7 @@ termenv.DisableMouseAllMotion()
 | Terminal         | Alt Screen | Change Cursor Color | Change Default Foreground Color | Change Default Background Color | Query Color Scheme | Query Cursor Position | Set Window Title |
 | ---------------- | :--------: | :-----------------: | :-----------------------------: | :-----------------------------: | :----------------: | :-------------------: | :--------------: |
 | alacritty        |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
+| foot             |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | kitty            |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | Konsole          |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | rxvt             |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
