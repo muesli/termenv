@@ -282,19 +282,20 @@ termenv.DisableMouseAllMotion()
 | kitty            |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | Konsole          |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | rxvt             |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
-| screen           |     ✅      |          ❌          |                ❌                |                ✅                |         ❌          |           ✅           |        ✅         |
+| screen           |     ✅      |          ❌          |                ❌                |                ✅                |      ⛔[^mux]       |           ✅           |        ✅         |
 | st               |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
-| tmux             |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
+| tmux             |     ✅      |          ✅          |                ✅                |                ✅                |      ⛔[^mux]       |           ✅           |        ✅         |
 | vte-based[^vte]  |     ✅      |          ✅          |                ✅                |                ❌                |         ✅          |           ✅           |        ✅         |
 | wezterm          |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | xterm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
-| Linux Console    |     ✅      |          ❌          |                ❌                |                ❌                |         ❌          |           ✅           |        ❌         |
+| Linux Console    |     ✅      |          ❌          |                ❌                |                ❌                |         ❌          |           ✅           |        ⛔         |
 | Apple Terminal   |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | iTerm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
 | Power Shell      |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
 | Windows Terminal |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
 
 [^vte]: This covers all vte-based terminals, including Gnome Terminal, guake, Pantheon Terminal, Terminator, Tilix, XFCE Terminal.
+[^mux]: Unsupported as multiplexers (like tmux or screen) can be connected to multiple terminals (with different color settings) at the same time.
 
 You can help improve this list! Check out [how to](ansi_compat.md) and open an issue or pull request.
 
