@@ -217,7 +217,7 @@ func termStatusReport(sequence int) (string, error) {
 	if err != nil {
 		return "", ErrStatusReport
 	}
-	defer unix.IoctlSetTermios(unix.Stdout, tcsetattr, t)
+	defer unix.IoctlSetTermios(unix.Stdout, tcsetattr, t) //nolint:errcheck
 
 	noecho := *t
 	noecho.Lflag = noecho.Lflag &^ unix.ECHO
