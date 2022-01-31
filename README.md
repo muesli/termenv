@@ -278,11 +278,11 @@ termenv.DisableMouseAllMotion()
 | Terminal         | Alt Screen | Change Cursor Color | Change Default Foreground Color | Change Default Background Color | Query Color Scheme | Query Cursor Position | Set Window Title |
 | ---------------- | :--------: | :-----------------: | :-----------------------------: | :-----------------------------: | :----------------: | :-------------------: | :--------------: |
 | alacritty        |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
-| Gnome Terminal   |     ✅      |          ✅          |                ✅                |                ❌                |         ✅          |           ✅           |        ✅         |
 | kitty            |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | Konsole          |     ✅      |          ❌          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | rxvt             |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
 | st               |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
+| vte-based[^vte]  |     ✅      |          ✅          |                ✅                |                ❌                |         ✅          |           ✅           |        ✅         |
 | wezterm          |     ✅      |          ✅          |                ✅                |                ✅                |         ✅          |           ✅           |        ✅         |
 | xterm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
 | Linux Console    |     ✅      |          ❌          |                ❌                |                ❌                |         ❌          |           ✅           |        ❌         |
@@ -290,6 +290,8 @@ termenv.DisableMouseAllMotion()
 | iTerm            |     ✅      |          ❌          |                ❌                |                ❌                |         ✅          |           ✅           |        ✅         |
 | Power Shell      |     ✅      |          ❔          |                ❔                |                ❔                |         ❔          |           ❔           |        ❔         |
 | Windows Terminal |     ✅      |          ✅          |                ✅                |                ✅                |         ❌          |           ✅           |        ✅         |
+
+[^vte]: This covers all vte-based terminals, including Gnome Terminal, guake, Pantheon Terminal, Terminator, Tilix, XFCE Terminal.
 
 You can help improve this list! Check out [how to](ansi_compat.md) and open an issue or pull request.
 
