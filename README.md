@@ -328,8 +328,20 @@ You can find the source code used to create this chart in `termenv`'s examples.
 ## Related Projects
 
 - [reflow](https://github.com/muesli/reflow) - ANSI-aware text operations
-- [Glow](https://github.com/charmbracelet/glow) - a markdown renderer for
-the command-line, which uses `termenv`
+- [Lip Gloss](https://github.com/charmbracelet/lipgloss) - style definitions for nice terminal layouts 👄
+- [ansi](https://github.com/muesli/ansi) - ANSI sequence helpers
+
+## termenv in the Wild
+
+Need some inspiration or just want to see how others are using `termenv`? Check
+out these projects:
+
+- [Bubble Tea](https://github.com/charmbracelet/bubbletea) - a powerful little TUI framework 🏗
+- [Glamour](https://github.com/charmbracelet/glamour) - stylesheet-based markdown rendering for your CLI apps 💇🏻‍♀️
+- [Glow](https://github.com/charmbracelet/glow) - a markdown renderer for the command-line 💅🏻
+- [duf](https://github.com/muesli/duf) - Disk Usage/Free Utility - a better 'df' alternative
+- [gitty](https://github.com/muesli/gitty) - contextual information about your git projects
+- [slides](https://github.com/maaslalani/slides) - terminal-based presentation tool
 
 ## License
 
