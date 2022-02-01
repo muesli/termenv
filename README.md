@@ -6,6 +6,8 @@
     <a href="https://github.com/muesli/termenv/actions"><img src="https://github.com/muesli/termenv/workflows/build/badge.svg" alt="Build Status"></a>
     <a href="https://coveralls.io/github/muesli/termenv?branch=master"><img src="https://coveralls.io/repos/github/muesli/termenv/badge.svg?branch=master" alt="Coverage Status"></a>
     <a href="https://goreportcard.com/report/muesli/termenv"><img src="https://goreportcard.com/badge/muesli/termenv" alt="Go ReportCard"></a>
+    <br />
+    <img src="https://github.com/muesli/termenv/raw/master/examples/hello-world/hello-world.png" alt="Example terminal output">
 </p>
 
 `termenv` lets you safely use advanced styling options on the terminal. It
@@ -13,8 +15,6 @@ gathers information about the terminal environment in terms of its ANSI & color
 support and offers you convenient methods to colorize and style your output,
 without you having to deal with all kinds of weird ANSI escape sequences and
 color conversions.
-
-![Example output](https://github.com/muesli/termenv/raw/master/examples/hello-world/hello-world.png)
 
 ## Features
 
@@ -343,13 +343,13 @@ out these projects:
 - [gitty](https://github.com/muesli/gitty) - contextual information about your git projects
 - [slides](https://github.com/maaslalani/slides) - terminal-based presentation tool
 
-## License
-
-[MIT](https://github.com/muesli/termenv/raw/master/LICENSE)
-
 ## Feedback
 
 Got some feedback or suggestions? Please open an issue or drop me a note!
 
 * [Twitter](https://twitter.com/mueslix)
 * [The Fediverse](https://mastodon.social/@fribbledom)
+
+## License
+
+[MIT](https://github.com/muesli/termenv/raw/master/LICENSE)
