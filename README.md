@@ -291,7 +291,7 @@ termenv.DisableMouseAllMotion()
 | Linux Console    |     ✅      |         ❌          |           ✅           |        ⛔         |          ❌          |                 ❌                 |                 ❌                 |
 | Apple Terminal   |     ✅      |         ✅          |           ✅           |        ✅         |          ❌          |                 ✅                 |                 ✅                 |
 | iTerm            |     ✅      |         ✅          |           ✅           |        ✅         |          ❌          |                 ❌                 |                 ❌                 |
-| Power Shell      |     ✅      |         ❔          |           ❔           |        ❔         |          ❔          |                 ❔                 |                 ❔                 |
+| Windows cmd      |     ✅      |         ❌          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
 | Windows Terminal |     ✅      |         ❌          |           ✅           |        ✅         |          ✅          |                 ✅                 |                 ✅                 |
 
 [^vte]: This covers all vte-based terminals, including Gnome Terminal, guake, Pantheon Terminal, Terminator, Tilix, XFCE Terminal.
