@@ -59,8 +59,8 @@ func colorProfile() Profile {
 	return Ascii
 }
 
-func foregroundColor() Color {
-	s, err := termStatusReport(10)
+func (o Output) foregroundColor() Color {
+	s, err := o.termStatusReport(10)
 	if err == nil {
 		c, err := xTermColor(s)
 		if err == nil {
@@ -81,8 +81,8 @@ func foregroundColor() Color {
 	return ANSIColor(7)
 }
 
-func backgroundColor() Color {
-	s, err := termStatusReport(11)
+func (o Output) backgroundColor() Color {
+	s, err := o.termStatusReport(11)
 	if err == nil {
 		c, err := xTermColor(s)
 		if err == nil {
@@ -182,7 +182,7 @@ func readNextResponse(fd *os.File) (response string, isOSC bool, err error) {
 	}
 
 	for {
-		b, err := readNextByte(os.Stdout)
+		b, err := readNextByte(fd)
 		if err != nil {
 			return "", false, err
 		}
@@ -210,7 +210,7 @@ func readNextResponse(fd *os.File) (response string, isOSC bool, err error) {
 	return "", false, ErrStatusReport
 }
 
-func termStatusReport(sequence int) (string, error) {
+func (o Output) termStatusReport(sequence int) (string, error) {
 	// screen/tmux can't support OSC, because they can be connected to multiple
 	// terminals concurrently.
 	term := os.Getenv("TERM")
@@ -218,32 +218,33 @@ func termStatusReport(sequence int) (string, error) {
 		return "", ErrStatusReport
 	}
 
+	fd := int(o.tty.Fd())
 	// if in background, we can't control the terminal
-	if !isForeground(unix.Stdout) {
+	if !isForeground(fd) {
 		return "", ErrStatusReport
 	}
 
-	t, err := unix.IoctlGetTermios(unix.Stdout, tcgetattr)
+	t, err := unix.IoctlGetTermios(fd, tcgetattr)
 	if err != nil {
 		return "", ErrStatusReport
 	}
-	defer unix.IoctlSetTermios(unix.Stdout, tcsetattr, t) //nolint:errcheck
+	defer unix.IoctlSetTermios(fd, tcsetattr, t) //nolint:errcheck
 
 	noecho := *t
 	noecho.Lflag = noecho.Lflag &^ unix.ECHO
 	noecho.Lflag = noecho.Lflag &^ unix.ICANON
-	if err := unix.IoctlSetTermios(unix.Stdout, tcsetattr, &noecho); err != nil {
+	if err := unix.IoctlSetTermios(fd, tcsetattr, &noecho); err != nil {
 		return "", ErrStatusReport
 	}
 
 	// first, send OSC query, which is ignored by terminal which do not support it
-	fmt.Printf("\033]%d;?\033\\", sequence)
+	fmt.Fprintf(o.tty, "\033]%d;?\033\\", sequence)
 
 	// then, query cursor position, should be supported by all terminals
-	fmt.Printf("\033[6n")
+	fmt.Fprintf(o.tty, "\033[6n")
 
 	// read the next response
-	res, isOSC, err := readNextResponse(os.Stdout)
+	res, isOSC, err := readNextResponse(o.tty)
 	if err != nil {
 		return "", err
 	}
@@ -254,7 +255,7 @@ func termStatusReport(sequence int) (string, error) {
 	}
 
 	// read the cursor query response next and discard the result
-	_, _, err = readNextResponse(os.Stdout)
+	_, _, err = readNextResponse(o.tty)
 	if err != nil {
 		return "", err
 	}

@@ -51,27 +51,20 @@ func ColorProfile() Profile {
 
 // ForegroundColor returns the terminal's default foreground color.
 func ForegroundColor() Color {
-	if !isTTY(os.Stdout.Fd()) {
-		return NoColor{}
-	}
-
-	return foregroundColor()
+	o := NewOutputWithProfile(os.Stdout, TrueColor)
+	return o.foregroundColor()
 }
 
 // BackgroundColor returns the terminal's default background color.
 func BackgroundColor() Color {
-	if !isTTY(os.Stdout.Fd()) {
-		return NoColor{}
-	}
-
-	return backgroundColor()
+	o := NewOutputWithProfile(os.Stdout, TrueColor)
+	return o.backgroundColor()
 }
 
 // HasDarkBackground returns whether terminal uses a dark-ish background.
 func HasDarkBackground() bool {
-	c := ConvertToRGB(BackgroundColor())
-	_, _, l := c.Hsl()
-	return l < 0.5
+	o := NewOutputWithProfile(os.Stdout, TrueColor)
+	return o.HasDarkBackground()
 }
 
 // EnvNoColor returns true if the environment variables explicitly disable color output
@@ -95,6 +88,17 @@ func EnvColorProfile() Profile {
 		return Ascii
 	}
 	p := ColorProfile()
+	if cliColorForced() && p == Ascii {
+		return ANSI
+	}
+	return p
+}
+
+func envColorProfile() Profile {
+	if EnvNoColor() {
+		return Ascii
+	}
+	p := colorProfile()
 	if cliColorForced() && p == Ascii {
 		return ANSI
 	}
