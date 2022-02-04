@@ -209,7 +209,7 @@ func EnableMousePress() {
 
 // DisableMousePress disables X10 mouse mode.
 func DisableMousePress() {
-	fmt.Print(CSI + EnableMousePressSeq)
+	fmt.Print(CSI + DisableMousePressSeq)
 }
 
 // EnableMouse enables Mouse Tracking mode.
