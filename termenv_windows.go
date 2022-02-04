@@ -39,12 +39,12 @@ func colorProfile() Profile {
 	return TrueColor
 }
 
-func foregroundColor() Color {
+func (o Output) foregroundColor() Color {
 	// default gray
 	return ANSIColor(7)
 }
 
-func backgroundColor() Color {
+func (o Output) backgroundColor() Color {
 	// default black
 	return ANSIColor(0)
 }

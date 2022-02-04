@@ -40,13 +40,13 @@ func ColorProfile() Profile {
 // ForegroundColor returns the terminal's default foreground color.
 func ForegroundColor() Color {
 	o := NewOutputWithProfile(os.Stdout, TrueColor)
-	return o.foregroundColor()
+	return o.ForegroundColor()
 }
 
 // BackgroundColor returns the terminal's default background color.
 func BackgroundColor() Color {
 	o := NewOutputWithProfile(os.Stdout, TrueColor)
-	return o.backgroundColor()
+	return o.BackgroundColor()
 }
 
 // HasDarkBackground returns whether terminal uses a dark-ish background.
