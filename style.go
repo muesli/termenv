@@ -22,6 +22,7 @@ const (
 
 // Style is a string that various rendering styles can be applied to.
 type Style struct {
+	Profile Profile
 	string
 	styles []string
 }
@@ -29,7 +30,8 @@ type Style struct {
 // String returns a new Style.
 func String(s ...string) Style {
 	return Style{
-		string: strings.Join(s, " "),
+		Profile: TrueColor,
+		string:  strings.Join(s, " "),
 	}
 }
 
@@ -39,6 +41,9 @@ func (t Style) String() string {
 
 // Styled renders s with all applied styles.
 func (t Style) Styled(s string) string {
+	if t.Profile == Ascii {
+		return s
+	}
 	if len(t.styles) == 0 {
 		return s
 	}
