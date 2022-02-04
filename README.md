@@ -31,17 +31,15 @@ color conversions.
 go get github.com/muesli/termenv
 ```
 
-## Query Terminal Support
-
-`termenv` can query the terminal it is running in, so you can safely use
-advanced features, like RGB colors. `ColorProfile` returns the color profile
-supported by the terminal:
+## Usage
 
 ```go
-profile := termenv.ColorProfile()
+output := termenv.NewOuput(os.Stdout)
 ```
 
-This returns one of the supported color profiles:
+`termenv` queries the terminal's capabilities it is running in, so you can
+safely use advanced features, like RGB colors or ANSI styles. `output.Profile`
+returns the supported profile:
 
 - `termenv.Ascii` - no ANSI support detected, ASCII only
 - `termenv.ANSI` - 16 color ANSI support
@@ -53,39 +51,46 @@ app is running in a light- or dark-themed environment:
 
 ```go
 // Returns terminal's foreground color
-color := termenv.ForegroundColor()
+color := output.ForegroundColor()
 
 // Returns terminal's background color
-color := termenv.BackgroundColor()
+color := output.BackgroundColor()
 
 // Returns whether terminal uses a dark-ish background
-darkTheme := termenv.HasDarkBackground()
+darkTheme := output.HasDarkBackground()
+```
+
+### Manual Profile Selection
+
+If you don't want to rely on the automatic detection, you can manually select
+the profile you want to use:
+
+```go
+output := termenv.NewOuputWithProfile(os.Stdout, termenv.TrueColor)
 ```
 
 ## Colors
 
-`termenv` supports multiple color profiles: ANSI (16 colors), ANSI Extended
-(256 colors), and TrueColor (24-bit RGB). Colors will automatically be degraded
-to the best matching available color in the desired profile:
+`termenv` supports multiple color profiles: Ascii (black & white only),
+ANSI (16 colors), ANSI Extended (256 colors), and TrueColor (24-bit RGB). Colors
+will automatically be degraded to the best matching available color in the
+desired profile:
 
 `TrueColor` => `ANSI 256 Colors` => `ANSI 16 Colors` => `Ascii`
 
 ```go
-s := termenv.String("Hello World")
-
-// Retrieve color profile supported by terminal
-p := termenv.ColorProfile()
+s := output.String("Hello World")
 
 // Supports hex values
 // Will automatically degrade colors on terminals not supporting RGB
-s.Foreground(p.Color("#abcdef"))
+s.Foreground(output.Color("#abcdef"))
 // but also supports ANSI colors (0-255)
-s.Background(p.Color("69"))
+s.Background(output.Color("69"))
 // ...or the color.Color interface
-s.Foreground(p.FromColor(color.RGBA{255, 128, 0, 255}))
+s.Foreground(output.FromColor(color.RGBA{255, 128, 0, 255}))
 
 // Combine fore- & background colors
-s.Foreground(p.Color("#ffffff")).Background(p.Color("#0000ff"))
+s.Foreground(output.Color("#ffffff")).Background(output.Color("#0000ff"))
 
 // Supports the fmt.Stringer interface
 fmt.Println(s)
@@ -96,7 +101,7 @@ fmt.Println(s)
 You can use a chainable syntax to compose your own styles:
 
 ```go
-s := termenv.String("foobar")
+s := output.String("foobar")
 
 // Text styles
 s.Bold()
@@ -120,7 +125,7 @@ s.Bold().Underline()
 
 ```go
 // load template helpers
-f := termenv.TemplateFuncs(termenv.ColorProfile())
+f := termenv.TemplateFuncs(output.Profile)
 tpl := template.New("tpl").Funcs(f)
 
 // apply bold style in a template
@@ -149,128 +154,128 @@ Other available helper functions are: `Faint`, `Italic`, `CrossOut`,
 
 ```go
 // Move the cursor to a given position
-termenv.MoveCursor(row, column)
+output.MoveCursor(row, column)
 
 // Save the cursor position
-termenv.SaveCursorPosition()
+output.SaveCursorPosition()
 
 // Restore a saved cursor position
-termenv.RestoreCursorPosition()
+output.RestoreCursorPosition()
 
 // Move the cursor up a given number of lines
-termenv.CursorUp(n)
+output.CursorUp(n)
 
 // Move the cursor down a given number of lines
-termenv.CursorDown(n)
+output.CursorDown(n)
 
 // Move the cursor up a given number of lines
-termenv.CursorForward(n)
+output.CursorForward(n)
 
 // Move the cursor backwards a given number of cells
-termenv.CursorBack(n)
+output.CursorBack(n)
 
 // Move the cursor down a given number of lines and place it at the beginning
 // of the line
-termenv.CursorNextLine(n)
+output.CursorNextLine(n)
 
 // Move the cursor up a given number of lines and place it at the beginning of
 // the line
-termenv.CursorPrevLine(n)
+output.CursorPrevLine(n)
 ```
 
 ## Screen
 
 ```go
 // Reset the terminal to its default style, removing any active styles
-termenv.Reset()
+output.Reset()
 
 // RestoreScreen restores a previously saved screen state
-termenv.RestoreScreen()
+output.RestoreScreen()
 
 // SaveScreen saves the screen state
-termenv.SaveScreen()
+output.SaveScreen()
 
 // Switch to the altscreen. The former view can be restored with ExitAltScreen()
-termenv.AltScreen()
+output.AltScreen()
 
 // Exit the altscreen and return to the former terminal view
-termenv.ExitAltScreen()
+output.ExitAltScreen()
 
 // Clear the visible portion of the terminal
-termenv.ClearScreen()
+output.ClearScreen()
 
 // Clear the current line
-termenv.ClearLine()
+output.ClearLine()
 
 // Clear a given number of lines
-termenv.ClearLines(n)
+output.ClearLines(n)
 
 // Set the scrolling region of the terminal
-termenv.ChangeScrollingRegion(top, bottom)
+output.ChangeScrollingRegion(top, bottom)
 
 // Insert the given number of lines at the top of the scrollable region, pushing
 // lines below down
-termenv.InsertLines(n)
+output.InsertLines(n)
 
 // Delete the given number of lines, pulling any lines in the scrollable region
 // below up
-termenv.DeleteLines(n)
+output.DeleteLines(n)
 ```
 
 ## Session
 
 ```go
 // SetWindowTitle sets the terminal window title
-termenv.SetWindowTitle(title)
+output.SetWindowTitle(title)
 
 // SetForegroundColor sets the default foreground color
-termenv.SetForegroundColor(color)
+output.SetForegroundColor(color)
 
 // SetBackgroundColor sets the default background color
-termenv.SetBackgroundColor(color)
+output.SetBackgroundColor(color)
 
 // SetCursorColor sets the cursor color
-termenv.SetCursorColor(color)
+output.SetCursorColor(color)
 
 // Hide the cursor
-termenv.HideCursor()
+output.HideCursor()
 
 // Show the cursor
-termenv.ShowCursor()
+output.ShowCursor()
 ```
 
 ## Mouse
 
 ```go
 // Enable X10 mouse mode, only button press events are sent
-termenv.EnableMousePress()
+output.EnableMousePress()
 
 // Disable X10 mouse mode
-termenv.DisableMousePress()
+output.DisableMousePress()
 
 // Enable Mouse Tracking mode
-termenv.EnableMouse()
+output.EnableMouse()
 
 // Disable Mouse Tracking mode
-termenv.DisableMouse()
+output.DisableMouse()
 
 // Enable Hilite Mouse Tracking mode
-termenv.EnableMouseHilite()
+output.EnableMouseHilite()
 
 // Disable Hilite Mouse Tracking mode
-termenv.DisableMouseHilite()
+output.DisableMouseHilite()
 
 // Enable Cell Motion Mouse Tracking mode
-termenv.EnableMouseCellMotion()
+output.EnableMouseCellMotion()
 
 // Disable Cell Motion Mouse Tracking mode
-termenv.DisableMouseCellMotion()
+output.DisableMouseCellMotion()
 
 // Enable All Motion Mouse mode
-termenv.EnableMouseAllMotion()
+output.EnableMouseAllMotion()
 
 // Disable All Motion Mouse mode
-termenv.DisableMouseAllMotion()
+output.DisableMouseAllMotion()
 ```
 
 ## Optional Feature Support
