@@ -18,6 +18,15 @@ const (
 	OSCTimeout = 5 * time.Second
 )
 
+func isForeground(fd int) bool {
+	pgrp, err := unix.IoctlGetInt(fd, unix.TIOCGPGRP)
+	if err != nil {
+		return false
+	}
+
+	return pgrp == unix.Getpgrp()
+}
+
 func colorProfile() Profile {
 	term := os.Getenv("TERM")
 	colorTerm := os.Getenv("COLORTERM")
@@ -212,6 +221,11 @@ func termStatusReport(sequence int) (string, error) {
 	// terminals concurrently.
 	term := os.Getenv("TERM")
 	if strings.HasPrefix(term, "screen") {
+		return "", ErrStatusReport
+	}
+
+	// if in background, we can't control the terminal
+	if !isForeground(unix.Stdout) {
 		return "", ErrStatusReport
 	}
 
