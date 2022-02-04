@@ -12,23 +12,11 @@ var (
 	ErrStatusReport = errors.New("unable to retrieve status report")
 )
 
-// Profile is a color profile: Ascii, ANSI, ANSI256, or TrueColor.
-type Profile int
-
 const (
 	// Control Sequence Introducer
 	CSI = "\x1b["
 	// Operating System Command
 	OSC = "\x1b]"
-
-	// Ascii, uncolored profile.
-	Ascii = Profile(iota) //nolint:revive
-	// ANSI, 4-bit color profile
-	ANSI
-	// ANSI256, 8-bit color profile
-	ANSI256
-	// TrueColor, 24-bit color profile
-	TrueColor
 )
 
 func isTTY(fd uintptr) bool {
