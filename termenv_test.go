@@ -3,15 +3,38 @@ package termenv
 import (
 	"bytes"
 	"fmt"
+	"image/color"
 	"os"
 	"strings"
 	"testing"
 	"text/template"
 )
 
+func TestLegacyTermEnv(t *testing.T) {
+	p := ColorProfile()
+	if p != TrueColor && p != Ascii {
+		t.Errorf("Expected %d, got %d", TrueColor, p)
+	}
+
+	fg := ForegroundColor()
+	fgseq := fg.Sequence(false)
+	fgexp := "97"
+	if fgseq != fgexp && fgseq != "" {
+		t.Errorf("Expected %s, got %s", fgexp, fgseq)
+	}
+
+	bg := BackgroundColor()
+	bgseq := bg.Sequence(true)
+	bgexp := "48;2;0;0;0"
+	if bgseq != bgexp && bgseq != "" {
+		t.Errorf("Expected %s, got %s", bgexp, bgseq)
+	}
+
+	_ = HasDarkBackground()
+}
+
 func TestTermEnv(t *testing.T) {
 	o := NewOutput(os.Stdout)
-	fmt.Println(o.Profile)
 	if o.Profile != TrueColor && o.Profile != Ascii {
 		t.Errorf("Expected %d, got %d", TrueColor, o.Profile)
 	}
