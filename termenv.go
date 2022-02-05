@@ -32,6 +32,10 @@ const (
 )
 
 func isTTY(fd uintptr) bool {
+	if cliColorForced() {
+		return true
+	}
+
 	if len(os.Getenv("CI")) > 0 {
 		return false
 	}
