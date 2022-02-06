@@ -48,6 +48,10 @@ This returns one of the supported color profiles:
 - `termenv.ANSI256` - Extended 256 color ANSI support
 - `termenv.TrueColor` - RGB/TrueColor support
 
+Alternatively, you can use `termenv.EnvColorProfile` which evaluates the
+terminal like `ColorProfile`, but also respects the `NO_COLOR` and
+`CLICOLOR_FORCE` environment variables.
+
 You can also query the terminal for its color scheme, so you know whether your
 app is running in a light- or dark-themed environment:
 

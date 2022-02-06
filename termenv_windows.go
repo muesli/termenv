@@ -51,7 +51,7 @@ func backgroundColor() Color {
 
 // EnableWindowsANSIConsole enables virtual terminal processing on Windows
 // platforms. This allows the use of ANSI escape sequences in Windows console
-//  applications. Ensure this gets called before anything gets rendered with
+// applications. Ensure this gets called before anything gets rendered with
 // termenv.
 //
 // Returns the original console mode and an error if one occurred.
