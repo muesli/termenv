@@ -1,8 +1,14 @@
 package termenv
 
 import (
+	"bufio"
+	"bytes"
+	"errors"
 	"fmt"
 	"os"
+	"os/exec"
+	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -17,6 +23,7 @@ const (
 	CursorPreviousLineSeq    = "%dF"
 	CursorHorizontalSeq      = "%dG"
 	CursorPositionSeq        = "%d;%dH"
+	GetCursorPositionSeq     = "%c[6n"
 	EraseDisplaySeq          = "%dJ"
 	EraseLineSeq             = "%dK"
 	ScrollUpSeq              = "%dS"
@@ -454,4 +461,65 @@ func DisableMouseAllMotion() {
 // SetWindowTitle sets the terminal window title.
 func SetWindowTitle(title string) {
 	NewOutputWithProfile(os.Stdout, ANSI).SetWindowTitle(title)
+}
+
+// GetCursorPosition return the current position of the cursor on a terminal window in (row, column) format.
+func GetCurosrPosition() (int, int, error) {
+	/* The method this function uses is a bit out of ordinary. Essentially, it changes
+	the command line to 'raw' mode, then prints an ANSI special character
+	"\033[6n" in the terminal. The terminal then prints the cursor's position
+	in this format: row;columnR . This function then parses this output to get row and
+	column numbers. Finally, turns back the terminal mode from 'raw' to 'normal'.
+	*/
+
+	var row int
+	var col int
+	// Set the terminal to raw mode (to be undone with `-raw`)
+	rawMode := exec.Command("/bin/stty", "raw")
+	rawMode.Stdin = os.Stdin
+	_ = rawMode.Run()
+	err := rawMode.Wait()
+	if err != nil {
+		return -1, -1, err
+	}
+
+	// Running command $ echo -e "\033[6n" | read -dR
+	cmd := exec.Command("echo", fmt.Sprintf(GetCursorPositionSeq, 27))
+	randomBytes := &bytes.Buffer{}
+	cmd.Stdout = randomBytes
+
+	// Start command asynchronously
+	_ = cmd.Start()
+
+	// capture keyboard output from echo command
+	reader := bufio.NewReader(os.Stdin)
+	err = cmd.Wait()
+	if err != nil {
+		return -1, -1, err
+	}
+
+	// by printing the command output, we are triggering input
+	fmt.Print(randomBytes)
+	text, _ := reader.ReadSlice('R') // The output ends with 'R'
+
+	// check for the desired output
+	if strings.Contains(string(text), ";") {
+		re := regexp.MustCompile(`\d+;\d+`)
+		line := re.FindString(string(text))
+		delimiters := strings.Split(line, ";")
+		// converting row and col strings to int
+		row, _ = strconv.Atoi(delimiters[0])
+		col, _ = strconv.Atoi(delimiters[1])
+	} else {
+		return -1, -1, errors.New("Could not parse cursor position output.")
+	}
+	// Set the terminal back from raw mode to 'normal'
+	rawModeOff := exec.Command("/bin/stty", "-raw")
+	rawModeOff.Stdin = os.Stdin
+	_ = rawModeOff.Run()
+	err = rawModeOff.Wait()
+	if err != nil {
+		return -1, -1, err
+	}
+	return row, col, err
 }

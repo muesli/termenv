@@ -162,6 +162,9 @@ output.SaveCursorPosition()
 // Restore a saved cursor position
 output.RestoreCursorPosition()
 
+// Gets current position of the cursor
+row, column, err := output.GetCursorPosition()
+
 // Move the cursor up a given number of lines
 output.CursorUp(n)
 
