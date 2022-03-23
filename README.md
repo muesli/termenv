@@ -161,6 +161,9 @@ termenv.SaveCursorPosition()
 // Restore a saved cursor position
 termenv.RestoreCursorPosition()
 
+// Gets the current cursor position
+row, column, err := termenv.GetCursorPosition()
+
 // Move the cursor up a given number of lines
 termenv.CursorUp(n)
 
