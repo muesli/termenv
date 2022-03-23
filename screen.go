@@ -464,7 +464,7 @@ func SetWindowTitle(title string) {
 }
 
 // GetCursorPosition return the current position of the cursor on a terminal window in (row, column) format.
-func GetCurosrPosition() (int, int, error) {
+func GetCursorPosition() (int, int, error) {
 	/* The method this function uses is a bit out of ordinary. Essentially, it changes
 	the command line to 'raw' mode, then prints an ANSI special character
 	"\033[6n" in the terminal. The terminal then prints the cursor's position
