@@ -34,7 +34,7 @@ func TestLegacyTermEnv(t *testing.T) {
 }
 
 func TestTermEnv(t *testing.T) {
-	o := NewOutput(os.Stdout)
+	o := NewOutput(os.Stdout, &osEnviron{})
 	if o.Profile != TrueColor && o.Profile != Ascii {
 		t.Errorf("Expected %d, got %d", TrueColor, o.Profile)
 	}
@@ -347,7 +347,8 @@ func TestEnvNoColor(t *testing.T) {
 			for i := 0; i < len(test.environ); i += 2 {
 				os.Setenv(test.environ[i], test.environ[i+1])
 			}
-			actual := EnvNoColor()
+			out := NewOutput(os.Stdout, &osEnviron{})
+			actual := out.EnvNoColor()
 			if test.expected != actual {
 				t.Errorf("expected %t but was %t", test.expected, actual)
 			}
