@@ -2,7 +2,6 @@ package termenv
 
 import (
 	"errors"
-	"os"
 
 	"github.com/mattn/go-isatty"
 )
@@ -19,40 +18,42 @@ const (
 	OSC = "\x1b]"
 )
 
-func isTTY(fd uintptr) bool {
-	if len(os.Getenv("CI")) > 0 {
+func (o *Output) isTTY() bool {
+	if len(o.environ.Getenv("CI")) > 0 {
 		return false
 	}
 
-	return isatty.IsTerminal(fd)
+	return isatty.IsTerminal(o.tty.Fd())
 }
 
 // ColorProfile returns the supported color profile:
 // Ascii, ANSI, ANSI256, or TrueColor.
 func ColorProfile() Profile {
-	if !isTTY(os.Stdout.Fd()) {
-		return Ascii
-	}
-
-	return colorProfile()
+	return output.ColorProfile()
 }
 
 // ForegroundColor returns the terminal's default foreground color.
 func ForegroundColor() Color {
-	o := NewOutputWithProfile(os.Stdout, TrueColor)
-	return o.ForegroundColor()
+	return output.ForegroundColor()
 }
 
 // BackgroundColor returns the terminal's default background color.
 func BackgroundColor() Color {
-	o := NewOutputWithProfile(os.Stdout, TrueColor)
-	return o.BackgroundColor()
+	return output.BackgroundColor()
 }
 
 // HasDarkBackground returns whether terminal uses a dark-ish background.
 func HasDarkBackground() bool {
-	o := NewOutputWithProfile(os.Stdout, TrueColor)
-	return o.HasDarkBackground()
+	return output.HasDarkBackground()
+}
+
+// EnvNoColor returns true if the environment variables explicitly disable color output
+// by setting NO_COLOR (https://no-color.org/)
+// or CLICOLOR/CLICOLOR_FORCE (https://bixense.com/clicolors/)
+// If NO_COLOR is set, this will return true, ignoring CLICOLOR/CLICOLOR_FORCE
+// If CLICOLOR=="0", it will be true only if CLICOLOR_FORCE is also "0" or is unset.
+func (o *Output) EnvNoColor() bool {
+	return o.environ.Getenv("NO_COLOR") != "" || (o.environ.Getenv("CLICOLOR") == "0" && !o.cliColorForced())
 }
 
 // EnvNoColor returns true if the environment variables explicitly disable color output
@@ -61,7 +62,7 @@ func HasDarkBackground() bool {
 // If NO_COLOR is set, this will return true, ignoring CLICOLOR/CLICOLOR_FORCE
 // If CLICOLOR=="0", it will be true only if CLICOLOR_FORCE is also "0" or is unset.
 func EnvNoColor() bool {
-	return os.Getenv("NO_COLOR") != "" || (os.Getenv("CLICOLOR") == "0" && !cliColorForced())
+	return output.EnvNoColor()
 }
 
 // EnvColorProfile returns the color profile based on environment variables set
@@ -72,29 +73,22 @@ func EnvNoColor() bool {
 // If the terminal does not support any colors, but CLICOLOR_FORCE is set and not "0"
 // then the ANSI color profile will be returned.
 func EnvColorProfile() Profile {
-	if EnvNoColor() {
+	return output.EnvColorProfile()
+}
+
+func (o *Output) EnvColorProfile() Profile {
+	if o.EnvNoColor() {
 		return Ascii
 	}
-	p := ColorProfile()
-	if cliColorForced() && p == Ascii {
+	p := o.ColorProfile()
+	if o.cliColorForced() && p == Ascii {
 		return ANSI
 	}
 	return p
 }
 
-func envColorProfile() Profile {
-	if EnvNoColor() {
-		return Ascii
-	}
-	p := colorProfile()
-	if cliColorForced() && p == Ascii {
-		return ANSI
-	}
-	return p
-}
-
-func cliColorForced() bool {
-	if forced := os.Getenv("CLICOLOR_FORCE"); forced != "" {
+func (o *Output) cliColorForced() bool {
+	if forced := o.environ.Getenv("CLICOLOR_FORCE"); forced != "" {
 		return forced != "0"
 	}
 	return false

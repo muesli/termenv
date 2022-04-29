@@ -10,16 +10,16 @@ import (
 	"golang.org/x/sys/windows"
 )
 
-func colorProfile() Profile {
-	if os.Getenv("ConEmuANSI") == "ON" {
+func (o *Output) colorProfile() Profile {
+	if o.environ.Get("ConEmuANSI") == "ON" {
 		return TrueColor
 	}
 
 	winVersion, _, buildNumber := windows.RtlGetNtVersionNumbers()
 	if buildNumber < 10586 || winVersion < 10 {
 		// No ANSI support before Windows 10 build 10586.
-		if os.Getenv("ANSICON") != "" {
-			conVersion := os.Getenv("ANSICON_VER")
+		if o.environ.Get("ANSICON") != "" {
+			conVersion := o.environ.Get("ANSICON_VER")
 			cv, err := strconv.ParseInt(conVersion, 10, 64)
 			if err != nil || cv < 181 {
 				// No 8 bit color support before v1.81 release.
