@@ -1,35 +1,71 @@
 package termenv
 
-import "os"
+import (
+	"io"
+	"os"
+)
+
+var (
+	// output is the default global output.
+	output = NewOutputWithProfile(os.Stdout, &osEnviron{}, ANSI)
+)
+
+// File represents a file descriptor.
+type File interface {
+	io.ReadWriter
+	Fd() uintptr
+}
 
 // Output is a terminal output.
 type Output struct {
 	Profile
-	tty *os.File
+	tty     File
+	environ Environ
+}
+
+// Environ is an interface for getting environment variables.
+type Environ interface {
+	Environ() []string
+	Getenv(string) string
+}
+
+type osEnviron struct{}
+
+func (oe *osEnviron) Environ() []string {
+	return os.Environ()
+}
+
+func (oe *osEnviron) Getenv(key string) string {
+	return os.Getenv(key)
+}
+
+// DefaultOutput returns the default global output.
+func DefaultOutput() *Output {
+	return output
 }
 
 // NewOutput returns a new Output for the given file descriptor.
-func NewOutput(tty *os.File) *Output {
-	p := Ascii
-	if isTTY(tty.Fd()) {
-		p = envColorProfile()
+func NewOutput(tty File, environ Environ) *Output {
+	o := NewOutputWithProfile(tty, environ, Ascii)
+	if o.isTTY() {
+		o.Profile = o.EnvColorProfile()
 	}
-
-	return NewOutputWithProfile(tty, p)
+	return o
 }
 
 // NewOutputWithProfile returns a new Output for the given file descriptor and
 // profile.
-func NewOutputWithProfile(tty *os.File, profile Profile) *Output {
+func NewOutputWithProfile(tty File, environ Environ, profile Profile) *Output {
 	return &Output{
 		Profile: profile,
 		tty:     tty,
+		environ: environ,
 	}
 }
 
 // ForegroundColor returns the terminal's default foreground color.
 func (o Output) ForegroundColor() Color {
-	if !isTTY(o.tty.Fd()) {
+	if !o.isTTY() {
 		return NoColor{}
 	}
 
@@ -38,7 +74,7 @@ func (o Output) ForegroundColor() Color {
 
 // BackgroundColor returns the terminal's default background color.
 func (o Output) BackgroundColor() Color {
-	if !isTTY(o.tty.Fd()) {
+	if !o.isTTY() {
 		return NoColor{}
 	}
 

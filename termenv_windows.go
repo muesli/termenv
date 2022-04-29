@@ -4,22 +4,21 @@
 package termenv
 
 import (
-	"os"
 	"strconv"
 
 	"golang.org/x/sys/windows"
 )
 
-func colorProfile() Profile {
-	if os.Getenv("ConEmuANSI") == "ON" {
+func (o *Output) ColorProfile() Profile {
+	if o.environ.Getenv("ConEmuANSI") == "ON" {
 		return TrueColor
 	}
 
 	winVersion, _, buildNumber := windows.RtlGetNtVersionNumbers()
 	if buildNumber < 10586 || winVersion < 10 {
 		// No ANSI support before Windows 10 build 10586.
-		if os.Getenv("ANSICON") != "" {
-			conVersion := os.Getenv("ANSICON_VER")
+		if o.environ.Getenv("ANSICON") != "" {
+			conVersion := o.environ.Getenv("ANSICON_VER")
 			cv, err := strconv.ParseInt(conVersion, 10, 64)
 			if err != nil || cv < 181 {
 				// No 8 bit color support before v1.81 release.

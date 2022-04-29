@@ -16,13 +16,14 @@ func tempOutput(t *testing.T) *Output {
 		t.Fatal(err)
 	}
 
-	return NewOutputWithProfile(f, TrueColor)
+	return NewOutputWithProfile(f, &osEnviron{}, TrueColor)
 }
 
 func verify(t *testing.T, o *Output, exp string) {
 	t.Helper()
+	tty := o.tty.(*os.File)
 
-	if _, err := o.tty.Seek(0, 0); err != nil {
+	if _, err := tty.Seek(0, 0); err != nil {
 		t.Fatal(err)
 	}
 
@@ -37,7 +38,7 @@ func verify(t *testing.T, o *Output, exp string) {
 	}
 
 	// remove temp file
-	os.Remove(o.tty.Name())
+	os.Remove(tty.Name())
 }
 
 func TestReset(t *testing.T) {
