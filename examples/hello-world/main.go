@@ -40,4 +40,11 @@ func main() {
 	fmt.Printf("\n\t%s %s\n", termenv.String("Has foreground color").Bold(), termenv.ForegroundColor())
 	fmt.Printf("\t%s %s\n", termenv.String("Has background color").Bold(), termenv.BackgroundColor())
 	fmt.Printf("\t%s %t\n", termenv.String("Has dark background?").Bold(), termenv.HasDarkBackground())
+
+	hw := "Hello, world!"
+	termenv.Copy(hw)
+	fmt.Println()
+	fmt.Printf("\t%q copied to clipboard\n", hw)
+
+	fmt.Printf("\t%s", termenv.Hyperlink("http://example.com", "This is a link"))
 }
