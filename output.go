@@ -27,6 +27,15 @@ func NewOutputWithProfile(tty *os.File, profile Profile) *Output {
 	}
 }
 
+// NewOutputWithProfileEnv returns a new Output for the given file descriptor and
+// autodetects the profile based on provided TERM and COLORTERM variables.
+func NewOutputWithProfileEnv(tty *os.File, term, colorTerm string) *Output {
+	return &Output{
+		Profile: colorProfile(term, colorTerm),
+		tty:     tty,
+	}
+}
+
 // ForegroundColor returns the terminal's default foreground color.
 func (o Output) ForegroundColor() Color {
 	if !isTTY(o.tty.Fd()) {

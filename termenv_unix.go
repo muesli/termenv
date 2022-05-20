@@ -27,9 +27,7 @@ func isForeground(fd int) bool {
 	return pgrp == unix.Getpgrp()
 }
 
-func colorProfile() Profile {
-	term := os.Getenv("TERM")
-	colorTerm := os.Getenv("COLORTERM")
+func colorProfile(term, colorTerm string) Profile {
 
 	switch strings.ToLower(colorTerm) {
 	case "24bit":

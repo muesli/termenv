@@ -34,7 +34,9 @@ func ColorProfile() Profile {
 		return Ascii
 	}
 
-	return colorProfile()
+	term := os.Getenv("TERM")
+	colorTerm := os.Getenv("COLORTERM")
+	return colorProfile(term, colorTerm)
 }
 
 // ForegroundColor returns the terminal's default foreground color.
@@ -86,7 +88,9 @@ func envColorProfile() Profile {
 	if EnvNoColor() {
 		return Ascii
 	}
-	p := colorProfile()
+	term := os.Getenv("TERM")
+	colorTerm := os.Getenv("COLORTERM")
+	p := colorProfile(term, colorTerm)
 	if cliColorForced() && p == Ascii {
 		return ANSI
 	}
