@@ -231,7 +231,7 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 
 	t, err := unix.IoctlGetTermios(fd, tcgetattr)
 	if err != nil {
-		return "", ErrStatusReport
+		return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
 	}
 	defer unix.IoctlSetTermios(fd, tcsetattr, t) //nolint:errcheck
 
@@ -239,7 +239,7 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 	noecho.Lflag = noecho.Lflag &^ unix.ECHO
 	noecho.Lflag = noecho.Lflag &^ unix.ICANON
 	if err := unix.IoctlSetTermios(fd, tcsetattr, &noecho); err != nil {
-		return "", ErrStatusReport
+		return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
 	}
 
 	// first, send OSC query, which is ignored by terminal which do not support it
@@ -251,7 +251,7 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 	// read the next response
 	res, isOSC, err := readNextResponse(o.tty)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
 	}
 
 	// if this is not OSC response, then the terminal does not support it
