@@ -12,14 +12,14 @@ import (
 type Profile int
 
 const (
-	// Ascii, uncolored profile.
-	Ascii = Profile(iota) //nolint:revive
-	// ANSI, 4-bit color profile
-	ANSI
+	// TrueColor, 24-bit color profile
+	TrueColor = Profile(iota)
 	// ANSI256, 8-bit color profile
 	ANSI256
-	// TrueColor, 24-bit color profile
-	TrueColor
+	// ANSI, 4-bit color profile
+	ANSI
+	// Ascii, uncolored profile
+	Ascii //nolint:revive
 )
 
 // String returns a new Style.
@@ -51,7 +51,7 @@ func (p Profile) Convert(c Color) Color {
 		if err != nil {
 			return nil
 		}
-		if p < TrueColor {
+		if p != TrueColor {
 			ac := hexToANSI256Color(h)
 			if p == ANSI {
 				return ansi256ToANSIColor(ac)
