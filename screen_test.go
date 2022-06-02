@@ -16,7 +16,7 @@ func tempOutput(t *testing.T) *Output {
 		t.Fatal(err)
 	}
 
-	return NewOutputWithProfile(f, &osEnviron{}, TrueColor)
+	return NewOutput(f, WithProfile(TrueColor))
 }
 
 func verify(t *testing.T, o *Output, exp string) {

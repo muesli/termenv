@@ -7,7 +7,7 @@ import (
 
 var (
 	// output is the default global output.
-	output = NewOutputWithProfile(os.Stdout, &osEnviron{}, ANSI)
+	output = NewOutput(os.Stdout, WithProfile(ANSI))
 )
 
 // File represents a file descriptor.
@@ -45,21 +45,34 @@ func DefaultOutput() *Output {
 }
 
 // NewOutput returns a new Output for the given file descriptor.
-func NewOutput(tty File, environ Environ) *Output {
-	o := NewOutputWithProfile(tty, environ, Ascii)
-	if o.isTTY() {
-		o.Profile = o.EnvColorProfile()
+func NewOutput(tty File, opts ...func(*Output)) *Output {
+	o := &Output{
+		tty:     tty,
+		environ: &osEnviron{},
+		Profile: Ascii,
 	}
+	o.Profile = o.EnvColorProfile()
+
+	for _, opt := range opts {
+		opt(o)
+	}
+
 	return o
 }
 
-// NewOutputWithProfile returns a new Output for the given file descriptor and
-// profile.
-func NewOutputWithProfile(tty File, environ Environ, profile Profile) *Output {
-	return &Output{
-		Profile: profile,
-		tty:     tty,
-		environ: environ,
+// WithProfile returns a new Output for the given environment. The profile gets
+// detected from this environment.
+func WithEnvironment(environ Environ) func(*Output) {
+	return func(o *Output) {
+		o.environ = environ
+		o.Profile = o.EnvColorProfile()
+	}
+}
+
+// WithProfile returns a new Output for the given file descriptor and profile.
+func WithProfile(profile Profile) func(*Output) {
+	return func(o *Output) {
+		o.Profile = profile
 	}
 }
 
