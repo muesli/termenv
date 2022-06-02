@@ -53,7 +53,7 @@ func outputFromSession(s ssh.Session) *termenv.Output {
 	e := &sshEnviron{
 		environ: environ,
 	}
-	return termenv.NewOutput(o, e)
+	return termenv.NewOutput(o, termenv.WithEnvironment(e))
 }
 
 func main() {

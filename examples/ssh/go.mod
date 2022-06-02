@@ -6,7 +6,7 @@ require (
 	github.com/charmbracelet/wish v0.4.0
 	github.com/creack/pty v1.1.18
 	github.com/gliderlabs/ssh v0.3.4
-	github.com/muesli/termenv v0.11.1-0.20220601154942-afd10a1cfe15
+	github.com/muesli/termenv v0.11.1-0.20220212125758-44cd13922739
 )
 
 require (
@@ -22,3 +22,5 @@ require (
 	golang.org/x/crypto v0.0.0-20220307211146-efcb8507fb70 // indirect
 	golang.org/x/sys v0.0.0-20220209214540-3681064d5158 // indirect
 )
+
+replace github.com/muesli/termenv => ../../
