@@ -3,6 +3,7 @@ package termenv
 import (
 	"io"
 	"os"
+	"sync"
 )
 
 var (
@@ -21,6 +22,11 @@ type Output struct {
 	Profile
 	tty     File
 	environ Environ
+
+	fgSync  *sync.Once
+	fgColor Color
+	bgSync  *sync.Once
+	bgColor Color
 }
 
 // Environ is an interface for getting environment variables.
@@ -50,6 +56,10 @@ func NewOutput(tty File, opts ...func(*Output)) *Output {
 		tty:     tty,
 		environ: &osEnviron{},
 		Profile: Ascii,
+		fgSync:  &sync.Once{},
+		fgColor: NoColor{},
+		bgSync:  &sync.Once{},
+		bgColor: NoColor{},
 	}
 	o.Profile = o.EnvColorProfile()
 
@@ -78,20 +88,28 @@ func WithProfile(profile Profile) func(*Output) {
 
 // ForegroundColor returns the terminal's default foreground color.
 func (o Output) ForegroundColor() Color {
-	if !o.isTTY() {
-		return NoColor{}
-	}
+	o.fgSync.Do(func() {
+		if !o.isTTY() {
+			return
+		}
 
-	return o.foregroundColor()
+		o.fgColor = o.foregroundColor()
+	})
+
+	return o.fgColor
 }
 
 // BackgroundColor returns the terminal's default background color.
 func (o Output) BackgroundColor() Color {
-	if !o.isTTY() {
-		return NoColor{}
-	}
+	o.bgSync.Do(func() {
+		if !o.isTTY() {
+			return
+		}
 
-	return o.backgroundColor()
+		o.bgColor = o.backgroundColor()
+	})
+
+	return o.bgColor
 }
 
 // HasDarkBackground returns whether terminal uses a dark-ish background.
