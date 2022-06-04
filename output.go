@@ -20,7 +20,7 @@ type File interface {
 // Output is a terminal output.
 type Output struct {
 	Profile
-	tty     File
+	tty     io.Writer
 	environ Environ
 
 	fgSync  *sync.Once
@@ -51,7 +51,7 @@ func DefaultOutput() *Output {
 }
 
 // NewOutput returns a new Output for the given file descriptor.
-func NewOutput(tty File, opts ...func(*Output)) *Output {
+func NewOutput(tty io.Writer, opts ...func(*Output)) *Output {
 	o := &Output{
 		tty:     tty,
 		environ: &osEnviron{},
@@ -117,4 +117,17 @@ func (o Output) HasDarkBackground() bool {
 	c := ConvertToRGB(o.BackgroundColor())
 	_, _, l := c.Hsl()
 	return l < 0.5
+}
+
+// TTY returns the terminal's file descriptor. This may be nil if the output is
+// not a terminal.
+func (o Output) TTY() File {
+	if f, ok := o.tty.(File); ok {
+		return f
+	}
+	return nil
+}
+
+func (o Output) Write(p []byte) (int, error) {
+	return o.tty.Write(p)
 }

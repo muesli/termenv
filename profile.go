@@ -25,7 +25,7 @@ const (
 // String returns a new Style.
 func (p Profile) String(s ...string) Style {
 	return Style{
-		Profile: p,
+		profile: p,
 		string:  strings.Join(s, " "),
 	}
 }

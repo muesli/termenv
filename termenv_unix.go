@@ -223,7 +223,12 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 		return "", ErrStatusReport
 	}
 
-	fd := int(o.tty.Fd())
+	tty := o.TTY()
+	if tty == nil {
+		return "", ErrStatusReport
+	}
+
+	fd := int(tty.Fd())
 	// if in background, we can't control the terminal
 	if !isForeground(fd) {
 		return "", ErrStatusReport
@@ -243,13 +248,13 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 	}
 
 	// first, send OSC query, which is ignored by terminal which do not support it
-	fmt.Fprintf(o.tty, "\033]%d;?\033\\", sequence)
+	fmt.Fprintf(tty, "\033]%d;?\033\\", sequence)
 
 	// then, query cursor position, should be supported by all terminals
-	fmt.Fprintf(o.tty, "\033[6n")
+	fmt.Fprintf(tty, "\033[6n")
 
 	// read the next response
-	res, isOSC, err := readNextResponse(o.tty)
+	res, isOSC, err := readNextResponse(tty)
 	if err != nil {
 		return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
 	}
@@ -260,7 +265,7 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 	}
 
 	// read the cursor query response next and discard the result
-	_, _, err = readNextResponse(o.tty)
+	_, _, err = readNextResponse(tty)
 	if err != nil {
 		return "", err
 	}
