@@ -27,7 +27,7 @@ func verify(t *testing.T, o *Output, exp string) {
 		t.Fatal(err)
 	}
 
-	b, err := ioutil.ReadAll(o.tty)
+	b, err := ioutil.ReadAll(tty)
 	if err != nil {
 		t.Fatal(err)
 	}

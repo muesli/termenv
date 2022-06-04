@@ -355,3 +355,32 @@ func TestEnvNoColor(t *testing.T) {
 		})
 	}
 }
+
+func TestPseudoTerm(t *testing.T) {
+	buf := &bytes.Buffer{}
+	o := NewOutput(buf)
+	if o.Profile != Ascii {
+		t.Errorf("Expected %d, got %d", Ascii, o.Profile)
+	}
+
+	fg := o.ForegroundColor()
+	fgseq := fg.Sequence(false)
+	if fgseq != "" {
+		t.Errorf("Expected empty response, got %s", fgseq)
+	}
+
+	bg := o.BackgroundColor()
+	bgseq := bg.Sequence(true)
+	if bgseq != "" {
+		t.Errorf("Expected empty response, got %s", bgseq)
+	}
+
+	exp := "foobar"
+	out := o.String(exp)
+	out = out.Foreground(o.Color("#abcdef"))
+	o.Write([]byte(out.String()))
+
+	if buf.String() != exp {
+		t.Errorf("Expected %s, got %s", exp, buf.String())
+	}
+}

@@ -22,8 +22,11 @@ func (o *Output) isTTY() bool {
 	if len(o.environ.Getenv("CI")) > 0 {
 		return false
 	}
+	if o.TTY() == nil {
+		return false
+	}
 
-	return isatty.IsTerminal(o.tty.Fd())
+	return isatty.IsTerminal(o.TTY().Fd())
 }
 
 // ColorProfile returns the supported color profile:
