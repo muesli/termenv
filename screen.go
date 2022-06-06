@@ -120,12 +120,12 @@ func (o Output) MoveCursor(row int, column int) {
 
 // HideCursor hides the cursor.
 func (o Output) HideCursor() {
-	fmt.Fprintf(o.tty, CSI+HideCursorSeq)
+	fmt.Fprint(o.tty, CSI+HideCursorSeq)
 }
 
 // ShowCursor shows the cursor.
 func (o Output) ShowCursor() {
-	fmt.Fprintf(o.tty, CSI+ShowCursorSeq)
+	fmt.Fprint(o.tty, CSI+ShowCursorSeq)
 }
 
 // SaveCursorPosition saves the cursor position.
