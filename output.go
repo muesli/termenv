@@ -131,3 +131,7 @@ func (o Output) TTY() File {
 func (o Output) Write(p []byte) (int, error) {
 	return o.tty.Write(p)
 }
+
+func (o Output) WriteString(s string) (int, error) {
+	return o.Write([]byte(s))
+}
