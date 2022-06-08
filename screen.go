@@ -267,197 +267,273 @@ func (o Output) SetWindowTitle(title string) {
 // Legacy functions.
 
 // Reset the terminal to its default style, removing any active styles.
+//
+// Deprecated: please use termenv.Output instead.
 func Reset() {
 	output.Reset()
 }
 
 // SetForegroundColor sets the default foreground color.
+//
+// Deprecated: please use termenv.Output instead.
 func SetForegroundColor(color Color) {
 	output.SetForegroundColor(color)
 }
 
 // SetBackgroundColor sets the default background color.
+//
+// Deprecated: please use termenv.Output instead.
 func SetBackgroundColor(color Color) {
 	output.SetBackgroundColor(color)
 }
 
 // SetCursorColor sets the cursor color.
+//
+// Deprecated: please use termenv.Output instead.
 func SetCursorColor(color Color) {
 	output.SetCursorColor(color)
 }
 
 // RestoreScreen restores a previously saved screen state.
+//
+// Deprecated: please use termenv.Output instead.
 func RestoreScreen() {
 	output.RestoreScreen()
 }
 
 // SaveScreen saves the screen state.
+//
+// Deprecated: please use termenv.Output instead.
 func SaveScreen() {
 	output.SaveScreen()
 }
 
 // AltScreen switches to the alternate screen buffer. The former view can be
 // restored with ExitAltScreen().
+//
+// Deprecated: please use termenv.Output instead.
 func AltScreen() {
 	output.AltScreen()
 }
 
 // ExitAltScreen exits the alternate screen buffer and returns to the former
 // terminal view.
+//
+// Deprecated: please use termenv.Output instead.
 func ExitAltScreen() {
 	output.ExitAltScreen()
 }
 
 // ClearScreen clears the visible portion of the terminal.
+//
+// Deprecated: please use termenv.Output instead.
 func ClearScreen() {
 	output.ClearScreen()
 }
 
 // MoveCursor moves the cursor to a given position.
+//
+// Deprecated: please use termenv.Output instead.
 func MoveCursor(row int, column int) {
 	output.MoveCursor(row, column)
 }
 
 // HideCursor hides the cursor.
+//
+// Deprecated: please use termenv.Output instead.
 func HideCursor() {
 	output.HideCursor()
 }
 
 // ShowCursor shows the cursor.
+//
+// Deprecated: please use termenv.Output instead.
 func ShowCursor() {
 	output.ShowCursor()
 }
 
 // SaveCursorPosition saves the cursor position.
+//
+// Deprecated: please use termenv.Output instead.
 func SaveCursorPosition() {
 	output.SaveCursorPosition()
 }
 
 // RestoreCursorPosition restores a saved cursor position.
+//
+// Deprecated: please use termenv.Output instead.
 func RestoreCursorPosition() {
 	output.RestoreCursorPosition()
 }
 
 // CursorUp moves the cursor up a given number of lines.
+//
+// Deprecated: please use termenv.Output instead.
 func CursorUp(n int) {
 	output.CursorUp(n)
 }
 
 // CursorDown moves the cursor down a given number of lines.
+//
+// Deprecated: please use termenv.Output instead.
 func CursorDown(n int) {
 	output.CursorDown(n)
 }
 
 // CursorForward moves the cursor up a given number of lines.
+//
+// Deprecated: please use termenv.Output instead.
 func CursorForward(n int) {
 	output.CursorForward(n)
 }
 
 // CursorBack moves the cursor backwards a given number of cells.
+//
+// Deprecated: please use termenv.Output instead.
 func CursorBack(n int) {
 	output.CursorBack(n)
 }
 
 // CursorNextLine moves the cursor down a given number of lines and places it at
 // the beginning of the line.
+//
+// Deprecated: please use termenv.Output instead.
 func CursorNextLine(n int) {
 	output.CursorNextLine(n)
 }
 
 // CursorPrevLine moves the cursor up a given number of lines and places it at
 // the beginning of the line.
+//
+// Deprecated: please use termenv.Output instead.
 func CursorPrevLine(n int) {
 	output.CursorPrevLine(n)
 }
 
 // ClearLine clears the current line.
+//
+// Deprecated: please use termenv.Output instead.
 func ClearLine() {
 	output.ClearLine()
 }
 
 // ClearLineLeft clears the line to the left of the cursor.
+//
+// Deprecated: please use termenv.Output instead.
 func ClearLineLeft() {
 	output.ClearLineLeft()
 }
 
 // ClearLineRight clears the line to the right of the cursor.
+//
+// Deprecated: please use termenv.Output instead.
 func ClearLineRight() {
 	output.ClearLineRight()
 }
 
 // ClearLines clears a given number of lines.
+//
+// Deprecated: please use termenv.Output instead.
 func ClearLines(n int) {
 	output.ClearLines(n)
 }
 
 // ChangeScrollingRegion sets the scrolling region of the terminal.
+//
+// Deprecated: please use termenv.Output instead.
 func ChangeScrollingRegion(top, bottom int) {
 	output.ChangeScrollingRegion(top, bottom)
 }
 
 // InsertLines inserts the given number of lines at the top of the scrollable
 // region, pushing lines below down.
+//
+// Deprecated: please use termenv.Output instead.
 func InsertLines(n int) {
 	output.InsertLines(n)
 }
 
 // DeleteLines deletes the given number of lines, pulling any lines in
 // the scrollable region below up.
+//
+// Deprecated: please use termenv.Output instead.
 func DeleteLines(n int) {
 	output.DeleteLines(n)
 }
 
 // EnableMousePress enables X10 mouse mode. Button press events are sent only.
+//
+// Deprecated: please use termenv.Output instead.
 func EnableMousePress() {
 	output.EnableMousePress()
 }
 
 // DisableMousePress disables X10 mouse mode.
+//
+// Deprecated: please use termenv.Output instead.
 func DisableMousePress() {
 	output.DisableMousePress()
 }
 
 // EnableMouse enables Mouse Tracking mode.
+//
+// Deprecated: please use termenv.Output instead.
 func EnableMouse() {
 	output.EnableMouse()
 }
 
 // DisableMouse disables Mouse Tracking mode.
+//
+// Deprecated: please use termenv.Output instead.
 func DisableMouse() {
 	output.DisableMouse()
 }
 
 // EnableMouseHilite enables Hilite Mouse Tracking mode.
+//
+// Deprecated: please use termenv.Output instead.
 func EnableMouseHilite() {
 	output.EnableMouseHilite()
 }
 
 // DisableMouseHilite disables Hilite Mouse Tracking mode.
+//
+// Deprecated: please use termenv.Output instead.
 func DisableMouseHilite() {
 	output.DisableMouseHilite()
 }
 
 // EnableMouseCellMotion enables Cell Motion Mouse Tracking mode.
+//
+// Deprecated: please use termenv.Output instead.
 func EnableMouseCellMotion() {
 	output.EnableMouseCellMotion()
 }
 
 // DisableMouseCellMotion disables Cell Motion Mouse Tracking mode.
+//
+// Deprecated: please use termenv.Output instead.
 func DisableMouseCellMotion() {
 	output.DisableMouseCellMotion()
 }
 
 // EnableMouseAllMotion enables All Motion Mouse mode.
+//
+// Deprecated: please use termenv.Output instead.
 func EnableMouseAllMotion() {
 	output.EnableMouseAllMotion()
 }
 
 // DisableMouseAllMotion disables All Motion Mouse mode.
+//
+// Deprecated: please use termenv.Output instead.
 func DisableMouseAllMotion() {
 	output.DisableMouseAllMotion()
 }
 
 // SetWindowTitle sets the terminal window title.
+//
+// Deprecated: please use termenv.Output instead.
 func SetWindowTitle(title string) {
 	output.SetWindowTitle(title)
 }
