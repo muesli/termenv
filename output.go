@@ -23,6 +23,7 @@ type Output struct {
 	tty     io.Writer
 	environ Environ
 
+	cache   bool
 	fgSync  *sync.Once
 	fgColor Color
 	bgSync  *sync.Once
@@ -55,65 +56,89 @@ func NewOutput(tty io.Writer, opts ...func(*Output)) *Output {
 	o := &Output{
 		tty:     tty,
 		environ: &osEnviron{},
-		Profile: Ascii,
+		Profile: -1,
 		fgSync:  &sync.Once{},
 		fgColor: NoColor{},
 		bgSync:  &sync.Once{},
 		bgColor: NoColor{},
 	}
-	o.Profile = o.EnvColorProfile()
 
 	for _, opt := range opts {
 		opt(o)
+	}
+	if o.Profile < 0 {
+		o.Profile = o.EnvColorProfile()
 	}
 
 	return o
 }
 
-// WithProfile returns a new Output for the given environment. The profile gets
-// detected from this environment.
+// WithEnvironment returns a new Output for the given environment.
 func WithEnvironment(environ Environ) func(*Output) {
 	return func(o *Output) {
 		o.environ = environ
-		o.Profile = o.EnvColorProfile()
 	}
 }
 
-// WithProfile returns a new Output for the given file descriptor and profile.
+// WithProfile returns a new Output for the given profile.
 func WithProfile(profile Profile) func(*Output) {
 	return func(o *Output) {
 		o.Profile = profile
 	}
 }
 
+// WithCache returns a new Output with fore- and background color values
+// pre-fetched and cached.
+func WithCache(v bool) func(*Output) {
+	return func(o *Output) {
+		o.cache = v
+
+		// cache the values now
+		_ = o.ForegroundColor()
+		_ = o.BackgroundColor()
+	}
+}
+
 // ForegroundColor returns the terminal's default foreground color.
-func (o Output) ForegroundColor() Color {
-	o.fgSync.Do(func() {
+func (o *Output) ForegroundColor() Color {
+	f := func() {
 		if !o.isTTY() {
 			return
 		}
 
 		o.fgColor = o.foregroundColor()
-	})
+	}
+
+	if o.cache {
+		o.fgSync.Do(f)
+	} else {
+		f()
+	}
 
 	return o.fgColor
 }
 
 // BackgroundColor returns the terminal's default background color.
-func (o Output) BackgroundColor() Color {
-	o.bgSync.Do(func() {
+func (o *Output) BackgroundColor() Color {
+	f := func() {
 		if !o.isTTY() {
 			return
 		}
 
 		o.bgColor = o.backgroundColor()
-	})
+	}
+
+	if o.cache {
+		o.bgSync.Do(f)
+	} else {
+		f()
+	}
 
 	return o.bgColor
 }
 
 // HasDarkBackground returns whether terminal uses a dark-ish background.
-func (o Output) HasDarkBackground() bool {
+func (o *Output) HasDarkBackground() bool {
 	c := ConvertToRGB(o.BackgroundColor())
 	_, _, l := c.Hsl()
 	return l < 0.5
@@ -132,6 +157,7 @@ func (o Output) Write(p []byte) (int, error) {
 	return o.tty.Write(p)
 }
 
+// WriteString writes the given string to the output.
 func (o Output) WriteString(s string) (int, error) {
 	return o.Write([]byte(s))
 }

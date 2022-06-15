@@ -384,3 +384,11 @@ func TestPseudoTerm(t *testing.T) {
 		t.Errorf("Expected %s, got %s", exp, buf.String())
 	}
 }
+
+func TestCache(t *testing.T) {
+	o := NewOutput(os.Stdout, WithCache(true), WithProfile(TrueColor))
+
+	if o.cache != true {
+		t.Errorf("Expected cache to be active, got %t", o.cache)
+	}
+}
