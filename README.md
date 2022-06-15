@@ -34,7 +34,7 @@ go get github.com/muesli/termenv
 ## Usage
 
 ```go
-output := termenv.NewOuput(os.Stdout)
+output := termenv.NewOutput(os.Stdout)
 ```
 
 `termenv` queries the terminal's capabilities it is running in, so you can
@@ -70,7 +70,7 @@ If you don't want to rely on the automatic detection, you can manually select
 the profile you want to use:
 
 ```go
-output := termenv.NewOuputWithProfile(os.Stdout, termenv.TrueColor)
+output := termenv.NewOutput(os.Stdout, termenv.WithProfile(termenv.TrueColor))
 ```
 
 ## Colors
