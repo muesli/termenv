@@ -14,11 +14,15 @@ import (
 
 type sshOutput struct {
 	ssh.Session
-	pty *os.File
+	tty *os.File
+}
+
+func (s *sshOutput) Write(p []byte) (int, error) {
+	return s.Session.Write(p)
 }
 
 func (s *sshOutput) Fd() uintptr {
-	return s.pty.Fd()
+	return s.tty.Fd()
 }
 
 type sshEnviron struct {
@@ -40,13 +44,13 @@ func (s *sshEnviron) Environ() []string {
 
 func outputFromSession(s ssh.Session) *termenv.Output {
 	sshPty, _, _ := s.Pty()
-	pty, _, err := pty.Open()
+	_, tty, err := pty.Open()
 	if err != nil {
 		panic(err)
 	}
 	o := &sshOutput{
 		Session: s,
-		pty:     pty,
+		tty:     tty,
 	}
 	environ := s.Environ()
 	environ = append(environ, fmt.Sprintf("TERM=%s", sshPty.Term))
