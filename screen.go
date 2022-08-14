@@ -49,6 +49,13 @@ const (
 	AltScreenSeq     = "?1049h"
 	ExitAltScreenSeq = "?1049l"
 
+	// Bracketed paste.
+	// https://en.wikipedia.org/wiki/Bracketed-paste
+	EnableBracketedPasteSeq  = "?2004h"
+	DisableBracketedPasteSeq = "?2004l"
+	StartBracketedPasteSeq   = "200~"
+	EndBracketedPasteSeq     = "201~"
+
 	// Session.
 	SetWindowTitleSeq     = "2;%s\007"
 	SetForegroundColorSeq = "10;%s\007"
@@ -255,4 +262,14 @@ func DisableMouseAllMotion() {
 // SetWindowTitle sets the terminal window title.
 func SetWindowTitle(title string) {
 	fmt.Printf(OSC+SetWindowTitleSeq, title)
+}
+
+// EnableBracketedPaste enables bracketed paste.
+func EnableBracketedPaste() {
+	fmt.Print(CSI + EnableBracketedPasteSeq)
+}
+
+// DisableBracketedPaste disables bracketed paste.
+func DisableBracketedPaste() {
+	fmt.Print(CSI + DisableBracketedPasteSeq)
 }
