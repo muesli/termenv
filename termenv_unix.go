@@ -214,7 +214,7 @@ func termStatusReport(sequence int) (string, error) {
 	// screen/tmux can't support OSC, because they can be connected to multiple
 	// terminals concurrently.
 	term := os.Getenv("TERM")
-	if strings.HasPrefix(term, "screen") {
+	if strings.HasPrefix(term, "screen") || strings.HasPrefix(term, "tmux") {
 		return "", ErrStatusReport
 	}
 
