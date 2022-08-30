@@ -264,6 +264,16 @@ func (o Output) SetWindowTitle(title string) {
 	fmt.Fprintf(o.tty, OSC+SetWindowTitleSeq, title)
 }
 
+// EnableBracketedPaste enables bracketed paste.
+func (o Output) EnableBracketedPaste() {
+	fmt.Fprintf(o.tty, CSI+EnableBracketedPasteSeq)
+}
+
+// DisableBracketedPaste disables bracketed paste.
+func (o Output) DisableBracketedPaste() {
+	fmt.Fprintf(o.tty, CSI+DisableBracketedPasteSeq)
+}
+
 // Legacy functions.
 
 // Reset the terminal to its default style, removing any active styles.
@@ -539,11 +549,15 @@ func SetWindowTitle(title string) {
 }
 
 // EnableBracketedPaste enables bracketed paste.
+//
+// Deprecated: please use termenv.Output instead.
 func EnableBracketedPaste() {
-	fmt.Print(CSI + EnableBracketedPasteSeq)
+	output.EnableBracketedPaste()
 }
 
 // DisableBracketedPaste disables bracketed paste.
+//
+// Deprecated: please use termenv.Output instead.
 func DisableBracketedPaste() {
-	fmt.Print(CSI + DisableBracketedPasteSeq)
+	output.DisableBracketedPaste()
 }
