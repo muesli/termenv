@@ -10,6 +10,10 @@ import (
 )
 
 func (o *Output) ColorProfile() Profile {
+	if !o.isTTY() {
+		return Ascii
+	}
+
 	if o.environ.Getenv("ConEmuANSI") == "ON" {
 		return TrueColor
 	}
