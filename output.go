@@ -87,9 +87,9 @@ func WithProfile(profile Profile) func(*Output) {
 	}
 }
 
-// WithCache returns a new Output with fore- and background color values
+// WithColorCache returns a new Output with fore- and background color values
 // pre-fetched and cached.
-func WithCache(v bool) func(*Output) {
+func WithColorCache(v bool) func(*Output) {
 	return func(o *Output) {
 		o.cache = v
 
