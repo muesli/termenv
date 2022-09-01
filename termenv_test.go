@@ -386,7 +386,7 @@ func TestPseudoTerm(t *testing.T) {
 }
 
 func TestCache(t *testing.T) {
-	o := NewOutput(os.Stdout, WithCache(true), WithProfile(TrueColor))
+	o := NewOutput(os.Stdout, WithColorCache(true), WithProfile(TrueColor))
 
 	if o.cache != true {
 		t.Errorf("Expected cache to be active, got %t", o.cache)
