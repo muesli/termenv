@@ -7,6 +7,12 @@ import (
 )
 
 func main() {
+	restoreConsole, err := termenv.EnableVirtualTerminalProcessing(termenv.DefaultOutput())
+	if err != nil {
+		panic(err)
+	}
+	defer restoreConsole()
+
 	// Basic ANSI colors 0 - 15
 	fmt.Println(termenv.String("Basic ANSI colors").Bold())
 

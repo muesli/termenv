@@ -7,6 +7,12 @@ import (
 )
 
 func main() {
+	restoreConsole, err := termenv.EnableVirtualTerminalProcessing(termenv.DefaultOutput())
+	if err != nil {
+		panic(err)
+	}
+	defer restoreConsole()
+
 	p := termenv.ColorProfile()
 
 	fmt.Printf("\n\t%s %s %s %s %s",
