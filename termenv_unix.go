@@ -5,6 +5,7 @@ package termenv
 
 import (
 	"fmt"
+	"io"
 	"strconv"
 	"strings"
 	"time"
@@ -272,4 +273,12 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 
 	// fmt.Println("Rcvd", res[1:])
 	return res, nil
+}
+
+// EnableVirtualTerminalProcessing enables virtual terminal processing on
+// Windows for w and returns a function that restores w to its previous state.
+// On non-Windows platforms, or if w does not refer to a terminal, then it
+// returns a non-nil no-op function and no error.
+func EnableVirtualTerminalProcessing(w io.Writer) (func() error, error) {
+	return func() error { return nil }, nil
 }
