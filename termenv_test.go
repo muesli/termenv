@@ -392,3 +392,16 @@ func TestCache(t *testing.T) {
 		t.Errorf("Expected cache to be active, got %t", o.cache)
 	}
 }
+
+func TestEnableVirtualTerminalProcessing(t *testing.T) {
+	// EnableVirtualTerminalProcessing should always return a non-nil
+	// restoreFunc, and in tests it should never return an error.
+	restoreFunc, err := EnableVirtualTerminalProcessing(NewOutput(os.Stdout))
+	if restoreFunc == nil || err != nil {
+		t.Fatalf("expected non-<nil>, <nil>, got %p, %v", restoreFunc, err)
+	}
+	// In tests, restoreFunc should never return an error.
+	if err := restoreFunc(); err != nil {
+		t.Fatalf("expected <nil>, got %v", err)
+	}
+}
