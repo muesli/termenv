@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image/color"
 	"os"
+	"runtime"
 	"strings"
 	"testing"
 	"text/template"
@@ -329,5 +330,26 @@ func TestEnvNoColor(t *testing.T) {
 				t.Errorf("expected %t but was %t", test.expected, actual)
 			}
 		})
+	}
+}
+
+func TestWindowsConsole(t *testing.T) {
+	// Test that the stub Windows console functions are present on all
+	// platforms. This test will cause a compile failure if they are not
+	// present.
+
+	// On Windows, don't run the functions as they require stdout to be a
+	// console, which is not the case in go test.
+	if runtime.GOOS == "windows" {
+		t.Skip()
+	}
+
+	// On non-Windows platforms, call the functions as they don't do anything.
+	mode, err := EnableWindowsANSIConsole()
+	if err != nil {
+		t.Errorf("Expected nil, got %v", err)
+	}
+	if err := RestoreWindowsConsole(mode); err != nil {
+		t.Errorf("Expected nil, got %v", err)
 	}
 }

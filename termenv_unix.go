@@ -262,3 +262,13 @@ func termStatusReport(sequence int) (string, error) {
 	// fmt.Println("Rcvd", res[1:])
 	return res, nil
 }
+
+// EnableWindowsANSIConsole does nothing on non-Windows platforms.
+func EnableWindowsANSIConsole() (uint32, error) {
+	return 0, nil
+}
+
+// RestoreWindowsConsole does nothing on non-Windows platforms.
+func RestoreWindowsConsole(mode uint32) error {
+	return nil
+}
