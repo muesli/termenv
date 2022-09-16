@@ -338,12 +338,16 @@ terminal applications on Unix support ANSI styling out-of-the-box, on Windows
 you need to enable ANSI processing in your application first:
 
 ```go
-    mode, err := termenv.EnableWindowsANSIConsole()
+    restoreConsole, err := termenv.EnableVirtualTerminalProcessing(termenv.DefaultOutput())
     if err != nil {
         panic(err)
     }
-    defer termenv.RestoreWindowsConsole(mode)
+    defer restoreConsole()
 ```
+
+The above code is safe to include on non-Windows systems or when os.Stdout does
+not refer to a terminal (e.g. in tests).
+
 
 ## Color Chart
 
