@@ -127,9 +127,11 @@ s.Bold().Underline()
 
 ## Template Helpers
 
+`termenv` provides a set of helper functions to style your Go templates:
+
 ```go
 // load template helpers
-f := termenv.TemplateFuncs(output.Profile)
+f := output.TemplateFuncs()
 tpl := template.New("tpl").Funcs(f)
 
 // apply bold style in a template
