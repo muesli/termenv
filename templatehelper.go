@@ -4,11 +4,17 @@ import (
 	"text/template"
 )
 
+// TemplateFuncs returns template helpers for the given output.
+func (o Output) TemplateFuncs() template.FuncMap {
+	return TemplateFuncs(o.Profile)
+}
+
 // TemplateFuncs contains a few useful template helpers.
 func TemplateFuncs(p Profile) template.FuncMap {
 	if p == Ascii {
 		return noopTemplateFuncs
 	}
+
 	return template.FuncMap{
 		"Color": func(values ...interface{}) string {
 			s := p.String(values[len(values)-1].(string))
