@@ -2,6 +2,7 @@ package termenv
 
 import (
 	"io"
+	"log"
 	"os"
 	"sync"
 )
@@ -122,6 +123,7 @@ func (o *Output) ForegroundColor() Color {
 func (o *Output) BackgroundColor() Color {
 	f := func() {
 		if !o.isTTY() {
+			log.Print("not a tty")
 			return
 		}
 

@@ -133,9 +133,9 @@ func waitForData(fd uintptr, timeout time.Duration) error {
 }
 
 func readNextByte(f File) (byte, error) {
-	if err := waitForData(f.Fd(), OSCTimeout); err != nil {
-		return 0, err
-	}
+	// if err := waitForData(f.Fd(), OSCTimeout); err != nil {
+	// 	return 0, err
+	// }
 
 	var b [1]byte
 	n, err := f.Read(b[:])
@@ -229,24 +229,25 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 		return "", ErrStatusReport
 	}
 
-	fd := int(tty.Fd())
+	// fd := int(tty.Fd())
 	// if in background, we can't control the terminal
-	if !isForeground(fd) {
-		return "", ErrStatusReport
-	}
+	// if !isForeground(fd) {
+	// log.Print("not in foreground")
+	// return "", ErrStatusReport
+	// }
 
-	t, err := unix.IoctlGetTermios(fd, tcgetattr)
-	if err != nil {
-		return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
-	}
-	defer unix.IoctlSetTermios(fd, tcsetattr, t) //nolint:errcheck
+	// t, err := unix.IoctlGetTermios(fd, tcgetattr)
+	// if err != nil {
+	// return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
+	// }
+	// defer unix.IoctlSetTermios(fd, tcsetattr, t) //nolint:errcheck
 
-	noecho := *t
-	noecho.Lflag = noecho.Lflag &^ unix.ECHO
-	noecho.Lflag = noecho.Lflag &^ unix.ICANON
-	if err := unix.IoctlSetTermios(fd, tcsetattr, &noecho); err != nil {
-		return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
-	}
+	// noecho := *t
+	// noecho.Lflag = noecho.Lflag &^ unix.ECHO
+	// noecho.Lflag = noecho.Lflag &^ unix.ICANON
+	// if err := unix.IoctlSetTermios(fd, tcsetattr, &noecho); err != nil {
+	// 	return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
+	// }
 
 	// first, send OSC query, which is ignored by terminal which do not support it
 	fmt.Fprintf(tty, "\033]%d;?\033\\", sequence)
