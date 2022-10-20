@@ -133,9 +133,10 @@ func waitForData(fd uintptr, timeout time.Duration) error {
 }
 
 func readNextByte(f File) (byte, error) {
-	if err := waitForData(f.Fd(), OSCTimeout); err != nil {
-		return 0, err
-	}
+	// if err := waitForData(f.Fd(), OSCTimeout); err != nil {
+	// 	log.Printf("termenv: failed to read OSC response: %v", err)
+	// 	return 0, err
+	// }
 
 	var b [1]byte
 	n, err := f.Read(b[:])
@@ -231,9 +232,9 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 
 	fd := int(tty.Fd())
 	// if in background, we can't control the terminal
-	if !isForeground(fd) {
-		return "", ErrStatusReport
-	}
+	// if !isForeground(fd) {
+	// 	return "", ErrStatusReport
+	// }
 
 	t, err := unix.IoctlGetTermios(fd, tcgetattr)
 	if err != nil {
