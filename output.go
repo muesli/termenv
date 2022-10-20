@@ -7,8 +7,10 @@ import (
 )
 
 var (
+	defaultTty = os.Stdout
+
 	// output is the default global output.
-	output = NewOutput(os.Stdout)
+	output = NewOutput(defaultTty)
 )
 
 // File represents a file descriptor.
@@ -20,7 +22,7 @@ type File interface {
 // Output is a terminal output.
 type Output struct {
 	Profile
-	tty     io.Writer
+	tty     io.ReadWriter
 	environ Environ
 
 	cache   bool
@@ -52,7 +54,7 @@ func DefaultOutput() *Output {
 }
 
 // NewOutput returns a new Output for the given file descriptor.
-func NewOutput(tty io.Writer, opts ...func(*Output)) *Output {
+func NewOutput(tty io.ReadWriter, opts ...func(*Output)) *Output {
 	o := &Output{
 		tty:     tty,
 		environ: &osEnviron{},
@@ -61,6 +63,9 @@ func NewOutput(tty io.Writer, opts ...func(*Output)) *Output {
 		fgColor: NoColor{},
 		bgSync:  &sync.Once{},
 		bgColor: NoColor{},
+	}
+	if o.tty == nil {
+		o.tty = os.Stdout
 	}
 
 	for _, opt := range opts {
@@ -155,6 +160,10 @@ func (o Output) TTY() File {
 
 func (o Output) Write(p []byte) (int, error) {
 	return o.tty.Write(p)
+}
+
+func (o Output) Read(p []byte) (int, error) {
+	return o.tty.Read(p)
 }
 
 // WriteString writes the given string to the output.
