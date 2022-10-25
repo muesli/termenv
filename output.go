@@ -8,7 +8,7 @@ import (
 
 var (
 	// output is the default global output.
-	output = NewOutput(os.Stdout)
+	output = NewOutput(nil)
 )
 
 // File represents a file descriptor.
@@ -68,6 +68,9 @@ func NewOutput(tty io.Writer, opts ...func(*Output)) *Output {
 	}
 	if o.Profile < 0 {
 		o.Profile = o.EnvColorProfile()
+	}
+	if o.tty == nil {
+		o.tty = os.Stdout
 	}
 
 	return o
