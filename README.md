@@ -253,7 +253,7 @@ output.ShowCursor()
 output.Copy(message)
 
 // Trigger notification
-output.Notification(title, body)
+output.Notify(title, body)
 ```
 
 ## Mouse
