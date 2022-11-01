@@ -249,8 +249,11 @@ output.HideCursor()
 // Show the cursor
 output.ShowCursor()
 
+// Copy to clipboard
+output.Copy(message)
+
 // Trigger notification
-output.Notification("Title", "Body")
+output.Notification(title, body)
 ```
 
 ## Mouse
