@@ -53,7 +53,7 @@ func main() {
 	fmt.Printf("\t%q copied to clipboard\n", hw)
 	fmt.Println()
 
-	termenv.Notification("Termenv", hw)
+	termenv.Notify("Termenv", hw)
 	fmt.Print("\tTriggered a notification")
 	fmt.Println()
 
