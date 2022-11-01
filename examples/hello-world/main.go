@@ -53,6 +53,10 @@ func main() {
 	fmt.Printf("\t%q copied to clipboard\n", hw)
 	fmt.Println()
 
+	termenv.Notification("Termenv", hw)
+	fmt.Print("\tTriggered a notification")
+	fmt.Println()
+
 	fmt.Printf("\t%s", termenv.Hyperlink("http://example.com", "This is a link"))
 	fmt.Println()
 }
