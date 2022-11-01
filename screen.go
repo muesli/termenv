@@ -57,10 +57,10 @@ const (
 	EndBracketedPasteSeq     = "201~"
 
 	// Session.
-	SetWindowTitleSeq     = "2;%s\007"
-	SetForegroundColorSeq = "10;%s\007"
-	SetBackgroundColorSeq = "11;%s\007"
-	SetCursorColorSeq     = "12;%s\007"
+	SetWindowTitleSeq     = "2;%s" + string(BEL)
+	SetForegroundColorSeq = "10;%s" + string(BEL)
+	SetBackgroundColorSeq = "11;%s" + string(BEL)
+	SetCursorColorSeq     = "12;%s" + string(BEL)
 	ShowCursorSeq         = "?25h"
 	HideCursorSeq         = "?25l"
 )

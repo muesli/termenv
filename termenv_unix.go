@@ -160,7 +160,7 @@ func readNextResponse(fd File) (response string, isOSC bool, err error) {
 	}
 
 	// first byte must be ESC
-	for start != '\033' {
+	for start != ESC {
 		start, err = readNextByte(fd)
 		if err != nil {
 			return "", false, err
@@ -197,7 +197,7 @@ func readNextResponse(fd File) (response string, isOSC bool, err error) {
 
 		if oscResponse {
 			// OSC can be terminated by BEL (\a) or ST (ESC)
-			if b == '\a' || strings.HasSuffix(response, "\033") {
+			if b == BEL || strings.HasSuffix(response, string(ESC)) {
 				return response, true, nil
 			}
 		} else {
@@ -249,10 +249,10 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 	}
 
 	// first, send OSC query, which is ignored by terminal which do not support it
-	fmt.Fprintf(tty, "\033]%d;?\033\\", sequence)
+	fmt.Fprintf(tty, OSC+"%d;?"+ST, sequence)
 
 	// then, query cursor position, should be supported by all terminals
-	fmt.Fprintf(tty, "\033[6n")
+	fmt.Fprintf(tty, CSI+"6n")
 
 	// read the next response
 	res, isOSC, err := readNextResponse(tty)
