@@ -405,3 +405,21 @@ func TestEnableVirtualTerminalProcessing(t *testing.T) {
 		t.Fatalf("expected <nil>, got %v", err)
 	}
 }
+
+func TestWithIsTTY(t *testing.T) {
+	{
+		o := NewOutput(os.Stdout, WithIsTTY(true))
+
+		if o.isTTY() != true {
+			t.Errorf("Expected isTTY is true, got %b", o.isTty)
+		}
+	}
+
+	{
+		o := NewOutput(os.Stdout, WithIsTTY(false))
+
+		if o.isTTY() != false {
+			t.Errorf("Expected isTTY is false, got %b", o.isTty)
+		}
+	}
+}

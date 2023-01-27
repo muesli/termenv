@@ -25,6 +25,10 @@ const (
 )
 
 func (o *Output) isTTY() bool {
+	if o.isTty != nil {
+		return *o.isTty
+	}
+
 	if len(o.environ.Getenv("CI")) > 0 {
 		return false
 	}

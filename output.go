@@ -28,6 +28,7 @@ type Output struct {
 	fgColor Color
 	bgSync  *sync.Once
 	bgColor Color
+	isTty   *bool
 }
 
 // Environ is an interface for getting environment variables.
@@ -96,6 +97,13 @@ func WithColorCache(v bool) func(*Output) {
 		// cache the values now
 		_ = o.ForegroundColor()
 		_ = o.BackgroundColor()
+	}
+}
+
+// WithIsTTY returns a new Output with isTTY set to the given value.
+func WithIsTTY(v bool) func(*Output) {
+	return func(o *Output) {
+		o.isTty = &v
 	}
 }
 
