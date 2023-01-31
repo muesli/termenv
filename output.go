@@ -26,6 +26,7 @@ type Output struct {
 	tty     io.Writer
 	environ Environ
 
+	unsafe  bool
 	cache   bool
 	fgSync  *sync.Once
 	fgColor Color
@@ -102,6 +103,17 @@ func WithColorCache(v bool) OutputOption {
 		// cache the values now
 		_ = o.ForegroundColor()
 		_ = o.BackgroundColor()
+	}
+}
+
+// WithUnsafe returns a new Output with unsafe mode enabled. Unsafe mode doesn't
+// check whether or not the terminal is a TTY.
+//
+// This is useful when mocking console output and enforcing ANSI escape output
+// e.g. on SSH sessions.
+func WithUnsafe() OutputOption {
+	return func(o *Output) {
+		o.unsafe = true
 	}
 }
 
