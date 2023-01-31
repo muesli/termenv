@@ -8,7 +8,7 @@ import (
 
 	"github.com/charmbracelet/wish"
 	"github.com/creack/pty"
-	"github.com/gliderlabs/ssh"
+	"github.com/charmbracelet/ssh"
 	"github.com/muesli/termenv"
 )
 
@@ -19,6 +19,14 @@ type sshOutput struct {
 
 func (s *sshOutput) Write(p []byte) (int, error) {
 	return s.Session.Write(p)
+}
+
+func (s *sshOutput) Read(p []byte) (int, error) {
+	return s.Session.Read(p)
+}
+
+func (s *sshOutput) Name() string {
+	return s.tty.Name()
 }
 
 func (s *sshOutput) Fd() uintptr {
@@ -57,7 +65,7 @@ func outputFromSession(s ssh.Session) *termenv.Output {
 	e := &sshEnviron{
 		environ: environ,
 	}
-	return termenv.NewOutput(o, termenv.WithEnvironment(e))
+	return termenv.NewOutput(o, termenv.WithUnsafe(), termenv.WithEnvironment(e))
 }
 
 func main() {
