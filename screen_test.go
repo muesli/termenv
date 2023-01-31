@@ -8,6 +8,19 @@ import (
 	"testing"
 )
 
+type testEnv struct{}
+
+func (te testEnv) Environ() []string {
+	return []string{"TERM=xterm-256color"}
+}
+
+func (te testEnv) Getenv(key string) string {
+	if key == "TERM" {
+		return "xterm-256color"
+	}
+	return ""
+}
+
 func tempOutput(t *testing.T) *Output {
 	t.Helper()
 
@@ -16,7 +29,7 @@ func tempOutput(t *testing.T) *Output {
 		t.Fatal(err)
 	}
 
-	return NewOutput(f, WithProfile(TrueColor))
+	return NewOutput(f, WithEnvironment(testEnv{}), WithProfile(TrueColor))
 }
 
 func verify(t *testing.T, o *Output, exp string) {
@@ -263,8 +276,50 @@ func TestDisableMouseAllMotion(t *testing.T) {
 	verify(t, o, "\x1b[?1003l")
 }
 
+func TestEnableMouseExtendedMode(t *testing.T) {
+	o := tempOutput(t)
+	o.EnableMouseExtendedMode()
+	verify(t, o, "\x1b[?1006h")
+}
+
+func TestDisableMouseExtendedMode(t *testing.T) {
+	o := tempOutput(t)
+	o.DisableMouseExtendedMode()
+	verify(t, o, "\x1b[?1006l")
+}
+
+func TestEnableMousePixelsMode(t *testing.T) {
+	o := tempOutput(t)
+	o.EnableMousePixelsMode()
+	verify(t, o, "\x1b[?1016h")
+}
+
+func TestDisableMousePixelsMode(t *testing.T) {
+	o := tempOutput(t)
+	o.DisableMousePixelsMode()
+	verify(t, o, "\x1b[?1016l")
+}
+
 func TestSetWindowTitle(t *testing.T) {
 	o := tempOutput(t)
 	o.SetWindowTitle("test")
 	verify(t, o, "\x1b]2;test\a")
+}
+
+func TestCopyClipboard(t *testing.T) {
+	o := tempOutput(t)
+	o.Copy("hello")
+	verify(t, o, "\x1b]52;c;aGVsbG8=\a")
+}
+
+func TestCopyPrimary(t *testing.T) {
+	o := tempOutput(t)
+	o.CopyPrimary("hello")
+	verify(t, o, "\x1b]52;p;aGVsbG8=\a")
+}
+
+func TestHyperlink(t *testing.T) {
+	o := tempOutput(t)
+	o.WriteString(o.Hyperlink("http://example.com", "example"))
+	verify(t, o, "\x1b]8;;http://example.com\x1b\\example\x1b]8;;\x1b\\")
 }
