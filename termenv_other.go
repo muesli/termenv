@@ -5,7 +5,9 @@ package termenv
 
 import "io"
 
-func colorProfile() Profile {
+// ColorProfile returns the supported color profile:
+// ANSI256
+func (o Output) ColorProfile() Profile {
 	return ANSI256
 }
 
@@ -17,12 +19,6 @@ func (o Output) foregroundColor() Color {
 func (o Output) backgroundColor() Color {
 	// default black
 	return ANSIColor(0)
-}
-
-// ColorProfile returns the supported color profile:
-// Default ANSI
-func (o *Output) ColorProfile() Profile {
-	return ANSI
 }
 
 // EnableVirtualTerminalProcessing enables virtual terminal processing on
