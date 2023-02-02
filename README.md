@@ -252,6 +252,9 @@ output.ShowCursor()
 // Copy to clipboard
 output.Copy(message)
 
+// Copy to primary clipboard (X11)
+output.CopyPrimary(message)
+
 // Trigger notification
 output.Notify(title, body)
 ```
