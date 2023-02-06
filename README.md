@@ -115,6 +115,13 @@ s.CrossOut()
 s.Underline()
 s.Overline()
 
+// Underline styles
+s.Underline(output.Color("#ff0000"))
+s.Undercurl(output.Color("11"))
+s.Underdouble()
+s.Underdot(output.Color("216"))
+s.Underdash()
+
 // Reverse swaps current fore- & background colors
 s.Reverse()
 
@@ -316,28 +323,32 @@ termenv.DisableBracketedPaste()
 <details>
 <summary>Click to show feature matrix</summary>
 
-| Terminal         | Query Color Scheme | Query Cursor Position | Set Window Title | Change Cursor Color | Change Default Foreground Setting | Change Default Background Setting | Bracketed Paste | Extended Mouse (SGR) | Pixels Mouse (SGR-Pixels) |
-| ---------------- | :----------------: | :-------------------: | :--------------: | :-----------------: | :-------------------------------: | :-------------------------------: | :-------------: | :------------------: | :-----------------------: |
-| alacritty        |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
-| foot             |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ✅             |
-| kitty            |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ✅             |
-| Konsole          |         ✅         |          ✅           |        ✅        |         ❌          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
-| rxvt             |         ❌         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ❌          |            ❌             |
-| urxvt            |         ❌         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
-| screen           |      ⛔[^mux]      |          ✅           |        ✅        |         ❌          |                ❌                 |                ✅                 |       ❌        |          ❌          |            ❌             |
-| st               |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
-| tmux             |      ⛔[^mux]      |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
-| vte-based[^vte]  |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ❌                 |       ✅        |          ✅          |            ❌             |
-| wezterm          |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ✅             |
-| xterm            |         ✅         |          ✅           |        ✅        |         ❌          |                ❌                 |                ❌                 |       ✅        |          ✅          |            ❌             |
-| Linux Console    |         ❌         |          ✅           |        ⛔        |         ❌          |                ❌                 |                ❌                 |       ❌        |          ❌          |            ❌             |
-| Apple Terminal   |         ✅         |          ✅           |        ✅        |         ❌          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
-| iTerm            |         ✅         |          ✅           |        ✅        |         ❌          |                ❌                 |                ❌                 |       ✅        |          ✅          |            ❌             |
-| Windows cmd      |         ❌         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ❌        |          ❌          |            ❌             |
-| Windows Terminal |         ❌         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
+| Terminal         | Colored & Styled Underlines | Query Color Scheme | Query Cursor Position | Set Window Title | Change Cursor Color | Change Default Foreground Setting | Change Default Background Setting | Bracketed Paste | Extended Mouse (SGR) | Pixels Mouse (SGR-Pixels) |
+| ---------------- | :-------------------------: | :----------------: | :-------------------: | :--------------: | :-----------------: | :-------------------------------: | :-------------------------------: | :-------------: | :------------------: | :-----------------------: |
+| alacritty        |             ✅              |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
+| foot             |          ❌[^foot]          |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ✅             |
+| kitty            |             ✅              |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ✅             |
+| Konsole          |             ✅              |         ✅         |          ✅           |        ✅        |         ❌          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
+| rxvt             |             ❌              |         ❌         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ❌          |            ❌             |
+| urxvt            |             ❌              |         ❌         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
+| screen           |             ❌              |      ⛔[^mux]      |          ✅           |        ✅        |         ❌          |                ❌                 |                ✅                 |       ❌        |          ❌          |            ❌             |
+| st               |           ✅[^st]           |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
+| tmux             |             ✅              |      ⛔[^mux]      |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
+| vte-based[^vte]  |             ✅              |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ❌                 |       ✅        |          ✅          |            ❌             |
+| wezterm          |             ✅              |         ✅         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ✅             |
+| xterm            |             ❌              |         ✅         |          ✅           |        ✅        |         ❌          |                ❌                 |                ❌                 |       ✅        |          ✅          |            ❌             |
+| Linux Console    |             ❌              |         ❌         |          ✅           |        ⛔        |         ❌          |                ❌                 |                ❌                 |       ❌        |          ❌          |            ❌             |
+| Apple Terminal   |             ❌              |         ✅         |          ✅           |        ✅        |         ❌          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
+| iTerm            |         ✅[^iterm]          |         ✅         |          ✅           |        ✅        |         ❌          |                ❌                 |                ❌                 |       ✅        |          ✅          |            ❌             |
+| Windows cmd      |             ❌              |         ❌         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ❌        |          ❌          |            ❌             |
+| Windows Terminal |        ❌[^winterm]         |         ❌         |          ✅           |        ✅        |         ✅          |                ✅                 |                ✅                 |       ✅        |          ✅          |            ❌             |
 
 [^vte]: This covers all vte-based terminals, including Gnome Terminal, guake, Pantheon Terminal, Terminator, Tilix, XFCE Terminal.
 [^mux]: Unavailable as multiplexers (like tmux or screen) can be connected to multiple terminals (with different color settings) at the same time.
+[^foot]: https://codeberg.org/dnkl/foot/issues/828
+[^st]: Underline styles & colors available using this patch https://st.suckless.org/patches/undercurl/
+[^iterm]: Supported in iTerm2 v3.5 https://gitlab.com/gnachman/iterm2/-/issues/6382
+[^winterm]: Refer to https://github.com/microsoft/terminal/issues/7228
 
 You can help improve this list! Check out [how to](ansi_compat.md) and open an issue or pull request.
 
