@@ -79,12 +79,12 @@ func (o Output) foregroundColor() Color {
 		c := strings.Split(colorFGBG, ";")
 		i, err := strconv.Atoi(c[0])
 		if err == nil {
-			return ANSIColor(i)
+			return ANSIColor{Color: uint8(i)}
 		}
 	}
 
 	// default gray
-	return ANSIColor(7)
+	return ANSIColor{Color: 7}
 }
 
 func (o Output) backgroundColor() Color {
@@ -101,12 +101,12 @@ func (o Output) backgroundColor() Color {
 		c := strings.Split(colorFGBG, ";")
 		i, err := strconv.Atoi(c[len(c)-1])
 		if err == nil {
-			return ANSIColor(i)
+			return ANSIColor{Color: uint8(i)}
 		}
 	}
 
 	// default black
-	return ANSIColor(0)
+	return ANSIColor{Color: 0}
 }
 
 func (o *Output) waitForData(timeout time.Duration) error {

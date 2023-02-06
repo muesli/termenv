@@ -17,14 +17,14 @@ func TestLegacyTermEnv(t *testing.T) {
 	}
 
 	fg := ForegroundColor()
-	fgseq := fg.Sequence(false)
+	fgseq := fg.Sequence()
 	fgexp := "97"
 	if fgseq != fgexp && fgseq != "" {
 		t.Errorf("Expected %s, got %s", fgexp, fgseq)
 	}
 
 	bg := BackgroundColor()
-	bgseq := bg.Sequence(true)
+	bgseq := bg.Sequence()
 	bgexp := "48;2;0;0;0"
 	if bgseq != bgexp && bgseq != "" {
 		t.Errorf("Expected %s, got %s", bgexp, bgseq)
@@ -40,14 +40,14 @@ func TestTermEnv(t *testing.T) {
 	}
 
 	fg := o.ForegroundColor()
-	fgseq := fg.Sequence(false)
+	fgseq := fg.Sequence()
 	fgexp := "97"
 	if fgseq != fgexp && fgseq != "" {
 		t.Errorf("Expected %s, got %s", fgexp, fgseq)
 	}
 
 	bg := o.BackgroundColor()
-	bgseq := bg.Sequence(true)
+	bgseq := bg.Sequence()
 	bgexp := "48;2;0;0;0"
 	if bgseq != bgexp && bgseq != "" {
 		t.Errorf("Expected %s, got %s", bgexp, bgseq)
@@ -115,16 +115,16 @@ func TestColorConversion(t *testing.T) {
 func TestFromColor(t *testing.T) {
 	// color.Color interface
 	c := TrueColor.FromColor(color.RGBA{255, 128, 0, 255})
-	exp := "38;2;255;128;0"
-	if c.Sequence(false) != exp {
-		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
+	exp := "2;255;128;0"
+	if c.Sequence() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence())
 	}
 }
 
 func TestAscii(t *testing.T) {
 	c := Ascii.Color("#abcdef")
-	if c.Sequence(false) != "" {
-		t.Errorf("Expected empty sequence, got %s", c.Sequence(false))
+	if c.Sequence() != "" {
+		t.Errorf("Expected empty sequence, got %s", c.Sequence())
 	}
 }
 
@@ -133,8 +133,8 @@ func TestANSIProfile(t *testing.T) {
 
 	c := p.Color("#e88388")
 	exp := "91"
-	if c.Sequence(false) != exp {
-		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
+	if c.Sequence() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence())
 	}
 	if _, ok := c.(ANSIColor); !ok {
 		t.Errorf("Expected type termenv.ANSIColor, got %T", c)
@@ -142,8 +142,8 @@ func TestANSIProfile(t *testing.T) {
 
 	c = p.Color("82")
 	exp = "92"
-	if c.Sequence(false) != exp {
-		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
+	if c.Sequence() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence())
 	}
 	if _, ok := c.(ANSIColor); !ok {
 		t.Errorf("Expected type termenv.ANSIColor, got %T", c)
@@ -151,8 +151,8 @@ func TestANSIProfile(t *testing.T) {
 
 	c = p.Color("2")
 	exp = "32"
-	if c.Sequence(false) != exp {
-		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
+	if c.Sequence() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence())
 	}
 	if _, ok := c.(ANSIColor); !ok {
 		t.Errorf("Expected type termenv.ANSIColor, got %T", c)
@@ -163,18 +163,18 @@ func TestANSI256Profile(t *testing.T) {
 	p := ANSI256
 
 	c := p.Color("#abcdef")
-	exp := "38;5;153"
-	if c.Sequence(false) != exp {
-		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
+	exp := "5;153"
+	if c.Sequence() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence())
 	}
 	if _, ok := c.(ANSI256Color); !ok {
 		t.Errorf("Expected type termenv.ANSI256Color, got %T", c)
 	}
 
 	c = p.Color("139")
-	exp = "38;5;139"
-	if c.Sequence(false) != exp {
-		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
+	exp = "5;139"
+	if c.Sequence() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence())
 	}
 	if _, ok := c.(ANSI256Color); !ok {
 		t.Errorf("Expected type termenv.ANSI256Color, got %T", c)
@@ -182,8 +182,8 @@ func TestANSI256Profile(t *testing.T) {
 
 	c = p.Color("2")
 	exp = "32"
-	if c.Sequence(false) != exp {
-		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
+	if c.Sequence() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence())
 	}
 	if _, ok := c.(ANSIColor); !ok {
 		t.Errorf("Expected type termenv.ANSIColor, got %T", c)
@@ -194,18 +194,18 @@ func TestTrueColorProfile(t *testing.T) {
 	p := TrueColor
 
 	c := p.Color("#abcdef")
-	exp := "38;2;171;205;239"
-	if c.Sequence(false) != exp {
-		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
+	exp := "2;171;205;239"
+	if c.Sequence() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence())
 	}
 	if _, ok := c.(RGBColor); !ok {
 		t.Errorf("Expected type termenv.HexColor, got %T", c)
 	}
 
 	c = p.Color("139")
-	exp = "38;5;139"
-	if c.Sequence(false) != exp {
-		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
+	exp = "5;139"
+	if c.Sequence() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence())
 	}
 	if _, ok := c.(ANSI256Color); !ok {
 		t.Errorf("Expected type termenv.ANSI256Color, got %T", c)
@@ -213,8 +213,8 @@ func TestTrueColorProfile(t *testing.T) {
 
 	c = p.Color("2")
 	exp = "32"
-	if c.Sequence(false) != exp {
-		t.Errorf("Expected %s, got %s", exp, c.Sequence(false))
+	if c.Sequence() != exp {
+		t.Errorf("Expected %s, got %s", exp, c.Sequence())
 	}
 	if _, ok := c.(ANSIColor); !ok {
 		t.Errorf("Expected type termenv.ANSIColor, got %T", c)
@@ -364,13 +364,13 @@ func TestPseudoTerm(t *testing.T) {
 	}
 
 	fg := o.ForegroundColor()
-	fgseq := fg.Sequence(false)
+	fgseq := fg.Sequence()
 	if fgseq != "" {
 		t.Errorf("Expected empty response, got %s", fgseq)
 	}
 
 	bg := o.BackgroundColor()
-	bgseq := bg.Sequence(true)
+	bgseq := bg.Sequence()
 	if bgseq != "" {
 		t.Errorf("Expected empty response, got %s", bgseq)
 	}

@@ -59,7 +59,15 @@ func (t Style) Styled(s string) string {
 // Foreground sets a foreground color.
 func (t Style) Foreground(c Color) Style {
 	if c != nil {
-		t.styles = append(t.styles, c.Sequence(false))
+		if ac, ok := c.(ANSIColor); ok {
+			// ANSIColor(s) are their own sequences.
+			ac.bg = false
+			c = ac
+		} else if _, ok := c.(NoColor); !ok {
+			// NoColor can't have any sequences
+			t.styles = append(t.styles, ForegroudSeq)
+		}
+		t.styles = append(t.styles, c.Sequence())
 	}
 	return t
 }
@@ -67,7 +75,15 @@ func (t Style) Foreground(c Color) Style {
 // Background sets a background color.
 func (t Style) Background(c Color) Style {
 	if c != nil {
-		t.styles = append(t.styles, c.Sequence(true))
+		if ac, ok := c.(ANSIColor); ok {
+			// ANSIColor(s) are their own sequences.
+			ac.bg = true
+			c = ac
+		} else if _, ok := c.(NoColor); !ok {
+			// NoColor can't have any sequences
+			t.styles = append(t.styles, BackgroundSeq)
+		}
+		t.styles = append(t.styles, c.Sequence())
 	}
 	return t
 }
