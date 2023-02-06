@@ -8,6 +8,12 @@ Bold
 Faint
 Italic
 Underline
+Red Underline
+Double Underline
+Undercurl
+Green Undercurl
+Dotted Underline
+Dashed Underline
 Overline
 Blink
 Reverse

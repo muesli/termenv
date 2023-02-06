@@ -45,14 +45,29 @@ func TemplateFuncs(p Profile) template.FuncMap {
 
 			return s.String()
 		},
-		"Bold":      styleFunc(p, Style.Bold),
-		"Faint":     styleFunc(p, Style.Faint),
-		"Italic":    styleFunc(p, Style.Italic),
-		"Underline": styleFunc(p, Style.Underline),
-		"Overline":  styleFunc(p, Style.Overline),
-		"Blink":     styleFunc(p, Style.Blink),
-		"Reverse":   styleFunc(p, Style.Reverse),
-		"CrossOut":  styleFunc(p, Style.CrossOut),
+		"Bold":        styleFunc(p, Style.Bold),
+		"Faint":       styleFunc(p, Style.Faint),
+		"Italic":      styleFunc(p, Style.Italic),
+		"Overline":    styleFunc(p, Style.Overline),
+		"Blink":       styleFunc(p, Style.Blink),
+		"Reverse":     styleFunc(p, Style.Reverse),
+		"CrossOut":    styleFunc(p, Style.CrossOut),
+		"Underline":   styleUnderline(p, Style.Underline),
+		"Underdouble": styleUnderline(p, Style.Underdouble),
+		"Undercurl":   styleUnderline(p, Style.Undercurl),
+		"Underdot":    styleUnderline(p, Style.Underdot),
+		"Underdash":   styleUnderline(p, Style.Underdash),
+	}
+}
+
+func styleUnderline(p Profile, f func(Style, ...Color) Style) func(...interface{}) string {
+	return func(values ...interface{}) string {
+		if len(values) == 2 {
+			s := p.String(values[1].(string))
+			return f(s, p.Color(values[0].(string))).String()
+		}
+		s := p.String(values[0].(string))
+		return f(s).String()
 	}
 }
 
@@ -64,17 +79,21 @@ func styleFunc(p Profile, f func(Style) Style) func(...interface{}) string {
 }
 
 var noopTemplateFuncs = template.FuncMap{
-	"Color":      noColorFunc,
-	"Foreground": noColorFunc,
-	"Background": noColorFunc,
-	"Bold":       noStyleFunc,
-	"Faint":      noStyleFunc,
-	"Italic":     noStyleFunc,
-	"Underline":  noStyleFunc,
-	"Overline":   noStyleFunc,
-	"Blink":      noStyleFunc,
-	"Reverse":    noStyleFunc,
-	"CrossOut":   noStyleFunc,
+	"Color":       noColorFunc,
+	"Foreground":  noColorFunc,
+	"Background":  noColorFunc,
+	"Bold":        noStyleFunc,
+	"Faint":       noStyleFunc,
+	"Italic":      noStyleFunc,
+	"Overline":    noStyleFunc,
+	"Blink":       noStyleFunc,
+	"Reverse":     noStyleFunc,
+	"CrossOut":    noStyleFunc,
+	"Underline":   noUnderline,
+	"Underdouble": noUnderline,
+	"Undercurl":   noUnderline,
+	"Underdot":    noUnderline,
+	"Underdash":   noUnderline,
 }
 
 func noColorFunc(values ...interface{}) string {
@@ -82,5 +101,12 @@ func noColorFunc(values ...interface{}) string {
 }
 
 func noStyleFunc(values ...interface{}) string {
+	return values[0].(string)
+}
+
+func noUnderline(values ...interface{}) string {
+	if len(values) == 2 {
+		return values[1].(string)
+	}
 	return values[0].(string)
 }

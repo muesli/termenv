@@ -19,6 +19,8 @@ const (
 	ForegroudSeq = "38"
 	// Background sequence code.
 	BackgroundSeq = "48"
+	// Underline color sequence code.
+	UnderColorSeq = "58"
 )
 
 // Foreground and Background sequence codes
