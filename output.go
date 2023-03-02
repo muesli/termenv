@@ -55,6 +55,11 @@ func DefaultOutput() *Output {
 	return output
 }
 
+// SetDefaultOutput sets the default global output.
+func SetDefaultOutput(o *Output) {
+	output = o
+}
+
 // NewOutput returns a new Output for the given file descriptor.
 func NewOutput(tty io.Writer, opts ...OutputOption) *Output {
 	o := &Output{
