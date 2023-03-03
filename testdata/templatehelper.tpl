@@ -8,6 +8,12 @@ Plain
 {{ Faint "Faint" }}
 {{ Italic "Italic" }}
 {{ Underline "Underline" }}
+{{ Underline "#ff0000" "Red Underline" }}
+{{ Underdouble "Double Underline" }}
+{{ Undercurl "Undercurl" }}
+{{ Undercurl "#00ff00" "Green Undercurl" }}
+{{ Underdot "Dotted Underline" }}
+{{ Underdash "Dashed Underline" }}
 {{ Overline "Overline" }}
 {{ Blink "Blink" }}
 {{ Reverse "Reverse" }}

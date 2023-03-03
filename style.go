@@ -9,15 +9,20 @@ import (
 
 // Sequence definitions.
 const (
-	ResetSeq     = "0"
-	BoldSeq      = "1"
-	FaintSeq     = "2"
-	ItalicSeq    = "3"
-	UnderlineSeq = "4"
-	BlinkSeq     = "5"
-	ReverseSeq   = "7"
-	CrossOutSeq  = "9"
-	OverlineSeq  = "53"
+	ResetSeq       = "0"
+	BoldSeq        = "1"
+	FaintSeq       = "2"
+	ItalicSeq      = "3"
+	UnderlineSeq   = "4" // also 4:1
+	UnderdoubleSeq = "4:2"
+	UndercurlSeq   = "4:3"
+	UnderdotSeq    = "4:4"
+	UnderdashSeq   = "4:5"
+	BlinkSeq       = "5"
+	ReverseSeq     = "7"
+	CrossOutSeq    = "9"
+	OverlineSeq    = "53"
+	UndercolorSeq  = "58"
 )
 
 // Style is a string that various rendering styles can be applied to.
@@ -106,9 +111,63 @@ func (t Style) Italic() Style {
 	return t
 }
 
+func undercolorSeq(c Color) []string {
+	var seqs []string
+	switch v := c.(type) {
+	case NoColor:
+		return seqs
+	case ANSIColor:
+		// ANSIColor(s) are their own sequences.
+		// Underline colors don't support ANSI color sequences.
+		// Convert them into ANSI256
+		c = ANSI256Color(v.Color)
+	}
+	seqs = append(seqs, UndercolorSeq, c.Sequence())
+	return seqs
+}
+
 // Underline enables underline rendering.
-func (t Style) Underline() Style {
+func (t Style) Underline(c ...Color) Style {
 	t.styles = append(t.styles, UnderlineSeq)
+	if len(c) > 0 {
+		t.styles = append(t.styles, undercolorSeq(c[0])...)
+	}
+	return t
+}
+
+// Underdouble enables double underline rendering.
+func (t Style) Underdouble(c ...Color) Style {
+	t.styles = append(t.styles, UnderdoubleSeq)
+	if len(c) > 0 {
+		t.styles = append(t.styles, undercolorSeq(c[0])...)
+	}
+	return t
+}
+
+// Undercurl enables curly underline rendering.
+func (t Style) Undercurl(c ...Color) Style {
+	t.styles = append(t.styles, UndercurlSeq)
+	if len(c) > 0 {
+		t.styles = append(t.styles, undercolorSeq(c[0])...)
+	}
+	return t
+}
+
+// Underdot enables dotted underline rendering.
+func (t Style) Underdot(c ...Color) Style {
+	t.styles = append(t.styles, UnderdotSeq)
+	if len(c) > 0 {
+		t.styles = append(t.styles, undercolorSeq(c[0])...)
+	}
+	return t
+}
+
+// Underdash enables dashed underline rendering.
+func (t Style) Underdash(c ...Color) Style {
+	t.styles = append(t.styles, UnderdashSeq)
+	if len(c) > 0 {
+		t.styles = append(t.styles, undercolorSeq(c[0])...)
+	}
 	return t
 }
 

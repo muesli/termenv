@@ -8,6 +8,12 @@ Plain
 [2mFaint[0m
 [3mItalic[0m
 [4mUnderline[0m
+[4;58;5;9mRed Underline[0m
+[4:2mDouble Underline[0m
+[4:3mUndercurl[0m
+[4:3;58;5;10mGreen Undercurl[0m
+[4:4mDotted Underline[0m
+[4:5mDashed Underline[0m
 [53mOverline[0m
 [5mBlink[0m
 [7mReverse[0m
