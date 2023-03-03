@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"image/color"
+	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
@@ -403,5 +404,14 @@ func TestEnableVirtualTerminalProcessing(t *testing.T) {
 	// In tests, restoreFunc should never return an error.
 	if err := restoreFunc(); err != nil {
 		t.Fatalf("expected <nil>, got %v", err)
+	}
+}
+
+func TestWithTTY(t *testing.T) {
+	for _, v := range []bool{true, false} {
+		o := NewOutput(ioutil.Discard, WithTTY(v))
+		if o.isTTY() != v {
+			t.Fatalf("expected WithTTY(%t) to set isTTY to %t", v, v)
+		}
 	}
 }
