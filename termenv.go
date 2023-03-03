@@ -25,7 +25,7 @@ const (
 )
 
 func (o *Output) isTTY() bool {
-	if o.unsafe {
+	if o.assumeTTY || o.unsafe {
 		return true
 	}
 	if len(o.environ.Getenv("CI")) > 0 {
