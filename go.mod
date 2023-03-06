@@ -7,5 +7,5 @@ require (
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/mattn/go-isatty v0.0.17
 	github.com/mattn/go-runewidth v0.0.14
-	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab
+	golang.org/x/sys v0.6.0
 )
