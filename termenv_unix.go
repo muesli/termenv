@@ -25,6 +25,10 @@ func (o *Output) ColorProfile() Profile {
 		return Ascii
 	}
 
+	if o.environ.Getenv("GOOGLE_CLOUD_SHELL") == "true" {
+		return TrueColor
+	}
+
 	term := o.environ.Getenv("TERM")
 	colorTerm := o.environ.Getenv("COLORTERM")
 
