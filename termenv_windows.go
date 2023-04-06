@@ -45,12 +45,12 @@ func (o *Output) ColorProfile() Profile {
 
 func (o Output) foregroundColor() Color {
 	// default gray
-	return ANSIColor(7)
+	return ANSIColor{Color: 7}
 }
 
 func (o Output) backgroundColor() Color {
 	// default black
-	return ANSIColor(0)
+	return ANSIColor{Color: 0}
 }
 
 // EnableWindowsANSIConsole enables virtual terminal processing on Windows

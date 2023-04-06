@@ -81,7 +81,7 @@ func (p Profile) Color(s string) Color {
 		}
 
 		if i < 16 {
-			c = ANSIColor(i)
+			c = ANSIColor{Color: uint8(i)}
 		} else {
 			c = ANSI256Color(i)
 		}

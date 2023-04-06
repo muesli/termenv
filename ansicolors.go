@@ -1,23 +1,23 @@
 package termenv
 
 // ANSI color codes
-const (
-	ANSIBlack ANSIColor = iota
-	ANSIRed
-	ANSIGreen
-	ANSIYellow
-	ANSIBlue
-	ANSIMagenta
-	ANSICyan
-	ANSIWhite
-	ANSIBrightBlack
-	ANSIBrightRed
-	ANSIBrightGreen
-	ANSIBrightYellow
-	ANSIBrightBlue
-	ANSIBrightMagenta
-	ANSIBrightCyan
-	ANSIBrightWhite
+var (
+	ANSIBlack         = ANSIColor{Color: 0}
+	ANSIRed           = ANSIColor{Color: 1}
+	ANSIGreen         = ANSIColor{Color: 2}
+	ANSIYellow        = ANSIColor{Color: 3}
+	ANSIBlue          = ANSIColor{Color: 4}
+	ANSIMagenta       = ANSIColor{Color: 5}
+	ANSICyan          = ANSIColor{Color: 6}
+	ANSIWhite         = ANSIColor{Color: 7}
+	ANSIBrightBlack   = ANSIColor{Color: 8}
+	ANSIBrightRed     = ANSIColor{Color: 9}
+	ANSIBrightGreen   = ANSIColor{Color: 10}
+	ANSIBrightYellow  = ANSIColor{Color: 11}
+	ANSIBrightBlue    = ANSIColor{Color: 12}
+	ANSIBrightMagenta = ANSIColor{Color: 13}
+	ANSIBrightCyan    = ANSIColor{Color: 14}
+	ANSIBrightWhite   = ANSIColor{Color: 15}
 )
 
 // RGB values of ANSI colors (0-255).
