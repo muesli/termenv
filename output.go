@@ -8,7 +8,7 @@ import (
 
 var (
 	// output is the default global output.
-	output = NewOutput(os.Stdout)
+	output = NewOutput(os.Stdout, WithColorCache(true))
 )
 
 // File represents a file descriptor.
