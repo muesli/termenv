@@ -34,7 +34,7 @@ func tempOutput(t *testing.T) *Output {
 
 func verify(t *testing.T, o *Output, exp string) {
 	t.Helper()
-	tty := o.tty.(*os.File)
+	tty := o.w.(*os.File)
 
 	if _, err := tty.Seek(0, 0); err != nil {
 		t.Fatal(err)
