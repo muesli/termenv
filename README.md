@@ -71,6 +71,9 @@ the profile you want to use:
 
 ```go
 output := termenv.NewOutput(os.Stdout, termenv.WithProfile(termenv.TrueColor))
+
+# or...
+output.Profile = termenv.ANSI256
 ```
 
 ## Colors
@@ -377,6 +380,23 @@ You can help improve this list! Check out [how to](ansi_compat.md) and open an i
 [^alacritty]: OSC8 is not supported, for more info see [issue#922](https://github.com/alacritty/alacritty/issues/922).
 
 </details>
+
+## Environment Variables
+
+Termenv is aware of some specific environment variables and based on those, it
+makes different decisions regarding color support.
+
+- `TERM` is set by the terminal program and gives information about the terminal type.
+- `COLORTERM` when set to `truecolor`, it enables the `TrueColor` profile.
+  `24bit`, `true`, and `yes` enables the `ANSI256` profile.
+- `COLORFGBG` helps detect terminal background and foreground colors if the
+  terminal doesn't support OSC 10/11.
+- `CLICOLOR_FORCE` when set to a non-empty value, enables basic colors using
+  the `ANSI` profile.
+- `NO_COLOR` when set and non-empty, disables terminal colors.
+- `CLICOLOR` when set to `0` and `CLICOLOR_FORCE` is not set or empty, will disables terminal colors.
+- `CI` when set and non-empty, assumes that terminal is not a TTY.
+- `GOOGLE_CLOUD_SHELL` when set to `true`, enables the `TrueColor` profile.
 
 ## Platform Support
 
