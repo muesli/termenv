@@ -105,10 +105,6 @@ func WithProfile(profile Profile) OutputOption {
 func WithColorCache(v bool) OutputOption {
 	return func(o *Output) {
 		o.cache = v
-
-		// cache the values now
-		_ = o.ForegroundColor()
-		_ = o.BackgroundColor()
 	}
 }
 
