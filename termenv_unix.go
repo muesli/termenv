@@ -50,7 +50,7 @@ func (o *Output) ColorProfile() Profile {
 	}
 
 	switch term {
-	case "xterm-kitty":
+	case "xterm-kitty", "wezterm":
 		return TrueColor
 	case "linux":
 		return ANSI
