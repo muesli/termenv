@@ -72,7 +72,7 @@ func (o *Output) ColorProfile() Profile {
 			// so no need of checking twice
 			wslLower := strings.ToLower(string(wsl))
 			// Also check if the terminal used is Windows Terminal
-			if strings.Contains(wslLower, "Microsoft") && os.Getenv("WT_SESSION") != "" {
+			if strings.Contains(wslLower, "microsoft") && os.Getenv("WT_SESSION") != "" {
 				return TrueColor
 			}
 		}
