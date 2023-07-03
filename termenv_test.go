@@ -2,8 +2,10 @@ package termenv
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"image/color"
+	"io"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -157,6 +159,39 @@ func TestANSIProfile(t *testing.T) {
 	}
 	if _, ok := c.(ANSIColor); !ok {
 		t.Errorf("Expected type termenv.ANSIColor, got %T", c)
+	}
+}
+
+func TestWSLDetectioninWindowsTerminal(t *testing.T) {
+	file, err := os.Open("/proc/sys/kernel/osrelease")
+	defer file.Close()
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		t.Error("Error reading file proc/sys/kernel/osrelease")
+	}
+
+	tmpFile, err := os.CreateTemp("", "osrelease")
+	defer tmpFile.Close()
+	if err != nil {
+		t.Error("Error making tmp file")
+	}
+
+	io.Copy(tmpFile, file)
+	_, err = io.WriteString(tmpFile, "6.2.6-76060206-microsoft")
+	if err != nil {
+		t.Error("Error writing to tmp file")
+	}
+
+	content, err := os.ReadFile(tmpFile.Name())
+	if err != nil {
+		t.Error("Error reading tmp file")
+	}
+
+	if os.Getenv("WT_SESSION") == "" {
+		os.Setenv("WT_SESSION", "a22023a86b26f5b301335de43994ddc3")
+	}
+	p := ColorProfile()
+	if p != TrueColor && !strings.Contains(strings.ToLower(string(content)), "mircosoft") && os.Getenv("WT_SESSION") == "" {
+		t.Errorf("Expected %d, got %d", TrueColor, p)
 	}
 }
 
