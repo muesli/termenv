@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"image/color"
-	"io"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -158,28 +157,6 @@ func TestANSIProfile(t *testing.T) {
 	}
 	if _, ok := c.(ANSIColor); !ok {
 		t.Errorf("Expected type termenv.ANSIColor, got %T", c)
-	}
-}
-
-func TestWSLDetectioninWindowsTerminal(t *testing.T) {
-	tmpFile, err := os.CreateTemp("", "osrelease")
-	if err != nil {
-		t.Error("Error making tmp file")
-	}
-	defer tmpFile.Close()
-
-	_, err = io.WriteString(tmpFile, "6.2.6-76060206-microsoft")
-	if err != nil {
-		t.Error("Error writing to tmp file")
-	}
-
-	if os.Getenv("WT_SESSION") == "" {
-		os.Setenv("WT_SESSION", "a22023a86b26f5b301335de43994ddc3")
-	}
-
-	p := checkWSLinWindowsTerminal(os.Getenv("TERM"), tmpFile.Name())
-	if p != TrueColor {
-		t.Errorf("Expected %d, got %d", TrueColor, p)
 	}
 }
 
@@ -436,5 +413,14 @@ func TestWithTTY(t *testing.T) {
 		if o.isTTY() != v {
 			t.Fatalf("expected WithTTY(%t) to set isTTY to %t", v, v)
 		}
+	}
+}
+
+func TestWindowsTerminal(t *testing.T) {
+	t.Setenv("TERM", "xterm-256color")
+	t.Setenv("WT_SESSION", "1")
+	o := NewOutput(ioutil.Discard, WithTTY(true))
+	if cp := o.ColorProfile(); cp != TrueColor {
+		t.Fatalf("expected color profile to be %d, got %d", TrueColor, cp)
 	}
 }

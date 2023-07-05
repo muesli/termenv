@@ -4,11 +4,8 @@
 package termenv
 
 import (
-	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -60,7 +57,11 @@ func (o *Output) ColorProfile() Profile {
 	}
 
 	if strings.Contains(term, "256color") {
-		return checkWSLinWindowsTerminal(term, "/proc/sys/kernel/osrelease")
+		// Check if we're running Windows Terminal
+		if o.environ.Getenv("WT_SESSION") != "" {
+			return TrueColor
+		}
+		return ANSI256
 	}
 	if strings.Contains(term, "color") {
 		return ANSI
@@ -70,26 +71,6 @@ func (o *Output) ColorProfile() Profile {
 	}
 
 	return Ascii
-}
-
-func checkWSLinWindowsTerminal(term, filename string) Profile {
-	// Check for WSL
-	wsl, err := ioutil.ReadFile(filename)
-	// Additional check for Mac OS as it doesn't have "/proc/" folder
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
-		return ANSI256
-	}
-	if string(wsl) != "" {
-		// Lowercasing every content inside "/proc/sys/kernal/osrelease"
-		// because it gives "Microsoft" for WSL and "microsoft" for WSL 2
-		// so no need of checking twice
-		wslLower := strings.ToLower(string(wsl))
-		// Also check if the terminal used is Windows Terminal
-		if strings.Contains(wslLower, "microsoft") && os.Getenv("WT_SESSION") != "" {
-			return TrueColor
-		}
-	}
-	return ANSI256
 }
 
 func (o Output) foregroundColor() Color {
