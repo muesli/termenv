@@ -30,8 +30,7 @@ func (o *Output) isTTY() bool {
 		return true
 	}
 
-	// FIXME: should check for its value instead of length
-	if len(o.environ.Getenv("CI")) > 0 {
+	if isCI, err := strconv.ParseBool(o.environ.Getenv("CI")); err == nil && isCI {
 		return false
 	}
 
