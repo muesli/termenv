@@ -36,8 +36,9 @@ func TestLegacyTermEnv(t *testing.T) {
 
 func TestTermEnv(t *testing.T) {
 	o := NewOutput(os.Stdout)
-	if o.Profile != TrueColor && o.Profile != Ascii {
-		t.Errorf("Expected %d, got %d", TrueColor, o.Profile)
+	p := o.ColorProfile()
+	if p != TrueColor && p != Ascii {
+		t.Errorf("Expected %d, got %d", TrueColor, p)
 	}
 
 	fg := o.ForegroundColor()
@@ -360,8 +361,9 @@ func TestEnvNoColor(t *testing.T) {
 func TestPseudoTerm(t *testing.T) {
 	buf := &bytes.Buffer{}
 	o := NewOutput(buf)
-	if o.Profile != Ascii {
-		t.Errorf("Expected %d, got %d", Ascii, o.Profile)
+	p := o.ColorProfile()
+	if p != Ascii {
+		t.Errorf("Expected %d, got %d", Ascii, p)
 	}
 
 	fg := o.ForegroundColor()
@@ -377,8 +379,8 @@ func TestPseudoTerm(t *testing.T) {
 	}
 
 	exp := "foobar"
-	out := o.String(exp)
-	out = out.Foreground(o.Color("#abcdef"))
+	out := p.String(exp)
+	out = out.Foreground(p.Color("#abcdef"))
 	o.Write([]byte(out.String()))
 
 	if buf.String() != exp {

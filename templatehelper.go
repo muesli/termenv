@@ -5,8 +5,8 @@ import (
 )
 
 // TemplateFuncs returns template helpers for the given output.
-func (o Output) TemplateFuncs() template.FuncMap {
-	return TemplateFuncs(o.Profile)
+func (o *Output) TemplateFuncs() template.FuncMap {
+	return TemplateFuncs(o.ColorProfile())
 }
 
 // TemplateFuncs contains a few useful template helpers.

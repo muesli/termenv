@@ -7,7 +7,7 @@ import (
 )
 
 // Copy copies text to clipboard using OSC 52 escape sequence.
-func (o Output) Copy(str string) {
+func (o *Output) Copy(str string) {
 	s := osc52.New(str)
 	if strings.HasPrefix(o.environ.Getenv("TERM"), "screen") {
 		s = s.Screen()
@@ -17,7 +17,7 @@ func (o Output) Copy(str string) {
 
 // CopyPrimary copies text to primary clipboard (X11) using OSC 52 escape
 // sequence.
-func (o Output) CopyPrimary(str string) {
+func (o *Output) CopyPrimary(str string) {
 	s := osc52.New(str).Primary()
 	if strings.HasPrefix(o.environ.Getenv("TERM"), "screen") {
 		s = s.Screen()
