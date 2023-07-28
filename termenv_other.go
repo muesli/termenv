@@ -11,12 +11,12 @@ func (o Output) termColorProfile() Profile {
 	return ANSI256
 }
 
-func (o Output) foregroundColor() Color {
+func (o *Output) foregroundColor() Color {
 	// default gray
 	return ANSIColor(7)
 }
 
-func (o Output) backgroundColor() Color {
+func (o *Output) backgroundColor() Color {
 	// default black
 	return ANSIColor(0)
 }

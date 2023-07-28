@@ -22,7 +22,7 @@ type OutputOption = func(*Output)
 
 // Output is a terminal output.
 type Output struct {
-	Profile
+	profile Profile
 	tty     io.Writer
 	environ Environ
 
@@ -33,6 +33,8 @@ type Output struct {
 	fgColor   Color
 	bgSync    *sync.Once
 	bgColor   Color
+
+	mtx sync.RWMutex
 }
 
 // Environ is an interface for getting environment variables.
@@ -66,7 +68,7 @@ func NewOutput(tty io.Writer, opts ...OutputOption) *Output {
 	o := &Output{
 		tty:     tty,
 		environ: &osEnviron{},
-		Profile: -1,
+		profile: -1,
 		fgSync:  &sync.Once{},
 		fgColor: NoColor{},
 		bgSync:  &sync.Once{},
@@ -79,8 +81,8 @@ func NewOutput(tty io.Writer, opts ...OutputOption) *Output {
 	for _, opt := range opts {
 		opt(o)
 	}
-	if o.Profile < 0 {
-		o.Profile = o.EnvColorProfile()
+	if o.profile < 0 {
+		o.profile = o.EnvColorProfile()
 	}
 
 	return o
@@ -96,7 +98,7 @@ func WithEnvironment(environ Environ) OutputOption {
 // WithProfile returns a new OutputOption for the given profile.
 func WithProfile(profile Profile) OutputOption {
 	return func(o *Output) {
-		o.Profile = profile
+		o.profile = profile
 	}
 }
 
@@ -134,8 +136,17 @@ func WithUnsafe() OutputOption {
 }
 
 // ColorProfile returns the supported color profile:
-func (o Output) ColorProfile() Profile {
-	return o.Profile
+func (o *Output) ColorProfile() Profile {
+	o.mtx.RLock()
+	defer o.mtx.RUnlock()
+	return o.profile
+}
+
+// SetColorProfile sets the color profile.
+func (o *Output) SetColorProfile(profile Profile) {
+	o.mtx.Lock()
+	defer o.mtx.Unlock()
+	o.profile = profile
 }
 
 // ForegroundColor returns the terminal's default foreground color.
@@ -145,7 +156,9 @@ func (o *Output) ForegroundColor() Color {
 			return
 		}
 
+		o.mtx.Lock()
 		o.fgColor = o.foregroundColor()
+		o.mtx.Unlock()
 	}
 
 	if o.cache {
@@ -154,6 +167,8 @@ func (o *Output) ForegroundColor() Color {
 		f()
 	}
 
+	o.mtx.RLock()
+	defer o.mtx.RUnlock()
 	return o.fgColor
 }
 
@@ -164,7 +179,9 @@ func (o *Output) BackgroundColor() Color {
 			return
 		}
 
+		o.mtx.Lock()
 		o.bgColor = o.backgroundColor()
+		o.mtx.Unlock()
 	}
 
 	if o.cache {
@@ -173,6 +190,8 @@ func (o *Output) BackgroundColor() Color {
 		f()
 	}
 
+	o.mtx.RLock()
+	defer o.mtx.RUnlock()
 	return o.bgColor
 }
 
@@ -185,18 +204,18 @@ func (o *Output) HasDarkBackground() bool {
 
 // TTY returns the terminal's file descriptor. This may be nil if the output is
 // not a terminal.
-func (o Output) TTY() File {
+func (o *Output) TTY() File {
 	if f, ok := o.tty.(File); ok {
 		return f
 	}
 	return nil
 }
 
-func (o Output) Write(p []byte) (int, error) {
+func (o *Output) Write(p []byte) (int, error) {
 	return o.tty.Write(p)
 }
 
 // WriteString writes the given string to the output.
-func (o Output) WriteString(s string) (int, error) {
+func (o *Output) WriteString(s string) (int, error) {
 	return o.Write([]byte(s))
 }

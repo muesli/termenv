@@ -44,6 +44,11 @@ func ColorProfile() Profile {
 	return output.ColorProfile()
 }
 
+// SetColorProfile sets the color profile.
+func SetColorProfile(profile Profile) {
+	output.SetColorProfile(profile)
+}
+
 // ForegroundColor returns the terminal's default foreground color.
 func ForegroundColor() Color {
 	return output.ForegroundColor()

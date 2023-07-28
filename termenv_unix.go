@@ -69,7 +69,7 @@ func (o *Output) termColorProfile() Profile {
 	return Ascii
 }
 
-func (o Output) foregroundColor() Color {
+func (o *Output) foregroundColor() Color {
 	s, err := o.termStatusReport(10)
 	if err == nil {
 		c, err := xTermColor(s)
@@ -91,7 +91,7 @@ func (o Output) foregroundColor() Color {
 	return ANSIColor(7)
 }
 
-func (o Output) backgroundColor() Color {
+func (o *Output) backgroundColor() Color {
 	s, err := o.termStatusReport(11)
 	if err == nil {
 		c, err := xTermColor(s)
@@ -223,7 +223,7 @@ func (o *Output) readNextResponse() (response string, isOSC bool, err error) {
 	return "", false, ErrStatusReport
 }
 
-func (o Output) termStatusReport(sequence int) (string, error) {
+func (o *Output) termStatusReport(sequence int) (string, error) {
 	// screen/tmux can't support OSC, because they can be connected to multiple
 	// terminals concurrently.
 	term := o.environ.Getenv("TERM")
