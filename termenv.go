@@ -2,6 +2,7 @@ package termenv
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/mattn/go-isatty"
 )
@@ -28,9 +29,15 @@ func (o *Output) isTTY() bool {
 	if o.assumeTTY || o.unsafe {
 		return true
 	}
-	if len(o.environ.Getenv("CI")) > 0 {
+
+	if isCI, err := strconv.ParseBool(o.environ.Getenv("CI")); err == nil && isCI {
 		return false
 	}
+
+	if isTty, err := strconv.ParseBool(o.environ.Getenv("TERMENV_TTY")); err == nil {
+		return isTty
+	}
+
 	if o.TTY() == nil {
 		return false
 	}
