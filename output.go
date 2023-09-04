@@ -133,7 +133,7 @@ func WithUnsafe() OutputOption {
 	}
 }
 
-// ColorProfile returns the supported color profile:
+// ColorProfile returns the supported color profile.
 func (o Output) ColorProfile() Profile {
 	return o.Profile
 }
