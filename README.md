@@ -100,7 +100,10 @@ s.Foreground(output.FromColor(color.RGBA{255, 128, 0, 255}))
 s.Foreground(output.Color("#ffffff")).Background(output.Color("#0000ff"))
 
 // Supports the fmt.Stringer interface
+s = s.Foreground(output.Color("#ffffff")).Background(output.Color("#0000ff"))
 fmt.Println(s)
+fmt.Println(s.String())
+
 ```
 
 ## Styles
