@@ -350,7 +350,7 @@ You can help improve this list! Check out [how to](ansi_compat.md) and open an i
 
 | Terminal         | Copy to Clipboard (OSC52) | Hyperlinks (OSC8) | Notifications (OSC777) |
 | ---------------- | :-----------------------: | :---------------: | :--------------------: |
-| alacritty        |            ✅             |  ❌[^alacritty]   |           ❌           |
+| alacritty        |            ✅             |  ✅[^alacritty]   |           ❌           |
 | foot             |            ✅             |        ✅         |           ✅           |
 | kitty            |            ✅             |        ✅         |           ✅           |
 | Konsole          |       ❌[^konsole]        |        ✅         |           ❌           |
@@ -374,7 +374,7 @@ You can help improve this list! Check out [how to](ansi_compat.md) and open an i
 [^apple]: OSC52 works with a [workaround](https://github.com/roy2220/osc52pty).
 [^tmux]: OSC8 is not supported, for more info see [issue#911](https://github.com/tmux/tmux/issues/911).
 [^screen]: OSC8 is not supported, for more info see [bug#50952](https://savannah.gnu.org/bugs/index.php?50952).
-[^alacritty]: OSC8 is not supported, for more info see [issue#922](https://github.com/alacritty/alacritty/issues/922).
+[^alacritty]: OSC8 is supported since [v0.11.0](https://github.com/alacritty/alacritty/releases/tag/v0.11.0)
 
 </details>
 
