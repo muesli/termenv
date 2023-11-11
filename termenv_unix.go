@@ -224,10 +224,10 @@ func (o *Output) readNextResponse() (response string, isOSC bool, err error) {
 }
 
 func (o Output) termStatusReport(sequence int) (string, error) {
-	// screen/tmux can't support OSC, because they can be connected to multiple
+	// screen can't support OSC, because they can be connected to multiple
 	// terminals concurrently.
 	term := o.environ.Getenv("TERM")
-	if strings.HasPrefix(term, "screen") || strings.HasPrefix(term, "tmux") {
+	if strings.HasPrefix(term, "screen") {
 		return "", ErrStatusReport
 	}
 
