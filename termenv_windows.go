@@ -54,6 +54,11 @@ func (o Output) backgroundColor() Color {
 	return ANSIColor(0)
 }
 
+func (o Output) kittyKeyboardProtocolSupport() byte {
+	// default byte
+	return 0b00000
+}
+
 // EnableWindowsANSIConsole enables virtual terminal processing on Windows
 // platforms. This allows the use of ANSI escape sequences in Windows console
 // applications. Ensure this gets called before anything gets rendered with

@@ -60,6 +60,11 @@ const (
 	StartBracketedPasteSeq   = "200~"
 	EndBracketedPasteSeq     = "201~"
 
+	// Kitty Keyboard Protocol.
+	// https://sw.kovidgoyal.net/kitty/keyboard-protocol
+	EnableKittyKeyboardProtocol  = ">1u"
+	DisableKittyKeyboardProtocol = "<u"
+
 	// Session.
 	SetWindowTitleSeq     = "2;%s" + string(BEL)
 	SetForegroundColorSeq = "10;%s" + string(BEL)
@@ -299,6 +304,16 @@ func (o Output) EnableBracketedPaste() {
 // DisableBracketedPaste disables bracketed paste.
 func (o Output) DisableBracketedPaste() {
 	fmt.Fprintf(o.w, CSI+DisableBracketedPasteSeq)
+}
+
+// EnableKittyKeyboardProtocol enables the kitty keyboard protocol.
+func (o Output) EnableKittyKeyboardProtocol() {
+	fmt.Fprintf(o.w, CSI+EnableKittyKeyboardProtocol)
+}
+
+// DisableKittyKeyboardProtocol disables the kitty keyboard protocol.
+func (o Output) DisableKittyKeyboardProtocol() {
+	fmt.Fprintf(o.w, CSI+DisableKittyKeyboardProtocol)
 }
 
 // Legacy functions.

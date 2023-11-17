@@ -35,6 +35,8 @@ type Output struct {
 	fgColor   Color
 	bgSync    *sync.Once
 	bgColor   Color
+	kkpFlags  byte
+	kkpSync   *sync.Once
 }
 
 // Environ is an interface for getting environment variables.
@@ -204,4 +206,34 @@ func (o Output) Write(p []byte) (int, error) {
 // WriteString writes the given string to the output.
 func (o Output) WriteString(s string) (int, error) {
 	return o.Write([]byte(s))
+}
+
+// KittyKeyboardProtocolSupport returns which progressive enhancements the
+// terminal supports for the kitty keyboard protocol.
+//
+// https://sw.kovidgoyal.net/kitty/keyboard-protocol/#progressive-enhancement
+//
+// The byte returned represents the bitset of supported flags.
+//
+// 0b1     (01) — Disambiguate escape codes
+// 0b10    (02) — Report event types
+// 0b100   (04) — Report alternate keys
+// 0b1000  (08) — Report all keys as escape codes
+// 0b10000 (16) — Report associated text.
+func (o Output) KittyKeyboardProtocolSupport() byte {
+	f := func() {
+		if !o.isTTY() {
+			return
+		}
+
+		o.kkpFlags = o.kittyKeyboardProtocolSupport()
+	}
+
+	if o.cache {
+		o.kkpSync.Do(f)
+	} else {
+		f()
+	}
+
+	return o.kkpFlags
 }
