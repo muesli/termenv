@@ -3,7 +3,7 @@ package termenv
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 	"text/template"
 )
@@ -31,7 +31,7 @@ func TestTemplateFuncs(t *testing.T) {
 			}
 			actual := buf.Bytes()
 			filename := fmt.Sprintf("./testdata/templatehelper_%s.txt", test.name)
-			expected, err := ioutil.ReadFile(filename)
+			expected, err := os.ReadFile(filename)
 			if err != nil {
 				t.Fatalf("unexpected error reading golden file %q: %v", filename, err)
 			}

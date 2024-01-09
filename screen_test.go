@@ -2,7 +2,7 @@ package termenv
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -24,7 +24,7 @@ func (te testEnv) Getenv(key string) string {
 func tempOutput(t *testing.T) *Output {
 	t.Helper()
 
-	f, err := ioutil.TempFile("", "termenv")
+	f, err := os.CreateTemp("", "termenv")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,13 +40,13 @@ func verify(t *testing.T, o *Output, exp string) {
 		t.Fatal(err)
 	}
 
-	b, err := ioutil.ReadAll(tty)
+	b, err := io.ReadAll(tty)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if string(b) != exp {
-		b = bytes.Replace(b, []byte("\x1b"), []byte("\\x1b"), -1)
-		exp = strings.Replace(exp, "\x1b", "\\x1b", -1)
+		b = bytes.ReplaceAll(b, []byte("\x1b"), []byte("\\x1b"))
+		exp = strings.ReplaceAll(exp, "\x1b", "\\x1b")
 		t.Errorf("output does not match, expected %s, got %s", exp, string(b))
 	}
 

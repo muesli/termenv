@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"image/color"
-	"io/ioutil"
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -312,8 +312,8 @@ func TestTemplateHelpers(t *testing.T) {
 		}
 
 		if buf.String() != v.Expected {
-			v1 := strings.Replace(v.Expected, "\x1b", "", -1)
-			v2 := strings.Replace(buf.String(), "\x1b", "", -1)
+			v1 := strings.ReplaceAll(v.Expected, "\x1b", "")
+			v2 := strings.ReplaceAll(buf.String(), "\x1b", "")
 			t.Errorf("Expected %s, got %s", v1, v2)
 		}
 	}
@@ -409,7 +409,7 @@ func TestEnableVirtualTerminalProcessing(t *testing.T) {
 
 func TestWithTTY(t *testing.T) {
 	for _, v := range []bool{true, false} {
-		o := NewOutput(ioutil.Discard, WithTTY(v))
+		o := NewOutput(io.Discard, WithTTY(v))
 		if o.isTTY() != v {
 			t.Fatalf("expected WithTTY(%t) to set isTTY to %t", v, v)
 		}
