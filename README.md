@@ -307,7 +307,7 @@ termenv.DisableBracketedPaste()
 
 ### Color Support
 
-- 24-bit (RGB): alacritty, foot, iTerm, kitty, Konsole, st, tmux, vte-based, wezterm, Windows Terminal
+- 24-bit (RGB): alacritty, foot, iTerm, kitty, Konsole, st, tmux, vte-based, wezterm, Ghostty, Windows Terminal
 - 8-bit (256): rxvt, screen, xterm, Apple Terminal
 - 4-bit (16): Linux Console
 
