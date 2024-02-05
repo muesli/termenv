@@ -22,6 +22,21 @@ const (
 	Ascii //nolint:revive
 )
 
+// Name returns the profile name as a string.
+func (p Profile) Name() string {
+	switch p {
+	case Ascii:
+		return "Ascii"
+	case ANSI:
+		return "ANSI"
+	case ANSI256:
+		return "ANSI256"
+	case TrueColor:
+		return "TrueColor"
+	}
+	return "Unknown"
+}
+
 // String returns a new Style.
 func (p Profile) String(s ...string) Style {
 	return Style{
