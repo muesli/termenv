@@ -13,15 +13,15 @@ var (
 )
 
 const (
-	// Escape character
+	// Escape character.
 	ESC = '\x1b'
-	// Bell
+	// Bell.
 	BEL = '\a'
-	// Control Sequence Introducer
+	// Control Sequence Introducer.
 	CSI = string(ESC) + "["
-	// Operating System Command
+	// Operating System Command.
 	OSC = string(ESC) + "]"
-	// String Terminator
+	// String Terminator.
 	ST = string(ESC) + `\`
 )
 
