@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	// timeout for OSC queries
+	// timeout for OSC queries.
 	OSCTimeout = 5 * time.Second
 )
 
@@ -113,6 +113,79 @@ func (o Output) backgroundColor() Color {
 	return ANSIColor(0)
 }
 
+func (o Output) kittyKeyboardProtocolSupport() byte {
+	// screen/tmux can't support OSC, because they can be connected to multiple
+	// terminals concurrently.
+	term := o.environ.Getenv("TERM")
+	if strings.HasPrefix(term, "screen") || strings.HasPrefix(term, "tmux") {
+		return 0
+	}
+
+	tty := o.TTY()
+	if tty == nil {
+		return 0
+	}
+
+	if !o.unsafe {
+		fd := int(tty.Fd())
+		// if in background, we can't control the terminal
+		if !isForeground(fd) {
+			return 0
+		}
+
+		t, err := unix.IoctlGetTermios(fd, tcgetattr)
+		if err != nil {
+			return 0
+		}
+		defer unix.IoctlSetTermios(fd, tcsetattr, t) //nolint:errcheck
+
+		noecho := *t
+		noecho.Lflag = noecho.Lflag &^ unix.ECHO
+		noecho.Lflag = noecho.Lflag &^ unix.ICANON
+		if err := unix.IoctlSetTermios(fd, tcsetattr, &noecho); err != nil {
+			return 0
+		}
+	}
+
+	// first, send CSI query to see whether this terminal supports the
+	// kitty keyboard protocol
+	fmt.Fprintf(tty, CSI+"?u")
+
+	// then, query primary device data, should be supported by all terminals
+	// if we receive a response for the primary device data befor the kitty keyboard
+	// protocol response, this terminal does not support kitty keyboard protocol.
+	fmt.Fprintf(tty, CSI+"c")
+
+	response, isAttrs, err := o.readNextResponseKittyKeyboardProtocol()
+
+	// we queried for the kitty keyboard protocol current progressive enhancements
+	// but received the primary device attributes response, therefore this terminal
+	// does not support the kitty keyboard protocol.
+	if err != nil || isAttrs {
+		return 0
+	}
+
+	// read the primary attrs response and ignore it.
+	_, _, err = o.readNextResponseKittyKeyboardProtocol()
+	if err != nil {
+		return 0
+	}
+
+	// we receive a valid response to the kitty keyboard protocol query, this
+	// terminal supports the protocol.
+	//
+	// parse the response and return the flags supported.
+	//
+	//   0    1 2 3 4
+	//   \x1b [ ? 1 u
+	//
+	if len(response) <= 3 {
+		return 0
+	}
+
+	return response[3]
+}
+
 func (o *Output) waitForData(timeout time.Duration) error {
 	fd := o.TTY().Fd()
 	tv := unix.NsecToTimeval(int64(timeout))
@@ -155,6 +228,62 @@ func (o *Output) readNextByte() (byte, error) {
 	}
 
 	return b[0], nil
+}
+
+// readNextResponseKittyKeyboardProtocol reads either a CSI response to the current
+// progressive enhancement status or primary device attributes response.
+//   - CSI response: "\x1b]?31u"
+//   - primary device attributes response: "\x1b]?64;1;2;7;8;9;15;18;21;44;45;46c"
+func (o *Output) readNextResponseKittyKeyboardProtocol() (response string, isAttrs bool, err error) {
+	start, err := o.readNextByte()
+	if err != nil {
+		return "", false, ErrStatusReport
+	}
+
+	// first byte must be ESC
+	for start != ESC {
+		start, err = o.readNextByte()
+		if err != nil {
+			return "", false, ErrStatusReport
+		}
+	}
+
+	response += string(start)
+
+	// next byte is [
+	tpe, err := o.readNextByte()
+	if err != nil {
+		return "", false, ErrStatusReport
+	}
+	response += string(tpe)
+
+	if tpe != '[' {
+		return "", false, ErrStatusReport
+	}
+
+	for {
+		b, err := o.readNextByte()
+		if err != nil {
+			return "", false, ErrStatusReport
+		}
+		response += string(b)
+
+		switch b {
+		case 'u':
+			// kitty keyboard protocol response
+			return response, false, nil
+		case 'c':
+			// primary device attributes response
+			return response, true, nil
+		}
+
+		// both responses have less than 38 bytes, so if we read more, that's an error
+		if len(response) > 38 {
+			break
+		}
+	}
+
+	return response, isAttrs, nil
 }
 
 // readNextResponse reads either an OSC response or a cursor position response:

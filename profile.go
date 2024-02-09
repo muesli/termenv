@@ -12,13 +12,13 @@ import (
 type Profile int
 
 const (
-	// TrueColor, 24-bit color profile
+	// TrueColor, 24-bit color profile.
 	TrueColor = Profile(iota)
-	// ANSI256, 8-bit color profile
+	// ANSI256, 8-bit color profile.
 	ANSI256
-	// ANSI, 4-bit color profile
+	// ANSI, 4-bit color profile.
 	ANSI
-	// Ascii, uncolored profile
+	// Ascii, uncolored profile.
 	Ascii //nolint:revive
 )
 
