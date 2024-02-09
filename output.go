@@ -103,14 +103,10 @@ func WithProfile(profile Profile) OutputOption {
 }
 
 // WithColorCache returns a new OutputOption with fore- and background color values
-// pre-fetched and cached.
+// cached on first access.
 func WithColorCache(v bool) OutputOption {
 	return func(o *Output) {
 		o.cache = v
-
-		// cache the values now
-		_ = o.ForegroundColor()
-		_ = o.BackgroundColor()
 	}
 }
 
