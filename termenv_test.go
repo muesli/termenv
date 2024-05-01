@@ -6,14 +6,22 @@ import (
 	"image/color"
 	"io"
 	"os"
+	"runtime"
 	"strings"
 	"testing"
 	"text/template"
 )
 
+const isOtherPlatform = runtime.GOOS == "plan9" || runtime.GOOS == "aix" || runtime.GOARCH == "wasm"
+
 func TestLegacyTermEnv(t *testing.T) {
 	p := ColorProfile()
-	if p != TrueColor && p != Ascii {
+
+	if isOtherPlatform {
+		if p != ANSI256 {
+			t.Errorf("Expected %d, got %d", ANSI256, p)
+		}
+	} else if p != TrueColor && p != Ascii {
 		t.Errorf("Expected %d, got %d", TrueColor, p)
 	}
 
@@ -36,7 +44,12 @@ func TestLegacyTermEnv(t *testing.T) {
 
 func TestTermEnv(t *testing.T) {
 	o := NewOutput(os.Stdout)
-	if o.Profile != TrueColor && o.Profile != Ascii {
+
+	if isOtherPlatform {
+		if o.Profile != ANSI256 {
+			t.Errorf("Expected %d, got %d", ANSI256, o.Profile)
+		}
+	} else if o.Profile != TrueColor && o.Profile != Ascii {
 		t.Errorf("Expected %d, got %d", TrueColor, o.Profile)
 	}
 
@@ -358,6 +371,10 @@ func TestEnvNoColor(t *testing.T) {
 }
 
 func TestPseudoTerm(t *testing.T) {
+	if isOtherPlatform {
+		t.Skip("does not pass on platforms that default to ANSI256")
+	}
+
 	buf := &bytes.Buffer{}
 	o := NewOutput(buf)
 	if o.Profile != Ascii {
