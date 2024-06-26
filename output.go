@@ -6,10 +6,8 @@ import (
 	"sync"
 )
 
-var (
-	// output is the default global output.
-	output = NewOutput(os.Stdout)
-)
+// output is the default global output.
+var output = NewOutput(os.Stdout)
 
 // File represents a file descriptor.
 //
