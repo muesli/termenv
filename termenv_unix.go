@@ -243,11 +243,6 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 
 	if !o.unsafe {
 		fd := int(tty.Fd())
-		// if in background, we can't control the terminal
-		if !isForeground(fd) {
-			return "", ErrStatusReport
-		}
-
 		t, err := unix.IoctlGetTermios(fd, tcgetattr)
 		if err != nil {
 			return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
