@@ -2,23 +2,31 @@ package termenv
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"os"
 	"strings"
 	"testing"
 )
 
-type testEnv struct{}
+type testEnv map[string]string
 
 func (te testEnv) Environ() []string {
-	return []string{"TERM=xterm-256color"}
+	var output []string
+	for key, value := range te {
+		output = append(output, fmt.Sprintf("%s=%s", key, value))
+	}
+
+	return output
 }
 
 func (te testEnv) Getenv(key string) string {
-	if key == "TERM" {
-		return "xterm-256color"
+	value, ok := te[key]
+	if !ok {
+		return ""
 	}
-	return ""
+
+	return value
 }
 
 func tempOutput(t *testing.T) *Output {
@@ -29,7 +37,9 @@ func tempOutput(t *testing.T) *Output {
 		t.Fatal(err)
 	}
 
-	return NewOutput(f, WithEnvironment(testEnv{}), WithProfile(TrueColor))
+	return NewOutput(f, WithEnvironment(testEnv{
+		"TERM": "xterm-256color",
+	}), WithProfile(TrueColor))
 }
 
 func verify(t *testing.T, o *Output, exp string) {

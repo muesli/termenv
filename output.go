@@ -25,9 +25,9 @@ type OutputOption = func(*Output)
 // Output is a terminal output.
 type Output struct {
 	Profile
-	TerminalIdentity
-	w       io.Writer
-	environ Environ
+	TerminalIdentity TerminalIdentity
+	w                io.Writer
+	environ          Environ
 
 	assumeTTY bool
 	unsafe    bool

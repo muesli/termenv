@@ -16,7 +16,7 @@ const (
 	DumbTerminal
 	// GoogleCloudShell is a browser-based CLI for GCP
 	GoogleCloudShell
-	// WindowsTerminalHosted indicates a terminal operating as a Windows Terminal tab
+	// WindowsTerminalHosted indicates a terminal operating as a Windows Terminal tab.
 	WindowsTerminalHosted
 	// XTermCompatible means that the terminal has identified itself as being xterm, which may or may not be true
 	XTermCompatible
