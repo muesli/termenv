@@ -25,23 +25,21 @@ func (o *Output) ColorProfile() Profile {
 		return Ascii
 	}
 
-	if o.environ.Getenv("GOOGLE_CLOUD_SHELL") == "true" {
+	if o.TerminalIdentity == GoogleCloudShell {
 		return TrueColor
 	}
 
-	term := o.environ.Getenv("TERM")
 	colorTerm := o.environ.Getenv("COLORTERM")
 
 	switch strings.ToLower(colorTerm) {
 	case "24bit":
 		fallthrough
 	case "truecolor":
-		if strings.HasPrefix(term, "screen") {
-			// tmux supports TrueColor, screen only ANSI256
-			if o.environ.Getenv("TERM_PROGRAM") != "tmux" {
-				return ANSI256
-			}
+		if o.TerminalIdentity == GNUScreen {
+			// Screen only supports ANSI256
+			return ANSI256
 		}
+
 		return TrueColor
 	case "yes":
 		fallthrough
@@ -49,6 +47,7 @@ func (o *Output) ColorProfile() Profile {
 		return ANSI256
 	}
 
+	term := o.environ.Getenv("TERM")
 	switch term {
 	case
 		"alacritty",
@@ -231,8 +230,7 @@ func (o *Output) readNextResponse() (response string, isOSC bool, err error) {
 func (o Output) termStatusReport(sequence int) (string, error) {
 	// screen/tmux can't support OSC, because they can be connected to multiple
 	// terminals concurrently.
-	term := o.environ.Getenv("TERM")
-	if strings.HasPrefix(term, "screen") || strings.HasPrefix(term, "tmux") || strings.HasPrefix(term, "dumb") {
+	if o.TerminalIdentity == GNUScreen || o.TerminalIdentity == TMux || o.TerminalIdentity == DumbTerminal {
 		return "", ErrStatusReport
 	}
 

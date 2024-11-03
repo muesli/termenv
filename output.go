@@ -25,6 +25,7 @@ type OutputOption = func(*Output)
 // Output is a terminal output.
 type Output struct {
 	Profile
+	TerminalIdentity
 	w       io.Writer
 	environ Environ
 
@@ -66,13 +67,14 @@ func SetDefaultOutput(o *Output) {
 // NewOutput returns a new Output for the given writer.
 func NewOutput(w io.Writer, opts ...OutputOption) *Output {
 	o := &Output{
-		w:       w,
-		environ: &osEnviron{},
-		Profile: -1,
-		fgSync:  &sync.Once{},
-		fgColor: NoColor{},
-		bgSync:  &sync.Once{},
-		bgColor: NoColor{},
+		w:                w,
+		environ:          &osEnviron{},
+		Profile:          -1,
+		TerminalIdentity: -1,
+		fgSync:           &sync.Once{},
+		fgColor:          NoColor{},
+		bgSync:           &sync.Once{},
+		bgColor:          NoColor{},
 	}
 
 	if o.w == nil {
@@ -80,6 +82,9 @@ func NewOutput(w io.Writer, opts ...OutputOption) *Output {
 	}
 	for _, opt := range opts {
 		opt(o)
+	}
+	if o.TerminalIdentity < 0 {
+		o.TerminalIdentity = o.EnvTerminalIdentity()
 	}
 	if o.Profile < 0 {
 		o.Profile = o.EnvColorProfile()

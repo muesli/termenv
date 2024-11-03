@@ -1,17 +1,16 @@
 package termenv
 
 import (
-	"strings"
-
 	"github.com/aymanbagabas/go-osc52/v2"
 )
 
 // Copy copies text to clipboard using OSC 52 escape sequence.
 func (o Output) Copy(str string) {
 	s := osc52.New(str)
-	if strings.HasPrefix(o.environ.Getenv("TERM"), "screen") {
+	if o.TerminalIdentity == GNUScreen {
 		s = s.Screen()
 	}
+
 	_, _ = s.WriteTo(o)
 }
 
@@ -19,7 +18,7 @@ func (o Output) Copy(str string) {
 // sequence.
 func (o Output) CopyPrimary(str string) {
 	s := osc52.New(str).Primary()
-	if strings.HasPrefix(o.environ.Getenv("TERM"), "screen") {
+	if o.TerminalIdentity == GNUScreen {
 		s = s.Screen()
 	}
 	_, _ = s.WriteTo(o)

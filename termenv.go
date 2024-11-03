@@ -3,6 +3,7 @@ package termenv
 import (
 	"errors"
 	"os"
+	"strings"
 
 	"github.com/mattn/go-isatty"
 )
@@ -112,4 +113,43 @@ func (o *Output) cliColorForced() bool {
 		return forced != "0"
 	}
 	return false
+}
+
+// EnvTerminalIdentity will consult environment variables to attempt to classify the currently running terminal
+func (o *Output) EnvTerminalIdentity() TerminalIdentity {
+	term := o.environ.Getenv("TERM")
+
+	if o.environ.Getenv("GOOGLE_CLOUD_SHELL") == "true" {
+		return GoogleCloudShell
+	}
+
+	if strings.HasPrefix(term, "screen") {
+		if o.environ.Getenv("TERM_PROGRAM") == "tmux" {
+			return TMux
+		}
+
+		return GNUScreen
+	}
+
+	if strings.HasPrefix(term, "tmux") {
+		return TMux
+	}
+
+	if strings.HasPrefix(term, "dumb") {
+		return DumbTerminal
+	}
+
+	if o.environ.Getenv("WT_SESSION") != "" {
+		return WindowsTerminalHosted
+	}
+
+	if strings.HasPrefix(term, "xterm") {
+		return XTermCompatible
+	}
+
+	if o.environ.Getenv("GOOS") == "windows" {
+		return OtherWindows
+	}
+
+	return OtherTerminal
 }
