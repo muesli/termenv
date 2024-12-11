@@ -53,11 +53,12 @@ func (o *Output) ColorProfile() Profile {
 	case
 		"alacritty",
 		"contour",
+		"rio",
 		"wezterm",
 		"xterm-ghostty",
 		"xterm-kitty":
 		return TrueColor
-	case "linux":
+	case "linux", "xterm":
 		return ANSI
 	}
 
