@@ -75,17 +75,15 @@ func (c NoColor) Sequence(_ bool) string {
 // Sequence returns the ANSI Sequence for the color.
 func (c ANSIColor) Sequence(bg bool) string {
 	col := int(c)
-	bgMod := func(c int) int {
-		if bg {
-			return c + 10
-		}
-		return c
+	bgMod := 0
+	if bg {
+		bgMod = 10
 	}
 
 	if col < 8 {
-		return fmt.Sprintf("%d", bgMod(col)+30)
+		return fmt.Sprintf("%d", bgMod+col+30)
 	}
-	return fmt.Sprintf("%d", bgMod(col-8)+90)
+	return fmt.Sprintf("%d", bgMod+(col-8)+90)
 }
 
 // Sequence returns the ANSI Sequence for the color.
