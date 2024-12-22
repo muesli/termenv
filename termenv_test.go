@@ -415,3 +415,12 @@ func TestWithTTY(t *testing.T) {
 		}
 	}
 }
+
+func TestWindowsTerminal(t *testing.T) {
+	t.Setenv("TERM", "xterm-256color")
+	t.Setenv("WT_SESSION", "1")
+	o := NewOutput(ioutil.Discard, WithTTY(true))
+	if cp := o.ColorProfile(); cp != TrueColor {
+		t.Fatalf("expected color profile to be %d, got %d", TrueColor, cp)
+	}
+}
