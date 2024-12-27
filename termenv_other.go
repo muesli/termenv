@@ -1,5 +1,5 @@
-//go:build js || plan9 || aix
-// +build js plan9 aix
+//go:build wasm || plan9 || aix
+// +build wasm plan9 aix
 
 package termenv
 
