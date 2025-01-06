@@ -34,7 +34,7 @@ go get github.com/muesli/termenv
 ## Usage
 
 ```go
-output := termenv.NewOutput(os.Stdout)
+output := termenv.NewOutput(os.Stderr)
 ```
 
 `termenv` queries the terminal's capabilities it is running in, so you can
@@ -70,7 +70,7 @@ If you don't want to rely on the automatic detection, you can manually select
 the profile you want to use:
 
 ```go
-output := termenv.NewOutput(os.Stdout, termenv.WithProfile(termenv.TrueColor))
+output := termenv.NewOutput(os.Stderr, termenv.WithProfile(termenv.TrueColor))
 ```
 
 ## Colors
@@ -392,7 +392,7 @@ you need to enable ANSI processing in your application first:
     defer restoreConsole()
 ```
 
-The above code is safe to include on non-Windows systems or when os.Stdout does
+The above code is safe to include on non-Windows systems or when os.Stderr does
 not refer to a terminal (e.g. in tests).
 
 ## Color Chart

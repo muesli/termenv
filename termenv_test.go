@@ -35,7 +35,7 @@ func TestLegacyTermEnv(t *testing.T) {
 }
 
 func TestTermEnv(t *testing.T) {
-	o := NewOutput(os.Stdout)
+	o := NewOutput(os.Stderr)
 	if o.Profile != TrueColor && o.Profile != Ascii {
 		t.Errorf("Expected %d, got %d", TrueColor, o.Profile)
 	}
@@ -348,7 +348,7 @@ func TestEnvNoColor(t *testing.T) {
 			for i := 0; i < len(test.environ); i += 2 {
 				os.Setenv(test.environ[i], test.environ[i+1])
 			}
-			out := NewOutput(os.Stdout)
+			out := NewOutput(os.Stderr)
 			actual := out.EnvNoColor()
 			if test.expected != actual {
 				t.Errorf("expected %t but was %t", test.expected, actual)
@@ -387,7 +387,7 @@ func TestPseudoTerm(t *testing.T) {
 }
 
 func TestCache(t *testing.T) {
-	o := NewOutput(os.Stdout, WithColorCache(true), WithProfile(TrueColor))
+	o := NewOutput(os.Stderr, WithColorCache(true), WithProfile(TrueColor))
 
 	if o.cache != true {
 		t.Errorf("Expected cache to be active, got %t", o.cache)
@@ -397,7 +397,7 @@ func TestCache(t *testing.T) {
 func TestEnableVirtualTerminalProcessing(t *testing.T) {
 	// EnableVirtualTerminalProcessing should always return a non-nil
 	// restoreFunc, and in tests it should never return an error.
-	restoreFunc, err := EnableVirtualTerminalProcessing(NewOutput(os.Stdout))
+	restoreFunc, err := EnableVirtualTerminalProcessing(NewOutput(os.Stderr))
 	if restoreFunc == nil || err != nil {
 		t.Fatalf("expected non-<nil>, <nil>, got %p, %v", restoreFunc, err)
 	}
