@@ -8,7 +8,7 @@ import (
 
 var (
 	// output is the default global output.
-	output = NewOutput(os.Stdout)
+	output = NewOutput(os.Stderr)
 )
 
 // File represents a file descriptor.
@@ -76,7 +76,7 @@ func NewOutput(w io.Writer, opts ...OutputOption) *Output {
 	}
 
 	if o.w == nil {
-		o.w = os.Stdout
+		o.w = os.Stderr
 	}
 	for _, opt := range opts {
 		opt(o)
