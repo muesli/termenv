@@ -5,9 +5,9 @@ package termenv
 
 import "io"
 
-// ColorProfile returns the supported color profile:
-// ANSI256
-func (o Output) ColorProfile() Profile {
+// termColorProfile returns the supported color profile from the TERM
+// environment variable.
+func (o Output) termColorProfile() Profile {
 	return ANSI256
 }
 

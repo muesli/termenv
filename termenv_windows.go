@@ -11,7 +11,8 @@ import (
 	"golang.org/x/sys/windows"
 )
 
-func (o *Output) ColorProfile() Profile {
+// termColorProfile returns the supported color profile from TERM environment:
+func (o *Output) termColorProfile() Profile {
 	if !o.isTTY() {
 		return Ascii
 	}
