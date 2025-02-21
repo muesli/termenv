@@ -63,6 +63,10 @@ func (o *Output) ColorProfile() Profile {
 	}
 
 	if strings.Contains(term, "256color") {
+		// Check if we're running Windows Terminal
+		if o.environ.Getenv("WT_SESSION") != "" {
+			return TrueColor
+		}
 		return ANSI256
 	}
 	if strings.Contains(term, "color") {
