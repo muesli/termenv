@@ -20,9 +20,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Coverage
+        run: go test -race -covermode atomic -coverprofile=profile.cov ./...
+
+      - name: Send coverage
+        uses: shogo82148/actions-goveralls@v1
+        with:
+          path-to-profile: profile.cov
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          go test -race -covermode atomic -coverprofile=profile.cov ./...
-          GO111MODULE=off go get github.com/mattn/goveralls
-          $(go env GOPATH)/bin/goveralls -coverprofile=profile.cov -service=github
