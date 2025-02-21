@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	// timeout for OSC queries
+	// timeout for OSC queries.
 	OSCTimeout = 5 * time.Second
 )
 
@@ -75,6 +75,7 @@ func (o *Output) ColorProfile() Profile {
 	return Ascii
 }
 
+//nolint:mnd
 func (o Output) foregroundColor() Color {
 	s, err := o.termStatusReport(10)
 	if err == nil {
@@ -97,6 +98,7 @@ func (o Output) foregroundColor() Color {
 	return ANSIColor(7)
 }
 
+//nolint:mnd
 func (o Output) backgroundColor() Color {
 	s, err := o.termStatusReport(11)
 	if err == nil {
@@ -131,7 +133,7 @@ func (o *Output) waitForData(timeout time.Duration) error {
 			continue
 		}
 		if err != nil {
-			return err
+			return err //nolint:wrapcheck
 		}
 		if n == 0 {
 			return fmt.Errorf("timeout")
@@ -153,7 +155,7 @@ func (o *Output) readNextByte() (byte, error) {
 	var b [1]byte
 	n, err := o.TTY().Read(b[:])
 	if err != nil {
-		return 0, err
+		return 0, err //nolint:wrapcheck
 	}
 
 	if n == 0 {
@@ -221,7 +223,7 @@ func (o *Output) readNextResponse() (response string, isOSC bool, err error) {
 		}
 
 		// both responses have less than 25 bytes, so if we read more, that's an error
-		if len(response) > 25 {
+		if len(response) > 25 { //nolint:mnd
 			break
 		}
 	}
