@@ -123,10 +123,10 @@ func (o *Output) waitForData(timeout time.Duration) error {
 	fd := o.TTY().Fd()
 	tv := unix.NsecToTimeval(int64(timeout))
 	var readfds unix.FdSet
-	readfds.Set(int(fd))
+	readfds.Set(int(fd)) //nolint:gosec
 
 	for {
-		n, err := unix.Select(int(fd)+1, &readfds, nil, nil, &tv)
+		n, err := unix.Select(int(fd)+1, &readfds, nil, nil, &tv) //nolint:gosec
 		if err == unix.EINTR {
 			continue
 		}
@@ -243,7 +243,7 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 	}
 
 	if !o.unsafe {
-		fd := int(tty.Fd())
+		fd := int(tty.Fd()) //nolint:gosec
 		// if in background, we can't control the terminal
 		if !isForeground(fd) {
 			return "", ErrStatusReport
@@ -264,10 +264,10 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 	}
 
 	// first, send OSC query, which is ignored by terminal which do not support it
-	fmt.Fprintf(tty, OSC+"%d;?"+ST, sequence)
+	fmt.Fprintf(tty, OSC+"%d;?"+ST, sequence) //nolint:errcheck
 
 	// then, query cursor position, should be supported by all terminals
-	fmt.Fprintf(tty, CSI+"6n")
+	fmt.Fprintf(tty, CSI+"6n") //nolint:errcheck
 
 	// read the next response
 	res, isOSC, err := o.readNextResponse()
