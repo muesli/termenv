@@ -113,7 +113,7 @@ func (o Output) ExitAltScreen() {
 
 // ClearScreen clears the visible portion of the terminal.
 func (o Output) ClearScreen() {
-	fmt.Fprintf(o.w, CSI+EraseDisplaySeq, 2) //nolint:errcheck
+	fmt.Fprintf(o.w, CSI+EraseDisplaySeq, 2) //nolint:errcheck,mnd
 	o.MoveCursor(1, 1)
 }
 
@@ -191,7 +191,7 @@ func (o Output) ClearLineRight() {
 
 // ClearLines clears a given number of lines.
 func (o Output) ClearLines(n int) {
-	clearLine := fmt.Sprintf(CSI+EraseLineSeq, 2)
+	clearLine := fmt.Sprintf(CSI+EraseLineSeq, 2) //nolint:mnd
 	cursorUp := fmt.Sprintf(CSI+CursorUpSeq, 1)
 	fmt.Fprint(o.w, clearLine+strings.Repeat(cursorUp+clearLine, n)) //nolint:errcheck
 }
