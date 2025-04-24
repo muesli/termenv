@@ -133,6 +133,11 @@ func WithUnsafe() OutputOption {
 	}
 }
 
+// ColorProfile returns the supported color profile.
+func (o Output) ColorProfile() Profile {
+	return o.Profile
+}
+
 // ForegroundColor returns the terminal's default foreground color.
 func (o *Output) ForegroundColor() Color {
 	f := func() {

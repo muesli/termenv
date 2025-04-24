@@ -18,9 +18,9 @@ const (
 	OSCTimeout = 5 * time.Second
 )
 
-// ColorProfile returns the supported color profile:
-// Ascii, ANSI, ANSI256, or TrueColor.
-func (o *Output) ColorProfile() Profile {
+// termColorProfile returns the supported color profile from the TERM
+// environment variable.
+func (o *Output) termColorProfile() Profile {
 	if !o.isTTY() {
 		return Ascii
 	}
