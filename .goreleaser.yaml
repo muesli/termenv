@@ -1,0 +1,47 @@
+before:
+  hooks: ['go mod tidy']
+builds:
+  - no_main_check: true
+    goos:
+      - windows
+      - darwin
+      - linux
+      - solaris
+      - dragonfly
+      - freebsd
+      - netbsd
+      - openbsd
+      - plan9
+      - js
+      - aix
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+    - '^test:'
+    - '^chore'
+    - 'merge conflict'
+    - Merge pull request
+    - Merge remote-tracking branch
+    - Merge branch
+    - go mod tidy
+  groups:
+    - title: Dependency updates
+      regexp: "^.*feat\\(deps\\)*:+.*$"
+      order: 300
+    - title: 'New Features'
+      regexp: "^.*feat[(\\w)]*:+.*$"
+      order: 100
+    - title: 'Bug fixes'
+      regexp: "^.*fix[(\\w)]*:+.*$"
+      order: 200
+    - title: 'Documentation updates'
+      regexp: "^.*docs[(\\w)]*:+.*$"
+      order: 400
+    - title: Other work
+      order: 9999
+release:
+  skip_upload: true
+
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
