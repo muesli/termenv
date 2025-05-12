@@ -36,14 +36,14 @@ func (c NoColor) String() string {
 type ANSIColor int
 
 func (c ANSIColor) String() string {
-	return ansiHex[c]
+	return getAnsiHex(int(c))
 }
 
 // ANSI256Color is a color (16-255) as defined by the ANSI Standard.
 type ANSI256Color int
 
 func (c ANSI256Color) String() string {
-	return ansiHex[c]
+	return getAnsiHex(int(c))
 }
 
 // RGBColor is a hex-encoded color, e.g. "#abcdef".
@@ -56,9 +56,9 @@ func ConvertToRGB(c Color) colorful.Color {
 	case RGBColor:
 		hex = string(v)
 	case ANSIColor:
-		hex = ansiHex[v]
+		hex = getAnsiHex(int(v))
 	case ANSI256Color:
-		hex = ansiHex[v]
+		hex = getAnsiHex(int(v))
 	}
 
 	ch, _ := colorful.Hex(hex)
@@ -144,9 +144,9 @@ func ansi256ToANSIColor(c ANSI256Color) ANSIColor {
 	var r int
 	md := math.MaxFloat64
 
-	h, _ := colorful.Hex(ansiHex[c])
+	h, _ := colorful.Hex(getAnsiHex(int(c)))
 	for i := 0; i <= 15; i++ {
-		hb, _ := colorful.Hex(ansiHex[i])
+		hb, _ := colorful.Hex(getAnsiHex(i))
 		d := h.DistanceHSLuv(hb)
 
 		if d < md {
