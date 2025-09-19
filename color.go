@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"strconv"
 	"strings"
 
 	"github.com/lucasb-eyer/go-colorful"
@@ -108,7 +109,16 @@ func (c RGBColor) Sequence(bg bool) string {
 	if bg {
 		prefix = Background
 	}
-	return fmt.Sprintf("%s;2;%d;%d;%d", prefix, uint8(f.R*255), uint8(f.G*255), uint8(f.B*255)) //nolint:mnd
+
+	buf := make([]byte, 0, len(prefix)+9+5)
+	buf = append(buf, prefix...)
+	buf = append(buf, ";2;"...)
+	buf = strconv.AppendInt(buf, int64(f.R*255), 10)
+	buf = append(buf, ";"...)
+	buf = strconv.AppendInt(buf, int64(f.G*255), 10)
+	buf = append(buf, ";"...)
+	buf = strconv.AppendInt(buf, int64(f.B*255), 10)
+	return string(buf)
 }
 
 func xTermColor(s string) (RGBColor, error) {
