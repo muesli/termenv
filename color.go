@@ -96,7 +96,7 @@ func (c ANSI256Color) Sequence(bg bool) string {
 	}
 
 	// allocate space for sequence:
-	// 9 = 1 int, max 3 bytes
+	// 3 = 1 int, max 3 bytes
 	// 3 = bytes for ANSI seperators
 	buf := make([]byte, 0, len(prefix)+3+3)
 	buf = append(buf, prefix...)
