@@ -95,6 +95,9 @@ func (c ANSI256Color) Sequence(bg bool) string {
 		prefix = Background
 	}
 
+	// allocate space for sequence:
+	// 9 = 1 int, max 3 bytes
+	// 3 = bytes for ANSI seperators
 	buf := make([]byte, 0, len(prefix)+3+3)
 	buf = append(buf, prefix...)
 	buf = append(buf, ";5;"...)
@@ -116,6 +119,9 @@ func (c RGBColor) Sequence(bg bool) string {
 
 	r, g, b := int64(f.R*255), int64(f.G*255), int64(f.B*255)
 
+	// allocate space for sequence:
+	// 9 = 3 ints, max 3 bytes each
+	// 5 = bytes for ANSI seperators
 	buf := make([]byte, 0, len(prefix)+9+5)
 	buf = append(buf, prefix...)
 	buf = append(buf, ";2;"...)
