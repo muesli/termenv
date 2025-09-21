@@ -95,7 +95,7 @@ func (c ANSI256Color) Sequence(bg bool) string {
 		prefix = Background
 	}
 
-	buf := make([]byte, 0, len(prefix)+9+3)
+	buf := make([]byte, 0, len(prefix)+3+3)
 	buf = append(buf, prefix...)
 	buf = append(buf, ";5;"...)
 	buf = strconv.AppendInt(buf, int64(c), 10)
