@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"strconv"
 	"strings"
 
 	"github.com/lucasb-eyer/go-colorful"
@@ -74,18 +75,17 @@ func (c NoColor) Sequence(_ bool) string {
 //
 //nolint:mnd
 func (c ANSIColor) Sequence(bg bool) string {
-	col := int(c)
-	bgMod := func(c int) int {
+	col := int64(c)
+	bgMod := func(c int64) int64 {
 		if bg {
 			return c + 10
 		}
 		return c
 	}
-
 	if col < 8 {
-		return fmt.Sprintf("%d", bgMod(col)+30) //nolint:mnd
+		return strconv.FormatInt(bgMod(col)+30, 10)
 	}
-	return fmt.Sprintf("%d", bgMod(col-8)+90) //nolint:mnd
+	return strconv.FormatInt(bgMod(col-8)+90, 10)
 }
 
 // Sequence returns the ANSI Sequence for the color.
@@ -94,7 +94,15 @@ func (c ANSI256Color) Sequence(bg bool) string {
 	if bg {
 		prefix = Background
 	}
-	return fmt.Sprintf("%s;5;%d", prefix, c)
+
+	// allocate space for sequence:
+	// 3 = 1 int, max 3 bytes
+	// 3 = bytes for ANSI seperators
+	buf := make([]byte, 0, len(prefix)+3+3)
+	buf = append(buf, prefix...)
+	buf = append(buf, ";5;"...)
+	buf = strconv.AppendInt(buf, int64(c), 10)
+	return string(buf)
 }
 
 // Sequence returns the ANSI Sequence for the color.
@@ -108,7 +116,21 @@ func (c RGBColor) Sequence(bg bool) string {
 	if bg {
 		prefix = Background
 	}
-	return fmt.Sprintf("%s;2;%d;%d;%d", prefix, uint8(f.R*255), uint8(f.G*255), uint8(f.B*255)) //nolint:mnd
+
+	r, g, b := int64(f.R*255), int64(f.G*255), int64(f.B*255)
+
+	// allocate space for sequence:
+	// 9 = 3 ints, max 3 bytes each
+	// 5 = bytes for ANSI seperators
+	buf := make([]byte, 0, len(prefix)+9+5)
+	buf = append(buf, prefix...)
+	buf = append(buf, ";2;"...)
+	buf = strconv.AppendInt(buf, r, 10)
+	buf = append(buf, ";"...)
+	buf = strconv.AppendInt(buf, g, 10)
+	buf = append(buf, ";"...)
+	buf = strconv.AppendInt(buf, b, 10)
+	return string(buf)
 }
 
 func xTermColor(s string) (RGBColor, error) {
