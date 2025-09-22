@@ -7,5 +7,5 @@ require (
 	github.com/lucasb-eyer/go-colorful v1.3.0
 	github.com/mattn/go-isatty v0.0.20
 	github.com/rivo/uniseg v0.4.7
-	golang.org/x/sys v0.30.0
+	golang.org/x/sys v0.31.0
 )
