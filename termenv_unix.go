@@ -53,6 +53,7 @@ func (o *Output) ColorProfile() Profile {
 	case
 		"alacritty",
 		"contour",
+		"foot",
 		"rio",
 		"wezterm",
 		"xterm-ghostty",
