@@ -20,6 +20,13 @@ const (
 	ANSIBrightWhite
 )
 
+func getAnsiHex(color int) string {
+	if color >= len(ansiHex) {
+		return ansiHex[len(ansiHex)-1]
+	}
+	return ansiHex[color]
+}
+
 // RGB values of ANSI colors (0-255).
 var ansiHex = []string{
 	"#000000",
