@@ -41,6 +41,16 @@ func (t Style) String() string {
 
 // Styled renders s with all applied styles.
 func (t Style) Styled(s string) string {
+	return t.styled(s, true)
+}
+
+// Styled renders s with all applied styles, but no trailing reset
+func (t Style) StyledWithoutReset(s string) string {
+	return t.styled(s, false)
+}
+
+// styled is a private function that is called by both Styled and StyledWithout Reset
+func (t Style) styled(s string, reset bool) string {
 	if t.profile == Ascii {
 		return s
 	}
@@ -53,7 +63,11 @@ func (t Style) Styled(s string) string {
 		return s
 	}
 
-	return fmt.Sprintf("%s%sm%s%sm", CSI, seq, s, CSI+ResetSeq)
+	var end string
+	if reset {
+		end = fmt.Sprintf("%s%sm", CSI, ResetSeq)
+	}
+	return fmt.Sprintf("%s%sm%s%s", CSI, seq, s, end)
 }
 
 // Foreground sets a foreground color.
