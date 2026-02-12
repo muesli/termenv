@@ -54,6 +54,7 @@ func (o *Output) ColorProfile() Profile {
 		"alacritty",
 		"contour",
 		"rio",
+		"rxvt-unicode",
 		"wezterm",
 		"xterm-ghostty",
 		"xterm-kitty":
