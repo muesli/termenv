@@ -112,7 +112,7 @@ func (c RGBColor) Sequence(bg bool) string {
 }
 
 func xTermColor(s string) (RGBColor, error) {
-	if len(s) < 24 || len(s) > 25 {
+	if len(s) < 24 || len(s) > 31 {
 		return RGBColor(""), ErrInvalidColor
 	}
 
@@ -131,12 +131,15 @@ func xTermColor(s string) (RGBColor, error) {
 
 	prefix := ";rgb:"
 	if !strings.HasPrefix(s, prefix) {
+		prefix = ";rgba:"
+	}
+	if !strings.HasPrefix(s, prefix) {
 		return RGBColor(""), ErrInvalidColor
 	}
 	s = strings.TrimPrefix(s, prefix)
 
 	h := strings.Split(s, "/")
-	hex := fmt.Sprintf("#%s%s%s", h[0][:2], h[1][:2], h[2][:2])
+	hex := fmt.Sprintf("#%s%s%s", h[0][:2], h[1][:2], h[2][:2]) // Ignore alpha for now
 	return RGBColor(hex), nil
 }
 

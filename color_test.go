@@ -19,6 +19,11 @@ func TestXTermColor(t *testing.T) {
 			true,
 		},
 		{
+			"\033]11;rgba:fafa/fafa/fafa/fefe\033\\",
+			RGBColor("#fafafa"),
+			true,
+		},
+		{
 			"\033]11;rgb:1212/3434/5656\a",
 			RGBColor("#123456"),
 			true,

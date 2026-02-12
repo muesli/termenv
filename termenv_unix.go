@@ -167,6 +167,7 @@ func (o *Output) readNextByte() (byte, error) {
 
 // readNextResponse reads either an OSC response or a cursor position response:
 //   - OSC response: "\x1b]11;rgb:1111/1111/1111\x1b\\"
+//   - OSC RGBA response: "\x1b]11;rgba:1111/1111/1111/1111\x1b\\"
 //   - cursor position response: "\x1b[42;1R"
 func (o *Output) readNextResponse() (response string, isOSC bool, err error) {
 	start, err := o.readNextByte()
@@ -222,8 +223,8 @@ func (o *Output) readNextResponse() (response string, isOSC bool, err error) {
 			}
 		}
 
-		// both responses have less than 25 bytes, so if we read more, that's an error
-		if len(response) > 25 { //nolint:mnd
+		// both responses have less than 31 bytes, so if we read more, that's an error
+		if len(response) > 31 { //nolint:mnd
 			break
 		}
 	}
