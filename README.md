@@ -47,8 +47,12 @@ returns the supported profile:
 - `termenv.TrueColor` - RGB/TrueColor support
 
 Alternatively, you can use `termenv.EnvColorProfile` which evaluates the
-terminal like `ColorProfile`, but also respects the `NO_COLOR` and
-`CLICOLOR_FORCE` environment variables.
+terminal like `ColorProfile`, but also respects the following environment
+variables:
+
+- [`NO_COLOR`](https://no-color.org/) — disables color output when set
+- [`CLICOLOR`/`CLICOLOR_FORCE`](https://bixense.com/clicolors/) — controls and forces color output
+- [`FORCE_COLOR`](https://force-color.org/) — forces color output when set
 
 You can also query the terminal for its color scheme, so you know whether your
 app is running in a light- or dark-themed environment:

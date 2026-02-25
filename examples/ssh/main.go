@@ -6,9 +6,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/charmbracelet/ssh"
 	"github.com/charmbracelet/wish"
 	"github.com/creack/pty"
-	"github.com/charmbracelet/ssh"
 	"github.com/muesli/termenv"
 )
 

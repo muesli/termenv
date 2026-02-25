@@ -62,8 +62,8 @@ func HasDarkBackground() bool {
 
 // EnvNoColor returns true if the environment variables explicitly disable color output
 // by setting NO_COLOR (https://no-color.org/)
-// or CLICOLOR/CLICOLOR_FORCE (https://bixense.com/clicolors/)
-// If NO_COLOR is set, this will return true, ignoring CLICOLOR/CLICOLOR_FORCE
+// or CLICOLOR/CLICOLOR_FORCE (https://bixense.com/clicolors/).
+// If NO_COLOR is set, this will return true, ignoring CLICOLOR/CLICOLOR_FORCE.
 // If CLICOLOR=="0", it will be true only if CLICOLOR_FORCE is also "0" or is unset.
 func (o *Output) EnvNoColor() bool {
 	return o.environ.Getenv("NO_COLOR") != "" || (o.environ.Getenv("CLICOLOR") == "0" && !o.cliColorForced())
@@ -71,37 +71,37 @@ func (o *Output) EnvNoColor() bool {
 
 // EnvNoColor returns true if the environment variables explicitly disable color output
 // by setting NO_COLOR (https://no-color.org/)
-// or CLICOLOR/CLICOLOR_FORCE (https://bixense.com/clicolors/)
-// If NO_COLOR is set, this will return true, ignoring CLICOLOR/CLICOLOR_FORCE
+// or CLICOLOR/CLICOLOR_FORCE (https://bixense.com/clicolors/).
+// If NO_COLOR is set, this will return true, ignoring CLICOLOR/CLICOLOR_FORCE.
 // If CLICOLOR=="0", it will be true only if CLICOLOR_FORCE is also "0" or is unset.
 func EnvNoColor() bool {
 	return output.EnvNoColor()
 }
 
-// EnvColorProfile returns the color profile based on environment variables set
-// Supports NO_COLOR (https://no-color.org/)
-// and CLICOLOR/CLICOLOR_FORCE (https://bixense.com/clicolors/)
-// If none of these environment variables are set, this behaves the same as ColorProfile()
-// It will return the Ascii color profile if EnvNoColor() returns true
-// If the terminal does not support any colors, but CLICOLOR_FORCE is set and not "0"
-// then the ANSI color profile will be returned.
+// EnvColorProfile returns the color profile based on environment variables set.
+// Supports NO_COLOR (https://no-color.org/),
+// CLICOLOR/CLICOLOR_FORCE (https://bixense.com/clicolors/),
+// and FORCE_COLOR (https://force-color.org/).
+// If none of these environment variables are set, this behaves the same as ColorProfile().
+// Returns Ascii if EnvNoColor() is true; otherwise upgrades a non-TTY Ascii result to
+// ANSI when CLICOLOR_FORCE is set and not "0", or when FORCE_COLOR is set.
 func EnvColorProfile() Profile {
 	return output.EnvColorProfile()
 }
 
-// EnvColorProfile returns the color profile based on environment variables set
-// Supports NO_COLOR (https://no-color.org/)
-// and CLICOLOR/CLICOLOR_FORCE (https://bixense.com/clicolors/)
-// If none of these environment variables are set, this behaves the same as ColorProfile()
-// It will return the Ascii color profile if EnvNoColor() returns true
-// If the terminal does not support any colors, but CLICOLOR_FORCE is set and not "0"
-// then the ANSI color profile will be returned.
+// EnvColorProfile returns the color profile based on environment variables set.
+// Supports NO_COLOR (https://no-color.org/),
+// CLICOLOR/CLICOLOR_FORCE (https://bixense.com/clicolors/),
+// and FORCE_COLOR (https://force-color.org/).
+// If none of these environment variables are set, this behaves the same as ColorProfile().
+// Returns Ascii if EnvNoColor() is true; otherwise upgrades a non-TTY Ascii result to
+// ANSI when CLICOLOR_FORCE is set and not "0", or when FORCE_COLOR is set.
 func (o *Output) EnvColorProfile() Profile {
 	if o.EnvNoColor() {
 		return Ascii
 	}
 	p := o.ColorProfile()
-	if o.cliColorForced() && p == Ascii {
+	if (o.cliColorForced() || o.forceColor()) && p == Ascii {
 		return ANSI
 	}
 	return p
@@ -112,4 +112,10 @@ func (o *Output) cliColorForced() bool {
 		return forced != "0"
 	}
 	return false
+}
+
+// forceColor returns true if FORCE_COLOR (https://force-color.org/) is set to
+// a non-empty value.
+func (o *Output) forceColor() bool {
+	return o.environ.Getenv("FORCE_COLOR") != ""
 }
