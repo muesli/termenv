@@ -37,8 +37,8 @@ go get github.com/muesli/termenv
 output := termenv.NewOutput(os.Stdout)
 ```
 
-`termenv` queries the terminal's capabilities it is running in, so you can
-safely use advanced features, like RGB colors or ANSI styles. `output.Profile`
+`termenv` queries the capabilities of the terminal it is running in, so you can
+safely use advanced features like RGB colors or ANSI styles. `output.Profile`
 returns the supported profile:
 
 - `termenv.Ascii` - no ANSI support detected, ASCII only
