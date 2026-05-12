@@ -136,6 +136,9 @@ func xTermColor(s string) (RGBColor, error) {
 	s = strings.TrimPrefix(s, prefix)
 
 	h := strings.Split(s, "/")
+	if len(h) != 3 || len(h[0]) < 2 || len(h[1]) < 2 || len(h[2]) < 2 {
+		return RGBColor(""), ErrInvalidColor
+	}
 	hex := fmt.Sprintf("#%s%s%s", h[0][:2], h[1][:2], h[2][:2])
 	return RGBColor(hex), nil
 }

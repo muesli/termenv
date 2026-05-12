@@ -43,6 +43,21 @@ func TestXTermColor(t *testing.T) {
 			"",
 			false,
 		},
+		{
+			"\033]11;rgb:aaaaaaaaaaaaaa\033",
+			"",
+			false,
+		},
+		{
+			"\033]11;rgb:aaaaaaaaaaa/a/a\033",
+			"",
+			false,
+		},
+		{
+			"\033]11;rgb:aaaaaa/aaaaaaa\033",
+			"",
+			false,
+		},
 	}
 
 	for _, test := range tests {
