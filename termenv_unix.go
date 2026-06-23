@@ -277,8 +277,23 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 		return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
 	}
 
-	// if this is not OSC response, then the terminal does not support it
+	// if this is not OSC response, then the cursor position response arrived first.
+	// The terminal may still send the OSC response; drain it so it doesn't leak
+	// into the TTY buffer and appear as garbage output or a phantom shell command.
 	if !isOSC {
+		if tty := o.TTY(); tty != nil {
+			fd := int(tty.Fd())
+			tv := unix.NsecToTimeval(int64(100 * time.Millisecond))
+			var rfds unix.FdSet
+			rfds.Set(fd)
+			if n, _ := unix.Select(fd+1, &rfds, nil, nil, &tv); n > 0 {
+				drained, _, _ := o.readNextResponse()
+				// readNextResponse stops at ESC (first byte of ST = ESC+\); consume the trailing \.
+				if strings.HasSuffix(drained, string(ESC)) {
+					_, _ = o.readNextByte()
+				}
+			}
+		}
 		return "", ErrStatusReport
 	}
 
