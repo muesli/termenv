@@ -271,25 +271,36 @@ func (o Output) termStatusReport(sequence int) (string, error) {
 	// then, query cursor position, should be supported by all terminals
 	fmt.Fprintf(tty, CSI+"6n") //nolint:errcheck
 
-	// read the next response
-	res, isOSC, err := o.readNextResponse()
-	if err != nil {
-		return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
+	// Read responses until the cursor report arrives. Every terminal answers
+	// CSI 6n, so it is the sentinel telling us both queries have been
+	// answered. Returning earlier -- because the terminal emitted the cursor
+	// report before the OSC reply -- would leave the OSC reply in the tty
+	// buffer, where the deferred termios restore re-enables ECHO and the shell
+	// echoes it as stray input.
+	var (
+		osc    string
+		gotOSC bool
+	)
+	for {
+		res, isOSC, err := o.readNextResponse()
+		if err != nil {
+			return "", fmt.Errorf("%s: %s", ErrStatusReport, err)
+		}
+		if isOSC {
+			osc, gotOSC = res, true
+			continue
+		}
+		// cursor report: both queries have now been answered
+		break
 	}
 
-	// if this is not OSC response, then the terminal does not support it
-	if !isOSC {
+	// if we never saw an OSC response, the terminal does not support it
+	if !gotOSC {
 		return "", ErrStatusReport
 	}
 
-	// read the cursor query response next and discard the result
-	_, _, err = o.readNextResponse()
-	if err != nil {
-		return "", err
-	}
-
-	// fmt.Println("Rcvd", res[1:])
-	return res, nil
+	// fmt.Println("Rcvd", osc[1:])
+	return osc, nil
 }
 
 // EnableVirtualTerminalProcessing enables virtual terminal processing on
