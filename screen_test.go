@@ -3,6 +3,7 @@ package termenv
 import (
 	"bytes"
 	"io"
+	"math"
 	"os"
 	"strings"
 	"testing"
@@ -196,6 +197,24 @@ func TestClearLines(t *testing.T) {
 	o := tempOutput(t)
 	o.ClearLines(8)
 	verify(t, o, "\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K")
+}
+
+func TestClearLinesZero(t *testing.T) {
+	o := tempOutput(t)
+	o.ClearLines(0)
+	verify(t, o, "\x1b[2K")
+}
+
+func TestClearLinesNegative(t *testing.T) {
+	// A negative n must not panic (strings.Repeat panics on a negative count)
+	// and should behave the same as n == 0: clear only the current line.
+	o := tempOutput(t)
+	o.ClearLines(-1)
+	verify(t, o, "\x1b[2K")
+
+	o2 := tempOutput(t)
+	o2.ClearLines(math.MinInt)
+	verify(t, o2, "\x1b[2K")
 }
 
 func TestChangeScrollingRegion(t *testing.T) {

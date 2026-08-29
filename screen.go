@@ -189,8 +189,13 @@ func (o Output) ClearLineRight() {
 	fmt.Fprint(o.w, CSI+EraseLineRightSeq) //nolint:errcheck
 }
 
-// ClearLines clears a given number of lines.
+// ClearLines clears a given number of lines. A negative n is treated the
+// same as 0, clearing only the current line, consistent with how the other
+// cursor/line methods in this file accept a negative n without panicking.
 func (o Output) ClearLines(n int) {
+	if n < 0 {
+		n = 0
+	}
 	clearLine := fmt.Sprintf(CSI+EraseLineSeq, 2) //nolint:mnd
 	cursorUp := fmt.Sprintf(CSI+CursorUpSeq, 1)
 	fmt.Fprint(o.w, clearLine+strings.Repeat(cursorUp+clearLine, n)) //nolint:errcheck
