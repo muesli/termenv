@@ -2,6 +2,14 @@ package termenv
 
 import "testing"
 
+func TestRGBColorSequenceRoundsChannels(t *testing.T) {
+	got := RGBColor("#657084").Sequence(false)
+	want := "38;2;101;112;132"
+	if got != want {
+		t.Fatalf("Sequence() = %q, want %q", got, want)
+	}
+}
+
 func TestXTermColor(t *testing.T) {
 	var tests = []struct {
 		input string
