@@ -34,6 +34,11 @@ func TestXTermColor(t *testing.T) {
 			false,
 		},
 		{
+			"\033]11;rgb:fafa/xxxxxxxxx\033",
+			"",
+			false,
+		},
+		{
 			"\033]11;rgb:fafa/fafa/fafaY",
 			"",
 			false,
