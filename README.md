@@ -145,12 +145,19 @@ bg := `{{ Background "#0000ff" "Blue Background" }}`
 // wrap styles
 wrap := `{{ Bold (Underline "Hello World") }}`
 
-// parse and render
-tpl, err = tpl.Parse(bold)
+// parse and render each example
+for _, text := range []string{bold, col, fg, bg, wrap} {
+    parsed, err := tpl.Parse(text)
+    if err != nil {
+        panic(err)
+    }
 
-var buf bytes.Buffer
-tpl.Execute(&buf, nil)
-fmt.Println(&buf)
+    var buf bytes.Buffer
+    if err := parsed.Execute(&buf, nil); err != nil {
+        panic(err)
+    }
+    fmt.Println(&buf)
+}
 ```
 
 Other available helper functions are: `Faint`, `Italic`, `CrossOut`,
