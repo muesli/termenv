@@ -62,3 +62,26 @@ func TestXTermColor(t *testing.T) {
 		})
 	}
 }
+
+func TestRGBColorSequenceRoundsChannels(t *testing.T) {
+	cases := []struct {
+		hex string
+		fg  string
+		bg  string
+	}{
+		{"#657084", "38;2;101;112;132", "48;2;101;112;132"},
+		{"#eceff4", "38;2;236;239;244", "48;2;236;239;244"},
+		{"#4c566a", "38;2;76;86;106", "48;2;76;86;106"},
+		{"#2d6271", "38;2;45;98;113", "48;2;45;98;113"},
+		{"#fafafa", "38;2;250;250;250", "48;2;250;250;250"},
+	}
+	for _, tc := range cases {
+		c := RGBColor(tc.hex)
+		if got := c.Sequence(false); got != tc.fg {
+			t.Errorf("%s fg: got %q want %q", tc.hex, got, tc.fg)
+		}
+		if got := c.Sequence(true); got != tc.bg {
+			t.Errorf("%s bg: got %q want %q", tc.hex, got, tc.bg)
+		}
+	}
+}
