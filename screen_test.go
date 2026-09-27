@@ -198,6 +198,13 @@ func TestClearLines(t *testing.T) {
 	verify(t, o, "\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K")
 }
 
+func TestClearLinesNegative(t *testing.T) {
+	o := tempOutput(t)
+	o.ClearLines(-1)
+	o.ClearLines(-1000)
+	verify(t, o, "")
+}
+
 func TestChangeScrollingRegion(t *testing.T) {
 	o := tempOutput(t)
 	o.ChangeScrollingRegion(16, 8)
