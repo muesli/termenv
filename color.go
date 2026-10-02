@@ -108,7 +108,8 @@ func (c RGBColor) Sequence(bg bool) string {
 	if bg {
 		prefix = Background
 	}
-	return fmt.Sprintf("%s;2;%d;%d;%d", prefix, uint8(f.R*255), uint8(f.G*255), uint8(f.B*255)) //nolint:mnd
+	r, g, b := f.RGB255()
+	return fmt.Sprintf("%s;2;%d;%d;%d", prefix, r, g, b)
 }
 
 func xTermColor(s string) (RGBColor, error) {
