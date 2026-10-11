@@ -3,6 +3,7 @@ package termenv
 import (
 	"bytes"
 	"io"
+	"math"
 	"os"
 	"strings"
 	"testing"
@@ -196,6 +197,12 @@ func TestClearLines(t *testing.T) {
 	o := tempOutput(t)
 	o.ClearLines(8)
 	verify(t, o, "\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K")
+
+	for _, n := range []int{0, -1, -5, math.MinInt} {
+		o = tempOutput(t)
+		o.ClearLines(n)
+		verify(t, o, "")
+	}
 }
 
 func TestChangeScrollingRegion(t *testing.T) {
