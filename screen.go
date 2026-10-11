@@ -191,6 +191,9 @@ func (o Output) ClearLineRight() {
 
 // ClearLines clears a given number of lines.
 func (o Output) ClearLines(n int) {
+	if n <= 0 {
+		return
+	}
 	clearLine := fmt.Sprintf(CSI+EraseLineSeq, 2) //nolint:mnd
 	cursorUp := fmt.Sprintf(CSI+CursorUpSeq, 1)
 	fmt.Fprint(o.w, clearLine+strings.Repeat(cursorUp+clearLine, n)) //nolint:errcheck
