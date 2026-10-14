@@ -73,6 +73,43 @@ the profile you want to use:
 output := termenv.NewOutput(os.Stdout, termenv.WithProfile(termenv.TrueColor))
 ```
 
+### Automated Tests
+
+`ForegroundColor`, `BackgroundColor`, and `HasDarkBackground` can send terminal
+queries and read the replies on Unix. These queries can interfere with an
+Expect-style test driving an application through a pseudo-terminal. They happen
+when you request the color scheme, or during `NewOutput` if you use
+`WithColorCache`; constructing an output without that option does not query the
+color scheme.
+
+Set `CI` to a nonempty value **before starting the application** to disable
+automatic TTY detection, including these color-scheme queries:
+
+```sh
+CI=1 ./my-app
+```
+
+Any nonempty value, including `CI=false`, has this effect. A fresh output will
+return `NoColor` for its foreground and background instead of detecting the
+terminal's theme. Automatic profile detection also returns `Ascii`, unless
+color is forced through the environment. If a test needs ANSI styling, select
+an explicit profile with `WithProfile`. Selecting a profile alone does not
+disable color-scheme queries.
+
+Do not combine this approach with `WithTTY(true)` or `WithUnsafe()`: those options
+bypass the `CI` check. `WithTTY(false)` restores automatic detection; it does not
+force a real terminal to be treated as a non-TTY.
+
+For unit tests that only check formatted output, use a buffer and a fixed profile
+to avoid terminal detection and keep the expected escape sequences stable:
+
+```go
+var buf bytes.Buffer
+output := termenv.NewOutput(&buf, termenv.WithProfile(termenv.TrueColor))
+fmt.Fprint(output, output.String("hello").Foreground(output.Color("#ff0000")))
+// buf.String() is "\x1b[38;2;255;0;0mhello\x1b[0m".
+```
+
 ## Colors
 
 `termenv` supports multiple color profiles: Ascii (black & white only),
