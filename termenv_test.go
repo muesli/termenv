@@ -84,6 +84,33 @@ func TestRendering(t *testing.T) {
 	}
 }
 
+func TestColorOutOfRange(t *testing.T) {
+	for _, s := range []string{"-1", "256", "512", "-99"} {
+		for _, p := range []Profile{TrueColor, ANSI256, ANSI, Ascii} {
+			if c := p.Color(s); c != nil {
+				t.Errorf("%s.Color(%q) = %v (%T), want nil", p.Name(), s, c, c)
+			}
+		}
+	}
+
+	// Valid bounds still work and do not panic when formatted.
+	if c := TrueColor.Color("0"); c == nil {
+		t.Fatal(`TrueColor.Color("0") = nil`)
+	} else if _, ok := c.(ANSIColor); !ok {
+		t.Fatalf(`TrueColor.Color("0") type = %T, want ANSIColor`, c)
+	} else if got := c.(ANSIColor).String(); got == "" {
+		t.Fatal(`TrueColor.Color("0").String() is empty`)
+	}
+
+	if c := TrueColor.Color("255"); c == nil {
+		t.Fatal(`TrueColor.Color("255") = nil`)
+	} else if _, ok := c.(ANSI256Color); !ok {
+		t.Fatalf(`TrueColor.Color("255") type = %T, want ANSI256Color`, c)
+	} else if got := c.(ANSI256Color).String(); got != "#eeeeee" {
+		t.Fatalf(`TrueColor.Color("255").String() = %q, want "#eeeeee"`, got)
+	}
+}
+
 func TestColorConversion(t *testing.T) {
 	// ANSI color
 	a := ANSI.Color("7")
