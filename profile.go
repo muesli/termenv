@@ -94,6 +94,9 @@ func (p Profile) Color(s string) Color {
 		if err != nil {
 			return nil
 		}
+		if i < 0 || i > 255 { //nolint:mnd
+			return nil
+		}
 
 		if i < 16 { //nolint:mnd
 			c = ANSIColor(i)
