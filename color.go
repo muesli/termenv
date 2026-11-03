@@ -184,7 +184,7 @@ func hexToANSI256Color(c colorful.Color) ANSI256Color {
 
 	// Calculate the nearest 0-based gray index at 232..255
 	var grayIdx int
-	average := (r + g + b) / 3
+	average := int((c.R + c.G + c.B) * 255 / 3)
 	if average > 238 {
 		grayIdx = 23
 	} else {
