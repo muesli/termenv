@@ -2,6 +2,23 @@ package termenv
 
 import "testing"
 
+func TestANSI256GrayscaleRoundTrip(t *testing.T) {
+	for i := 232; i <= 255; i++ {
+		want := ANSI256Color(i)
+		if got := ANSI256.Color(want.String()); got != want {
+			t.Errorf("ANSI256.Color(%q) = %v, want %v", want.String(), got, want)
+		}
+	}
+}
+
+func TestANSI256ColorCube(t *testing.T) {
+	for _, want := range []ANSI256Color{16, 231, 196} {
+		if got := ANSI256.Color(want.String()); got != want {
+			t.Errorf("ANSI256.Color(%q) = %v, want %v", want.String(), got, want)
+		}
+	}
+}
+
 func TestXTermColor(t *testing.T) {
 	var tests = []struct {
 		input string
