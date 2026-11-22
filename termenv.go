@@ -3,8 +3,6 @@ package termenv
 import (
 	"errors"
 	"os"
-
-	"github.com/mattn/go-isatty"
 )
 
 var (
@@ -33,7 +31,7 @@ func (o *Output) isTTY() bool {
 		return false
 	}
 	if f, ok := o.Writer().(*os.File); ok {
-		return isatty.IsTerminal(f.Fd())
+		return isTerminal(f.Fd())
 	}
 
 	return false
